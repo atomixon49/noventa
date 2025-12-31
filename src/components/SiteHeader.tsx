@@ -108,13 +108,13 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-black/40 backdrop-blur supports-[backdrop-filter]:bg-black/30">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-3">
-          <Link href="/" className="rounded-xl bg-white px-3 py-2 shadow-sm">
+          <Link href="/" className="flex items-center">
             <Image 
-              src="/logo-n.png" 
+              src="/noventa-1.jpeg" 
               alt="Noventa" 
-              width={170} 
-              height={52}
-              className="h-11 w-auto object-contain"
+              width={180} 
+              height={50}
+              className="h-12 w-auto object-contain"
               priority
             />
           </Link>
@@ -126,6 +126,9 @@ export function SiteHeader() {
           </Link>
           <Link href="#faq" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             {t.nav.faq}
+          </Link>
+          <Link href="#updates" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
+            {t.nav.updates}
           </Link>
           <Link href="/login" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             {t.nav.login}

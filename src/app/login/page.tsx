@@ -134,10 +134,10 @@ export default function LoginPage() {
                 className="inline-block rounded-xl bg-white p-3 shadow-lg"
               >
                 <Image 
-                  src="/logo-n.png" 
+                  src="/noventa-1.jpeg" 
                   alt="Noventa" 
-                  width={140} 
-                  height={42}
+                  width={160} 
+                  height={45}
                   className="mx-auto w-28 sm:w-32"
                 />
               </motion.div>

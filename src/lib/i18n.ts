@@ -13,6 +13,7 @@ export type Translations = {
     about: string;
     faq: string;
     login: string;
+    updates: string;
   };
   hero: {
     eyebrow: string;
@@ -32,6 +33,12 @@ export type Translations = {
     structuredTags: string[];
     comingSoonTitle: string;
     comingSoonCards: { title: string; description: string }[];
+    aboutTitle: string;
+    aboutSubtitle: string;
+    aboutText: string;
+    socialTitle: string;
+    socialSubtitle: string;
+    followUs: string;
     faqTitle: string;
     faqs: { q: string; a: string }[];
     finalCtaTitle: string;
@@ -40,6 +47,7 @@ export type Translations = {
   };
   footer: {
     note: string;
+    socialMedia: string;
   };
 };
 
@@ -55,6 +63,7 @@ export const translations: Record<Language, Translations> = {
       about: "Über uns",
       faq: "FAQ",
       login: "Firmen-Login",
+      updates: "Updates",
     },
     hero: {
       eyebrow: "Für Unternehmen (Beta)",
@@ -152,6 +161,12 @@ export const translations: Record<Language, Translations> = {
             "Später: Performance-Ansicht für externe Verkäufer:innen — klar gekennzeichnet.",
         },
       ],
+      aboutTitle: "Über Noventa",
+      aboutSubtitle: "Wir bauen die transparenteste Sales-Job-Plattform",
+      aboutText: "Noventa wurde gegründet, um den Vertriebsarbeitsmarkt zu revolutionieren. Wir glauben an Transparenz, klare Strukturen und faire Bedingungen für beide Seiten. Unser Team arbeitet daran, eine Plattform zu schaffen, die Vertrauen schafft und echte Matches ermöglicht.",
+      socialTitle: "Folge uns auf Social Media",
+      socialSubtitle: "Bleib auf dem Laufenden mit unseren neuesten Updates",
+      followUs: "Folge @noventacrew",
       faqTitle: "FAQ",
       faqs: [
         {
@@ -170,6 +185,22 @@ export const translations: Record<Language, Translations> = {
           q: "Kann eine Firma mehrere Stellen posten?",
           a: "Ja. Unternehmensprofil bleibt stabil, Stellenanzeigen sind variabel und können parallel laufen.",
         },
+        {
+          q: "Wie lange dauert die Registrierung?",
+          a: "Weniger als 3 Minuten. Unternehmensprofil einmal ausfüllen, dann können Sie direkt Stellen veröffentlichen.",
+        },
+        {
+          q: "Wann kommen Bewerbungen und Chats?",
+          a: "Diese Features sind als 'coming soon' markiert. Wir bauen die Plattform Schritt für Schritt auf und halten Sie transparent informiert.",
+        },
+        {
+          q: "Kann ich meine Stellenanzeigen bearbeiten?",
+          a: "Ja, Sie können Ihre Anzeigen jederzeit im Dashboard bearbeiten, pausieren oder löschen.",
+        },
+        {
+          q: "Warum ist ein öffentlicher Ansprechpartner wichtig?",
+          a: "Transparenz schafft Vertrauen. Ein echter Name und eine Position zeigen, dass Ihr Unternehmen seriös ist und reduzieren Fake-Job-Bedenken erheblich.",
+        },
       ],
       finalCtaTitle: "Bereit, die erste Stelle auf Noventa zu posten?",
       finalCtaSubtitle:
@@ -177,7 +208,8 @@ export const translations: Record<Language, Translations> = {
       finalCta: "Unternehmen registrieren",
     },
     footer: {
-      note: "Noventa ist in Beta. Einige Module sind als ‚coming soon‘ markiert.",
+      note: "Noventa ist in Beta. Einige Module sind als ‚coming soon' markiert.",
+      socialMedia: "Folgen Sie uns",
     },
   },
   es: {
@@ -191,6 +223,7 @@ export const translations: Record<Language, Translations> = {
       about: "Sobre nosotros",
       faq: "FAQ",
       login: "Acceso empresas",
+      updates: "Actualizaciones",
     },
     hero: {
       eyebrow: "Para empresas (Beta)",
@@ -288,6 +321,12 @@ export const translations: Record<Language, Translations> = {
             "Más adelante: panel de performance de vendedores externos.",
         },
       ],
+      aboutTitle: "Sobre Noventa",
+      aboutSubtitle: "Construyendo la plataforma de empleos de ventas más transparente",
+      aboutText: "Noventa nació para revolucionar el mercado laboral de ventas. Creemos en la transparencia, estructuras claras y condiciones justas para ambas partes. Nuestro equipo trabaja para crear una plataforma que genere confianza y permita matches reales.",
+      socialTitle: "Síguenos en redes sociales",
+      socialSubtitle: "Mantente al día con nuestras últimas novedades",
+      followUs: "Sigue a @noventacrew",
       faqTitle: "Preguntas frecuentes",
       faqs: [
         {
@@ -306,6 +345,22 @@ export const translations: Record<Language, Translations> = {
           q: "¿Puedo publicar varias ofertas?",
           a: "Sí. El perfil de empresa es estable; las ofertas son variables y pueden ser múltiples.",
         },
+        {
+          q: "¿Cuánto tarda el registro?",
+          a: "Menos de 3 minutos. Crea tu perfil de empresa una vez y luego publica ofertas directamente.",
+        },
+        {
+          q: "¿Cuándo llegan candidaturas y chats?",
+          a: "Estos módulos están marcados como 'próximamente'. Construimos la plataforma paso a paso con total transparencia.",
+        },
+        {
+          q: "¿Puedo editar mis ofertas?",
+          a: "Sí, puedes editar, pausar o eliminar tus ofertas en cualquier momento desde el dashboard.",
+        },
+        {
+          q: "¿Por qué es importante un contacto público?",
+          a: "La transparencia genera confianza. Un nombre real y cargo muestran que tu empresa es seria y reduce enormemente las dudas sobre ofertas falsas.",
+        },
       ],
       finalCtaTitle: "¿Listo para publicar tu primera oferta en Noventa?",
       finalCtaSubtitle:
@@ -313,7 +368,8 @@ export const translations: Record<Language, Translations> = {
       finalCta: "Registrar empresa",
     },
     footer: {
-      note: "Noventa está en beta. Algunos módulos aparecen como ‘próximamente’.",
+      note: "Noventa está en beta. Algunos módulos aparecen como 'próximamente'.",
+      socialMedia: "Síguenos",
     },
   },
   en: {
@@ -327,6 +383,7 @@ export const translations: Record<Language, Translations> = {
       about: "About us",
       faq: "FAQ",
       login: "Login",
+      updates: "Updates",
     },
     hero: {
       eyebrow: "For companies (Beta)",
@@ -424,6 +481,12 @@ export const translations: Record<Language, Translations> = {
             "Later: performance view for external sellers — clearly labeled.",
         },
       ],
+      aboutTitle: "About Noventa",
+      aboutSubtitle: "Building the most transparent sales job platform",
+      aboutText: "Noventa was founded to revolutionize the sales job market. We believe in transparency, clear structures, and fair conditions for both sides. Our team is working to create a platform that builds trust and enables real matches.",
+      socialTitle: "Follow us on social media",
+      socialSubtitle: "Stay updated with our latest news",
+      followUs: "Follow @noventacrew",
       faqTitle: "FAQ",
       faqs: [
         {
@@ -442,6 +505,22 @@ export const translations: Record<Language, Translations> = {
           q: "Can a company post multiple roles?",
           a: "Yes. Company profile is stable; job postings are variable and can run in parallel.",
         },
+        {
+          q: "How long does registration take?",
+          a: "Less than 3 minutes. Fill out your company profile once, then post jobs directly.",
+        },
+        {
+          q: "When are applications and chats coming?",
+          a: "These features are marked as 'coming soon'. We’re building the platform step by step with full transparency.",
+        },
+        {
+          q: "Can I edit my job postings?",
+          a: "Yes, you can edit, pause, or delete your postings anytime from the dashboard.",
+        },
+        {
+          q: "Why is a public contact person important?",
+          a: "Transparency builds trust. A real name and position show your company is legitimate and significantly reduce fake job concerns.",
+        },
       ],
       finalCtaTitle: "Ready to post your first role on Noventa?",
       finalCtaSubtitle:
@@ -450,6 +529,7 @@ export const translations: Record<Language, Translations> = {
     },
     footer: {
       note: "Noventa is in beta. Some modules are labeled as coming soon.",
+      socialMedia: "Follow us",
     },
   },
 };

@@ -42,8 +42,10 @@ import {
   Lock,
   Unlock,
   Mail,
-  Phone
+  Phone,
+  BarChart3
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -55,6 +57,8 @@ const dashboardTranslations = {
   de: {
     sidebar: {
       home: "Startseite",
+      myProfile: "Mein Profil",
+      myOffers: "Meine Angebote",
       jobOffers: "Stellenangebote",
       createOffer: "Angebot erstellen",
       candidates: "Kandidaten",
@@ -173,6 +177,8 @@ const dashboardTranslations = {
   en: {
     sidebar: {
       home: "Home",
+      myProfile: "My Profile",
+      myOffers: "My Offers",
       jobOffers: "Job Offers",
       createOffer: "Create Offer",
       candidates: "Candidates",
@@ -291,6 +297,8 @@ const dashboardTranslations = {
   es: {
     sidebar: {
       home: "Inicio",
+      myProfile: "Mi perfil",
+      myOffers: "Mis ofertas",
       jobOffers: "Ofertas de trabajo",
       createOffer: "Crear oferta",
       candidates: "Candidatos",
@@ -614,7 +622,7 @@ const benefitsOptions = [
   { value: "volunteer", label: "Días de voluntariado", icon: "🤝" },
 ];
 
-type View = "list" | "create" | "stats" | "candidates";
+type View = "list" | "create" | "stats" | "candidates" | "profile" | "suggestions";
 
 // --- Components ---
 
@@ -649,7 +657,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white flex overflow-hidden">
+    <div className="min-h-screen bg-[#0f172a] text-white flex overflow-x-hidden">
       {/* Mobile Overlay */}
       <AnimatePresence>
         {sidebarOpen && (
@@ -670,26 +678,24 @@ export default function DashboardPage() {
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Logo */}
-        <div className="p-4 border-b border-slate-700/50 flex items-center justify-between h-[80px]">
-          <div className={`flex items-center gap-3 transition-all duration-300 ${!sidebarOpen && "justify-center w-full"}`}>
-            <div className={`bg-white rounded-xl shadow-lg shadow-cyan-500/10 shrink-0 transition-all duration-300 flex items-center justify-center ${sidebarOpen ? 'px-4 py-2 w-full' : 'w-12 h-12 p-1.5'}`}>
-              <Image
-                src="/logo-n.png"
-                alt="Noventa"
-                width={sidebarOpen ? 140 : 40}
-                height={sidebarOpen ? 40 : 40}
-                className={`object-contain transition-all duration-300 ${sidebarOpen ? 'h-8 w-auto' : 'h-full w-full'}`}
-              />
-            </div>
+        <div className="p-4 border-b border-slate-700/50 flex items-center justify-center h-[80px] relative">
+          <div className="bg-white rounded-xl shadow-lg w-14 h-14 shrink-0 flex items-center justify-center p-2">
+            <Image
+              src="/logo-n.png"
+              alt="Noventa"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
           </div>
-          {sidebarOpen && (
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="absolute right-[-12px] top-8 bg-slate-800 border border-slate-600 rounded-full p-1 text-slate-400 hover:text-white hover:bg-slate-700 transition-all shadow-xl z-50"
-            >
-              <ChevronLeft size={14} />
-            </button>
-          )}
+          
+          {/* Expand/Collapse Button - More spacing to the right */}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="absolute right-[-20px] top-8 bg-gradient-to-r from-cyan-500 to-blue-600 border-2 border-slate-700 rounded-full p-2 text-white hover:from-cyan-400 hover:to-blue-500 transition-all shadow-2xl shadow-cyan-500/30 z-50 hover:scale-110"
+          >
+            {sidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+          </button>
         </div>
 
         {/* Navigation */}
@@ -702,8 +708,15 @@ export default function DashboardPage() {
             onClick={() => setCurrentView("stats")}
           />
           <SidebarItem
+            icon={User}
+            label={tr.sidebar.myProfile}
+            active={currentView === "profile"}
+            collapsed={!sidebarOpen}
+            onClick={() => setCurrentView("profile" as View)}
+          />
+          <SidebarItem
             icon={Briefcase}
-            label={tr.sidebar.jobOffers}
+            label={tr.sidebar.myOffers}
             active={currentView === "list"}
             collapsed={!sidebarOpen}
             onClick={() => setCurrentView("list")}
@@ -776,24 +789,44 @@ export default function DashboardPage() {
             <Menu size={22} className="text-slate-300" />
           </button>
           
-          <div className="flex-1 min-w-0">
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 truncate">
-              {currentView === "list" && tr.header.jobOffers}
-              {currentView === "create" && tr.header.createOffer}
-              {currentView === "stats" && tr.header.dashboard}
-              {currentView === "candidates" && tr.header.candidates}
-            </h1>
-            <p className="text-slate-400 text-xs sm:text-sm mt-1 hidden sm:block">
-              {currentView === "list" && tr.header.jobOffersDesc.replace("{count}", jobs.length.toString())}
-              {currentView === "create" && tr.header.createOfferDesc}
-              {currentView === "stats" && tr.header.dashboardDesc}
-              {currentView === "candidates" && tr.header.candidatesDesc}
-            </p>
+          <div className="flex-1 min-w-0 flex items-center gap-4">
+            {/* Company Logo */}
+            <div className="hidden sm:flex items-center justify-center w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg shrink-0">
+              <Building2 size={24} className="text-white" />
+            </div>
+            
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">
+                {currentView === "stats" && "Bienvenido, TechCorp GmbH"}
+                {currentView === "profile" && tr.sidebar.myProfile}
+                {currentView === "list" && tr.sidebar.myOffers}
+                {currentView === "create" && tr.header.createOffer}
+                {currentView === "candidates" && tr.header.candidates}
+                {currentView === "suggestions" && "Sugerencias para la versión final"}
+              </h1>
+              <p className="text-slate-400 text-xs sm:text-sm mt-1">
+                {currentView === "stats" && "Panel de control de tu empresa"}
+                {currentView === "profile" && "Gestiona la información de tu empresa"}
+                {currentView === "list" && `Gestiona tus ${jobs.length} ofertas publicadas`}
+                {currentView === "create" && tr.header.createOfferDesc}
+                {currentView === "candidates" && tr.header.candidatesDesc}
+                {currentView === "suggestions" && "Ayúdanos a mejorar la plataforma con tus ideas"}
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <button className="relative p-2 sm:p-2.5 rounded-xl hover:bg-slate-800/80 transition-colors border border-transparent hover:border-slate-700/50">
               <Bell size={18} className="sm:w-5 sm:h-5 text-slate-300" />
               <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 bg-cyan-500 rounded-full ring-2 ring-[#0f172a]" />
+            </button>
+            <button 
+              onClick={() => setCurrentView("suggestions" as View)}
+              className="group relative px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl hover:from-purple-500/20 hover:to-pink-500/20 transition-all"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles size={16} className="text-purple-400 animate-pulse" />
+                <span className="text-purple-400 font-medium text-sm hidden sm:inline">Sugerencias</span>
+              </div>
             </button>
             <button
               onClick={() => setCurrentView("create")}
@@ -822,19 +855,297 @@ export default function DashboardPage() {
                 jobs={jobs}
                 onDelete={handleDeleteJob}
                 setCurrentView={setCurrentView}
-                tr={tr}
               />
             )}
             {currentView === "create" && (
               <CreateOfferView key="create" setCurrentView={setCurrentView} onCreate={handleCreateJob} tr={tr} />
             )}
             {currentView === "candidates" && (
-              <CandidatesView key="candidates" candidates={candidates} jobs={jobs} tr={tr} />
+              <CandidatesView key="candidates" candidates={candidates} jobs={jobs} />
+            )}
+            {currentView === "profile" && (
+              <ProfileView key="profile" jobs={jobs} tr={tr} />
+            )}
+            {currentView === "suggestions" && (
+              <SuggestionsView key="suggestions" setCurrentView={setCurrentView} />
             )}
           </AnimatePresence>
         </div>
       </main>
     </div>
+  );
+}
+
+// Suggestions View Component
+function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => void }) {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => {
+      setCurrentView("stats");
+    }, 2000);
+  };
+
+  if (submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex flex-col items-center justify-center min-h-[400px]"
+      >
+        <div className="text-center">
+          <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 size={40} className="text-white" />
+          </div>
+          <h3 className="text-2xl font-bold text-white mb-2">¡Gracias por tu feedback!</h3>
+          <p className="text-slate-400">Tus sugerencias nos ayudan a mejorar</p>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      className="max-w-2xl mx-auto"
+    >
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700/50 p-8">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-3 bg-purple-500/10 rounded-xl">
+            <Sparkles className="w-6 h-6 text-purple-400" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-white">Comparte tus ideas</h2>
+            <p className="text-slate-400 text-sm">Ayúdanos a construir la mejor plataforma</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              ¿Qué funcionalidad te gustaría ver?
+            </label>
+            <textarea
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all resize-none"
+              rows={4}
+              placeholder="Describe tu idea..."
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              ¿Qué mejorarías del dashboard actual?
+            </label>
+            <textarea
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all resize-none"
+              rows={3}
+              placeholder="Tus sugerencias..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              Prioridad
+            </label>
+            <select className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all">
+              <option value="low">Baja</option>
+              <option value="medium">Media</option>
+              <option value="high">Alta</option>
+            </select>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setCurrentView("stats")}
+              className="flex-1 px-6 py-3 bg-slate-800 border border-slate-700 rounded-xl text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl text-white font-semibold hover:from-purple-400 hover:to-pink-400 transition-all shadow-lg shadow-purple-500/25"
+            >
+              Enviar Sugerencia
+            </button>
+          </div>
+        </form>
+      </div>
+    </motion.div>
+  );
+}
+
+// Profile View Component
+function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
+  const activeJobs = jobs.filter(j => j.status === 'active').length;
+  const closedPositions = 12; // Simulado
+  const acceptedCandidates = 8; // Simulado
+  const interviews = 15; // Simulado
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6"
+    >
+      {/* Company Profile Card */}
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700/50 overflow-hidden">
+        <div className="relative h-32 bg-gradient-to-r from-cyan-500/20 to-blue-600/20">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80')] bg-cover bg-center opacity-10" />
+        </div>
+        
+        <div className="px-6 pb-6 -mt-16 relative">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
+            {/* Company Logo */}
+            <div className="w-28 h-28 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-2xl flex items-center justify-center border-4 border-[#0f172a]">
+              <Building2 size={48} className="text-white" />
+            </div>
+            
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-white mb-1">TechCorp GmbH</h2>
+              <p className="text-slate-400 text-sm mb-3">Tecnología • Berlín, Alemania</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-medium border border-cyan-500/20">
+                  Verificada
+                </span>
+                <span className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-medium border border-blue-500/20">
+                  Premium
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-cyan-500/10 rounded-lg">
+              <Briefcase className="w-5 h-5 text-cyan-400" />
+            </div>
+            <span className="text-slate-400 text-sm">Ofertas Publicadas</span>
+          </div>
+          <div className="text-3xl font-bold text-white">{activeJobs}</div>
+          <div className="text-xs text-slate-500 mt-1">Activas ahora</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-green-500/10 rounded-lg">
+              <CheckCircle2 className="w-5 h-5 text-green-400" />
+            </div>
+            <span className="text-slate-400 text-sm">Vacantes Cerradas</span>
+          </div>
+          <div className="text-3xl font-bold text-white">{closedPositions}</div>
+          <div className="text-xs text-slate-500 mt-1">Últimos 6 meses</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.3 }}
+          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-blue-500/10 rounded-lg">
+              <Users className="w-5 h-5 text-blue-400" />
+            </div>
+            <span className="text-slate-400 text-sm">Candidatos Aceptados</span>
+          </div>
+          <div className="text-3xl font-bold text-white">{acceptedCandidates}</div>
+          <div className="text-xs text-slate-500 mt-1">Este mes</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
+          className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-purple-500/10 rounded-lg">
+              <Calendar className="w-5 h-5 text-purple-400" />
+            </div>
+            <span className="text-slate-400 text-sm">Entrevistas</span>
+          </div>
+          <div className="text-3xl font-bold text-white">{interviews}</div>
+          <div className="text-xs text-slate-500 mt-1">Programadas</div>
+        </motion.div>
+      </div>
+
+      {/* Additional Info */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5 text-cyan-400" />
+            Rendimiento
+          </h3>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400 text-sm">Tasa de respuesta</span>
+              <span className="text-white font-semibold">87%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400 text-sm">Tiempo promedio de contratación</span>
+              <span className="text-white font-semibold">18 días</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-slate-400 text-sm">Satisfacción de candidatos</span>
+              <span className="text-white font-semibold">4.8/5.0</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6">
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-blue-400" />
+            Actividad Reciente
+          </h3>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2" />
+              <div className="flex-1">
+                <p className="text-white text-sm">Nueva aplicación recibida</p>
+                <p className="text-slate-500 text-xs">Hace 2 horas</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-2 h-2 bg-green-400 rounded-full mt-2" />
+              <div className="flex-1">
+                <p className="text-white text-sm">Oferta publicada exitosamente</p>
+                <p className="text-slate-500 text-xs">Hace 5 horas</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-2 h-2 bg-blue-400 rounded-full mt-2" />
+              <div className="flex-1">
+                <p className="text-white text-sm">Entrevista programada</p>
+                <p className="text-slate-500 text-xs">Hace 1 día</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
@@ -847,7 +1158,7 @@ function SidebarItem({
   collapsed = false,
   onClick,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   active?: boolean;
   collapsed?: boolean;
@@ -910,48 +1221,108 @@ function StatsView({
     >
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard icon={Briefcase} label={tr.stats.totalOffers} value={stats.totalJobs} trend="+12%" color="cyan" />
-        <StatCard icon={Zap} label={tr.stats.activeOffers} value={stats.activeJobs} trend="+5%" color="emerald" />
-        <StatCard icon={Eye} label={tr.stats.views} value={stats.totalViews.toLocaleString()} trend="+23%" color="violet" />
-        <StatCard icon={Users} label={tr.stats.applications} value={stats.totalApplications} trend="+18%" color="amber" />
+        {/* Deadline Progress */}
+        <motion.div 
+          whileHover={{ y: -5 }} 
+          className="p-6 rounded-3xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/5 border border-cyan-500/20 backdrop-blur-sm"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-3 rounded-2xl bg-white/5">
+              <Clock className="w-6 h-6 text-cyan-400" />
+            </div>
+            <span className="text-xs font-medium text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">En progreso</span>
+          </div>
+          <div className="text-sm text-slate-400 mb-1">Deadline del Proyecto</div>
+          <div className="text-2xl font-bold text-white mb-3">Cargando...</div>
+          <div className="w-full bg-slate-700/50 rounded-full h-2 mb-2">
+            <motion.div 
+              className="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full"
+              initial={{ width: "0%" }}
+              animate={{ width: "67%" }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+            />
+          </div>
+          <div className="text-xs text-slate-500">67% completado</div>
+        </motion.div>
+
+        {/* Coming Soon Cards */}
+        <StatCardComingSoon icon={Zap} label="Ofertas Activas" color="emerald" />
+        <StatCardComingSoon icon={Eye} label="Visualizaciones" color="violet" />
+        <StatCardComingSoon icon={Users} label="Aplicaciones" color="amber" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Quick Actions - Spans 2 cols */}
+        {/* Vendor View - How sellers see the company */}
         <div className="lg:col-span-2 flex flex-col">
           <h3 className="text-xl font-semibold flex items-center gap-2 mb-6">
-            <Sparkles className="text-cyan-400" size={20} />
-            {tr.stats.quickActions}
+            <Eye className="text-cyan-400" size={20} />
+            Vista de Vendedores
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
-            <QuickActionCard 
-              icon={PlusCircle} 
-              title={tr.stats.createNewOffer}
-              desc={tr.stats.publishVacancy}
-              color="cyan"
-              onClick={() => setCurrentView("create")} 
-            />
-            <QuickActionCard 
-              icon={Briefcase} 
-              title={tr.stats.manageOffers}
-              desc={tr.stats.viewPublications}
-              color="violet"
-              onClick={() => setCurrentView("list")} 
-            />
-            <QuickActionCard 
-              icon={Users} 
-              title={tr.stats.reviewCandidates}
-              desc={tr.stats.viewApplications}
-              color="amber"
-              onClick={() => setCurrentView("candidates")} 
-            />
-            <QuickActionCard 
-              icon={Settings} 
-              title={tr.stats.configuration}
-              desc={tr.stats.accountSettings}
-              color="slate"
-              onClick={() => {}} 
-            />
+          <div className="bg-slate-800/40 rounded-3xl border border-slate-700/50 p-6 backdrop-blur-sm flex-1">
+            <div className="flex items-start gap-6 mb-6">
+              {/* Company Logo */}
+              <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-lg flex items-center justify-center shrink-0">
+                <Building2 size={36} className="text-white" />
+              </div>
+              
+              {/* Company Info */}
+              <div className="flex-1">
+                <h4 className="text-2xl font-bold text-white mb-2">TechCorp GmbH</h4>
+                <p className="text-slate-400 text-sm mb-3">Empresa de tecnología líder en soluciones empresariales</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-medium border border-cyan-500/20">
+                    ✓ Verificada
+                  </span>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-medium border border-blue-500/20">
+                    Premium
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Company Details Grid */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <Users className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-slate-400">Empleados</span>
+                </div>
+                <div className="text-xl font-bold text-white">250-500</div>
+              </div>
+              
+              <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <MapPin className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-slate-400">Ubicación</span>
+                </div>
+                <div className="text-xl font-bold text-white">Berlín, DE</div>
+              </div>
+              
+              <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <Building2 className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-slate-400">Industria</span>
+                </div>
+                <div className="text-xl font-bold text-white">Tecnología</div>
+              </div>
+              
+              <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar className="w-4 h-4 text-cyan-400" />
+                  <span className="text-xs text-slate-400">Fundada</span>
+                </div>
+                <div className="text-xl font-bold text-white">2015</div>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <button 
+              onClick={() => setCurrentView("profile")}
+              className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2"
+            >
+              <Eye size={18} />
+              Ver perfil completo
+            </button>
           </div>
         </div>
 
@@ -1068,6 +1439,17 @@ function StatsView({
           </button>
         </div>
       </div>
+
+      {/* Back to Homepage Button */}
+      <div className="flex justify-center mt-8">
+        <Link 
+          href="/"
+          className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-2xl hover:border-cyan-500/50 transition-all hover:shadow-lg hover:shadow-cyan-500/10"
+        >
+          <ArrowRight size={20} className="text-cyan-400 rotate-180 group-hover:-translate-x-1 transition-transform" />
+          <span className="text-white font-semibold">Volver a la Homepage</span>
+        </Link>
+      </div>
     </motion.div>
   );
 }
@@ -1092,6 +1474,58 @@ function StatCard({ icon: Icon, label, value, trend, color }: any) {
       </div>
       <div className="text-3xl font-bold text-white mb-1">{value}</div>
       <div className="text-sm opacity-80">{label}</div>
+    </motion.div>
+  );
+}
+
+function StatCardComingSoon({ icon: Icon, label, color }: any) {
+  const colors: any = {
+    emerald: "from-emerald-500/20 to-emerald-600/5 border-emerald-500/20 text-emerald-400",
+    violet: "from-violet-500/20 to-violet-600/5 border-violet-500/20 text-violet-400",
+    amber: "from-amber-500/20 to-amber-600/5 border-amber-500/20 text-amber-400",
+  };
+
+  return (
+    <motion.div 
+      whileHover={{ y: -5 }} 
+      className={`p-6 rounded-3xl bg-gradient-to-br ${colors[color]} border backdrop-blur-sm relative overflow-hidden`}
+    >
+      {/* Coming Soon Overlay */}
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] flex items-center justify-center z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <motion.div
+            animate={{ 
+              scale: [1, 1.1, 1],
+              opacity: [0.7, 1, 0.7]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="text-lg font-bold text-white mb-1"
+          >
+            Coming Soon
+          </motion.div>
+          <div className="text-xs text-slate-400">Próximamente</div>
+        </motion.div>
+      </div>
+
+      {/* Blurred Content */}
+      <div className="filter blur-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div className={`p-3 rounded-2xl bg-white/5`}>
+            <Icon size={24} />
+          </div>
+        </div>
+        <div className="text-3xl font-bold text-white mb-1">---</div>
+        <div className="text-sm opacity-80">{label}</div>
+      </div>
     </motion.div>
   );
 }
@@ -1131,7 +1565,7 @@ function QuickActionCard({ icon: Icon, title, desc, color, onClick }: any) {
   );
 }
 
-function ListView({ jobs, onDelete, setCurrentView, tr }: { jobs: JobOffer[], onDelete: (id: string | number) => void, setCurrentView: (view: View) => void, tr?: any }) {
+function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDelete: (id: string | number) => void, setCurrentView: (view: View) => void }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
@@ -1560,14 +1994,15 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
   );
 }
 
-function CandidatesView({ candidates, jobs, tr }: { candidates: Candidate[], jobs: JobOffer[], tr?: any }) {
+function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: JobOffer[] }) {
   const [selectedJob, setSelectedJob] = useState<string | number>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [showUnlockModal, setShowUnlockModal] = useState(false);
   
   useEffect(() => {
-    const handleFilter = (e: any) => {
-      if (e.detail?.jobId) {
+    const handleFilter = (event: Event) => {
+      const e = event as CustomEvent<{ jobId?: string | number }>;
+      if (e.detail?.jobId !== undefined) {
         setSelectedJob(e.detail.jobId);
       }
     };
@@ -1594,8 +2029,36 @@ function CandidatesView({ candidates, jobs, tr }: { candidates: Candidate[], job
       initial={{ opacity: 0, y: 20 }} 
       animate={{ opacity: 1, y: 0 }} 
       exit={{ opacity: 0, y: -20 }}
-      className="space-y-6"
+      className="space-y-6 relative"
     >
+      {/* Coming Soon Overlay */}
+      <div className="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-40 flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center -mt-20"
+        >
+          <motion.div
+            animate={{ 
+              scale: [1, 1.1, 1],
+              opacity: [0.8, 1, 0.8]
+            }}
+            transition={{ 
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="text-5xl font-bold text-white mb-4"
+          >
+            Coming Soon
+          </motion.div>
+          <p className="text-xl text-slate-300 mb-2">Gestión de Candidatos</p>
+          <p className="text-slate-400">Esta funcionalidad estará disponible próximamente</p>
+        </motion.div>
+      </div>
+
+      {/* Blurred Content */}
+      <div className="filter blur-sm pointer-events-none">
       {/* Unlock Modal */}
       <AnimatePresence>
         {showUnlockModal && (
@@ -1837,6 +2300,7 @@ function CandidatesView({ candidates, jobs, tr }: { candidates: Candidate[], job
             ))
           )}
         </AnimatePresence>
+      </div>
       </div>
     </motion.div>
   );

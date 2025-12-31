@@ -6,40 +6,134 @@ import { MotionDiv } from "@/components/Motion";
 import { Section } from "@/components/Section";
 import { useLanguage } from "@/components/LanguageProvider";
 import { 
-  LayoutDashboard, 
   Briefcase, 
   Users, 
-  MessageSquare, 
-  Settings, 
   CheckCircle2, 
-  BarChart3, 
-  ShieldCheck, 
-  Filter,
   Building2,
-  FileText,
-  TrendingUp,
-  Clock,
   ArrowRight,
   ChevronDown,
-  type LucideIcon
 } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { HeroDashboard } from "@/components/landings/HeroDashboard";
 import { CountUp } from "@/components/CountUp";
+import { SocialMediaGallery } from "@/components/SocialMediaGallery";
 
-function Card({ icon: Icon, title, description }: { icon: LucideIcon; title: string; description: string }) {
-  return (
-    <div className="group relative overflow-hidden rounded-xl border border-slate-700/50 bg-slate-800/50 p-6 transition-all hover:border-teal-500/30 hover:bg-slate-800/80">
-      <Icon className="h-7 w-7 text-teal-400" />
-      <div className="mt-4 text-base font-semibold text-white">{title}</div>
-      <div className="mt-2 text-sm leading-6 text-slate-400">{description}</div>
-    </div>
-  );
-}
+const ShaderBackground = dynamic(
+  () => import("@/components/ShaderBackground").then((m) => m.ShaderBackground),
+  { ssr: false },
+);
 
 export function LandingA() {
   const { t } = useLanguage();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [isShowcasePaused, setIsShowcasePaused] = useState(false);
+
+  const showcaseCards = [
+    {
+      title: "Problem Statement and Roadmap",
+      description: "How we’re building a pause button for biology.",
+      author: "The Unit Team",
+      image:
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Founder Letter",
+      description: "A letter from Laura and Hunter.",
+      author: "Laura Deming & Hunter Davis",
+      image:
+        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Glass",
+      description: "When to zoom out and when to zoom in.",
+      author: "Katrina Lake",
+      image:
+        "https://images.unsplash.com/photo-1471879832106-c7ab9e0cee23?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "The Hiring Playbook",
+      description: "Signals that actually predict performance.",
+      author: "Noventa Research",
+      image:
+        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Design Systems",
+      description: "How to scale UX without slowing teams down.",
+      author: "Product Studio",
+      image:
+        "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Metrics that Matter",
+      description: "From vanity numbers to actionable insights.",
+      author: "Analytics Team",
+      image:
+        "https://images.unsplash.com/photo-1454165205744-3b78555e5572?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Case Study",
+      description: "A recruiting pipeline rebuilt in 14 days.",
+      author: "Customer Stories",
+      image:
+        "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Onboarding",
+      description: "First-week experiences that retain talent.",
+      author: "People Ops",
+      image:
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "AI in Recruiting",
+      description: "Automate the boring parts, keep the human ones.",
+      author: "Applied AI",
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80&auto=format&fit=crop",
+    },
+    {
+      title: "Recruiting Ops",
+      description: "A simple framework for consistent hiring.",
+      author: "Ops Team",
+      image:
+        "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80&auto=format&fit=crop",
+    },
+  ];
+
+  function ShowcaseCard({
+    title,
+    description,
+    author,
+    image,
+  }: {
+    title: string;
+    description: string;
+    author: string;
+    image: string;
+  }) {
+    return (
+      <div
+        className="w-[420px] shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md"
+      >
+        <div className="flex items-stretch justify-between gap-6 p-5">
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-slate-900 truncate">{title}</div>
+            <div className="mt-1 max-h-10 overflow-hidden text-sm leading-5 text-slate-600">{description}</div>
+            <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
+              <div className="h-6 w-6 rounded-full bg-slate-200" />
+              <div className="truncate">{author}</div>
+            </div>
+          </div>
+
+          <div className="h-[96px] w-[120px] overflow-hidden rounded-xl bg-slate-100">
+            <img src={image} alt={title} className="h-full w-full object-cover" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-900 dark:bg-slate-950 text-white selection:bg-teal-500/30">
@@ -156,18 +250,57 @@ export function LandingA() {
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t.sections.whyTitle}</h2>
             <p className="mt-4 text-slate-600 dark:text-slate-300">Enterprise-grade recruitment tools for modern companies.</p>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { icon: ShieldCheck, ...t.sections.whyCards[0] },
-              { icon: Filter, ...t.sections.whyCards[1] },
-              { icon: CheckCircle2, ...t.sections.whyCards[2] },
-            ].map((card, i) => (
-              <div key={i} className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-200 bg-white dark:bg-white/95 p-6 shadow-sm transition-all hover:border-teal-500/30 hover:shadow-md">
-                <card.icon className="h-7 w-7 text-teal-600 dark:text-teal-600" />
-                <div className="mt-4 text-base font-semibold text-slate-900 dark:text-slate-900">{card.title}</div>
-                <div className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-700">{card.description}</div>
+
+          <div className="space-y-6">
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent" />
+
+              <div
+                className={
+                  "noventa-marquee noventa-marquee--left rounded-2xl " +
+                  (isShowcasePaused ? "is-paused" : "")
+                }
+                style={{
+                  // @ts-expect-error CSS var
+                  "--noventa-marquee-duration": "70s",
+                }}
+                onClick={() => setIsShowcasePaused((v) => !v)}
+              >
+                <div className="noventa-marquee__track flex gap-6 pr-6">
+                  {[...showcaseCards, ...showcaseCards].map((c, idx) => (
+                    <div key={idx} className="py-1">
+                      <ShowcaseCard {...c} />
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            </div>
+
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-slate-50 dark:from-slate-900 to-transparent" />
+
+              <div
+                className={
+                  "noventa-marquee noventa-marquee--right rounded-2xl " +
+                  (isShowcasePaused ? "is-paused" : "")
+                }
+                style={{
+                  // @ts-expect-error CSS var
+                  "--noventa-marquee-duration": "78s",
+                }}
+                onClick={() => setIsShowcasePaused((v) => !v)}
+              >
+                <div className="noventa-marquee__track flex gap-6 pr-6">
+                  {[...showcaseCards.slice(5), ...showcaseCards.slice(0, 5), ...showcaseCards.slice(5), ...showcaseCards.slice(0, 5)].map((c, idx) => (
+                    <div key={idx} className="py-1">
+                      <ShowcaseCard {...c} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </Section>
       </div>
@@ -372,7 +505,40 @@ export function LandingA() {
         </Section>
       </div>
 
-      <div className="relative overflow-hidden bg-slate-50 dark:bg-slate-900 py-24">
+      <div className="bg-slate-50 dark:bg-slate-900 py-20">
+        <Section id="about" className="relative">
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{t.sections.aboutTitle}</h2>
+            <p className="text-xl text-teal-600 dark:text-teal-400 mb-8">{t.sections.aboutSubtitle}</p>
+            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-12">
+              {t.sections.aboutText}
+            </p>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img 
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80" 
+                alt="Team" 
+                className="w-full h-80 object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+            </div>
+          </MotionDiv>
+        </Section>
+      </div>
+
+      {/* Social Media Gallery */}
+      <SocialMediaGallery 
+        title={t.sections.socialTitle}
+        subtitle={t.sections.socialSubtitle}
+        followText={t.sections.followUs}
+      />
+
+      <div className="relative overflow-hidden bg-slate-50 dark:bg-slate-900">
         <video
           className="hidden lg:block absolute inset-0 h-full w-full object-cover"
           autoPlay
@@ -443,31 +609,58 @@ export function LandingA() {
 
       <div className="bg-slate-50 dark:bg-slate-900 pt-10 pb-10">
         <Section id="cta" className="relative pb-10">
-          <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 px-6 py-16 shadow-2xl sm:px-16 md:pt-20 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
-            <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-24 lg:text-left">
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                {t.sections.finalCtaTitle}
-              </h2>
-              <p className="mt-6 text-lg leading-8 text-teal-100">
-                {t.sections.finalCtaSubtitle}
-              </p>
-              <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-                <a
-                  href="#"
-                  className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-teal-600 shadow-sm hover:bg-teal-50 transition-colors"
-                >
-                  {t.sections.finalCta}
-                </a>
-                <span className="text-xs text-teal-200">{t.footer.note}</span>
+          <div className="relative overflow-hidden rounded-xl shadow-2xl h-[400px] lg:h-[500px]">
+            {/* ShaderBackground as animated background */}
+            <div className="absolute inset-0">
+              <ShaderBackground className="w-full h-full" />
+            </div>
+            
+            {/* Gradient overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
+            
+            {/* Radial gradient vignette */}
+            <div className="absolute inset-0 [background:radial-gradient(120%_80%_at_50%_50%,_transparent_40%,_black_100%)]" />
+            
+            {/* Content */}
+            <div className="relative z-10 h-full flex items-center px-6 sm:px-16 lg:px-24">
+              <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:text-left">
+                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  {t.sections.finalCtaTitle}
+                </h2>
+                <p className="mt-6 text-lg leading-8 text-slate-200">
+                  {t.sections.finalCtaSubtitle}
+                </p>
+                <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
+                  <Link
+                    href="/register"
+                    className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-100 transition-colors"
+                  >
+                    {t.sections.finalCta}
+                  </Link>
+                  <span className="text-xs text-slate-300">{t.footer.note}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-16 border-t border-slate-200 dark:border-slate-800 pt-8 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <div>© Noventa</div>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</a>
+          <div className="mt-16 border-t border-slate-200 dark:border-slate-800 pt-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+              <div>© Noventa</div>
+              <div className="flex items-center gap-6">
+                <span className="font-medium">{t.footer.socialMedia}:</span>
+                <a href="https://instagram.com/noventa" target="_blank" rel="noopener noreferrer" className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  Instagram
+                </a>
+                <a href="https://tiktok.com/@noventa" target="_blank" rel="noopener noreferrer" className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                  TikTok
+                </a>
+              </div>
+              <div className="flex gap-4">
+                <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</a>
+                <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</a>
+              </div>
             </div>
           </div>
         </Section>

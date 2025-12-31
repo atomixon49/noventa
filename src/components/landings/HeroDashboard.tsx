@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Briefcase,
@@ -19,14 +20,81 @@ import {
   Phone,
   FileText,
   Filter,
-  ChevronDown
+  ChevronDown,
+  MousePointerClick
 } from "lucide-react";
 
 export function HeroDashboard() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "create" | "candidates">("dashboard");
+  const [showTooltip, setShowTooltip] = useState(true);
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [positionIndex, setPositionIndex] = useState(0);
+
+  const messages = [
+    "¡Prueba el dashboard!",
+    "¿Deseas probar? Regístrate",
+    "¿Quieres ver más? Regístrate",
+    "¿Deseas empezar? Regístrate"
+  ];
+
+  const positions = ["bottom", "top", "right"] as const;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMessageIndex((prev) => (prev + 1) % messages.length);
+      setPositionIndex((prev) => (prev + 1) % positions.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [messages.length, positions.length]);
+
+  const currentPosition = positions[positionIndex];
+  
+  const getPositionClasses = () => {
+    switch (currentPosition) {
+      case "top":
+        return {
+          container: "absolute -top-16 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap",
+          arrow: "absolute left-1/2 -translate-x-1/2 -bottom-1 w-3 h-3 bg-teal-500 rotate-45"
+        };
+      case "bottom":
+        return {
+          container: "absolute -bottom-16 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap",
+          arrow: "absolute left-1/2 -translate-x-1/2 -top-1 w-3 h-3 bg-teal-500 rotate-45"
+        };
+      case "right":
+        return {
+          container: "absolute -right-48 top-1/2 -translate-y-1/2 z-50 whitespace-nowrap",
+          arrow: "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-3 h-3 bg-teal-500 rotate-45"
+        };
+    }
+  };
+
+  const positionClasses = getPositionClasses();
 
   return (
-    <div className="relative rounded-xl border border-slate-700/50 bg-slate-800/90 shadow-2xl shadow-black/40 backdrop-blur-sm overflow-hidden h-[420px] flex flex-col">
+    <div className="relative rounded-xl border border-slate-700/50 bg-slate-800/90 shadow-2xl shadow-black/40 backdrop-blur-sm overflow-visible h-[420px] flex flex-col">
+      {/* Animated Tooltip - Rotating Positions */}
+      <AnimatePresence mode="wait">
+        {showTooltip && (
+          <motion.div
+            key={`${messageIndex}-${positionIndex}`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.4, type: "spring" }}
+            className={positionClasses.container}
+          >
+            <div className="relative">
+              <div className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 py-2.5 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-2">
+                <MousePointerClick size={16} className="animate-pulse" />
+                {messages[messageIndex]}
+              </div>
+              <div className={positionClasses.arrow} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Top Bar */}
       <div className="h-12 border-b border-slate-700/50 flex items-center justify-between px-4 bg-slate-900/50 shrink-0">
         <div className="flex items-center gap-2 text-sm">
@@ -41,7 +109,16 @@ export function HeroDashboard() {
       <div className="flex flex-1 min-h-0">
         {/* Sidebar */}
         <div className="w-14 flex-none border-r border-slate-700/50 bg-slate-900/50 flex flex-col items-center py-4 gap-3 z-10">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center font-bold text-white text-xs shadow-lg mb-2">90</div>
+          {/* Logo with white background */}
+          <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center shadow-lg p-1.5 mb-2">
+            <Image
+              src="/logo-n.png"
+              alt="Noventa"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+          </div>
           
           <button 
             onClick={() => setActiveTab("dashboard")}

@@ -279,13 +279,15 @@ export default function RegisterPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Image 
-              src="/logo-n.png" 
-              alt="Noventa" 
-              width={200} 
-              height={60}
-              className="mb-12"
-            />
+            <div className="inline-block mb-12 p-3 bg-white/10 backdrop-blur-sm rounded-2xl border-2 border-white/20">
+              <Image 
+                src="/noventa-1.jpeg" 
+                alt="Noventa" 
+                width={200} 
+                height={60}
+                className=""
+              />
+            </div>
             
             <h1 className="text-4xl font-bold text-white mb-6">
               {tr.leftPanel.title}
@@ -342,13 +344,15 @@ export default function RegisterPage() {
         >
           {/* Mobile Logo */}
           <div className="lg:hidden mb-6 sm:mb-8 text-center">
-            <Image 
-              src="/logo-n.png" 
-              alt="Noventa" 
-              width={150} 
-              height={45}
-              className="mx-auto w-28 sm:w-36"
-            />
+            <div className="inline-block p-2.5 bg-white/10 backdrop-blur-sm rounded-xl border-2 border-white/20">
+              <Image 
+                src="/noventa-1.jpeg" 
+                alt="Noventa" 
+                width={150} 
+                height={45}
+                className="w-28 sm:w-36"
+              />
+            </div>
           </div>
 
           {/* Progress Steps */}
