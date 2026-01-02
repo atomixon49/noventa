@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { ChangeEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
@@ -988,6 +989,105 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
   const acceptedCandidates = 8; // Simulado
   const interviews = 15; // Simulado
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState<{
+    companyName: string;
+    location: string;
+    industry: string;
+    highlights: string;
+    foundedYear: string;
+    employees: string;
+    description: string;
+    teamMembers: Array<{
+      id: string;
+      name: string;
+      age: number;
+      role: string;
+      tenure: string;
+      image: string;
+    }>;
+  }>(() => ({
+    companyName: "TechCorp GmbH",
+    location: "Berlín, Alemania",
+    industry: "Tecnología",
+    highlights: "B2B • Reclutamiento • Ventas",
+    foundedYear: "2015",
+    employees: "250-500",
+    description: "Empresa de tecnología líder en soluciones empresariales.",
+    teamMembers: [
+      { id: "tm-1", name: "Sofía Rojas", age: 29, role: "Head of People", tenure: "2 años", image: "/t1.jpeg" },
+      { id: "tm-2", name: "Mateo Álvarez", age: 34, role: "Sales Lead", tenure: "3 años", image: "/t2.jpeg" },
+      { id: "tm-3", name: "Valentina Cruz", age: 27, role: "Recruiter", tenure: "1 año", image: "/t3.jpeg" },
+      { id: "tm-4", name: "Daniel Herrera", age: 31, role: "Account Executive", tenure: "2 años", image: "/t4.jpeg" },
+      { id: "tm-5", name: "Camila Méndez", age: 26, role: "Customer Success", tenure: "1 año", image: "/t5.jpeg" },
+      { id: "tm-6", name: "Sebastián Vega", age: 30, role: "Ops", tenure: "2 años", image: "/t6.jpeg" },
+      { id: "tm-7", name: "Lucía Torres", age: 28, role: "Talent Partner", tenure: "2 años", image: "/t7.jpeg" },
+      { id: "tm-8", name: "Andrés Molina", age: 33, role: "Marketing", tenure: "4 años", image: "/t8.jpeg" },
+      { id: "tm-9", name: "Isabella Navarro", age: 25, role: "Designer", tenure: "1 año", image: "/t9.jpeg" },
+      { id: "tm-10", name: "Juan Pérez", age: 36, role: "CTO", tenure: "5 años", image: "/t10.jpeg" },
+    ],
+  }));
+
+  const [newMember, setNewMember] = useState<{
+    name: string;
+    age: string;
+    role: string;
+    tenure: string;
+    image: string;
+  }>({
+    name: "",
+    age: "",
+    role: "",
+    tenure: "",
+    image: "/t1.jpeg",
+  });
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("noventa_company_profile");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setProfile((prev) => ({ ...prev, ...parsed }));
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("noventa_company_profile", JSON.stringify(profile));
+    } catch {
+      // ignore
+    }
+  }, [profile]);
+
+  const addTeamMember = () => {
+    if (!newMember.name.trim()) return;
+    const ageNum = Number(newMember.age);
+    if (!Number.isFinite(ageNum) || ageNum <= 0) return;
+    if (!newMember.role.trim()) return;
+    if (!newMember.tenure.trim()) return;
+
+    const id = `tm-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    setProfile((p) => ({
+      ...p,
+      teamMembers: [
+        {
+          id,
+          name: newMember.name.trim(),
+          age: ageNum,
+          role: newMember.role.trim(),
+          tenure: newMember.tenure.trim(),
+          image: newMember.image || "/t1.jpeg",
+        },
+        ...p.teamMembers,
+      ],
+    }));
+
+    setNewMember({ name: "", age: "", role: "", tenure: "", image: "/t1.jpeg" });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -1010,8 +1110,19 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
             </div>
             
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-white mb-1">TechCorp GmbH</h2>
-              <p className="text-slate-400 text-sm mb-3">Tecnología • Berlín, Alemania</p>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-1">{profile.companyName}</h2>
+                  <p className="text-slate-400 text-sm mb-3">{profile.industry} • {profile.location}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing((v) => !v)}
+                  className="px-4 py-2 rounded-xl bg-slate-900/40 border border-slate-700/50 text-slate-200 hover:text-white hover:bg-slate-900/60 transition-all text-sm font-medium"
+                >
+                  {isEditing ? "Guardar" : "Editar"}
+                </button>
+              </div>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-medium border border-cyan-500/20">
                   Verificada
@@ -1022,6 +1133,207 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700/50 p-6">
+        <div className="grid md:grid-cols-2 gap-5">
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Ubicación</label>
+            <div className="relative">
+              <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                value={profile.location}
+                onChange={(e) => setProfile((p) => ({ ...p, location: e.target.value }))}
+                disabled={!isEditing}
+                className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all disabled:opacity-60"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Industria</label>
+            <div className="relative">
+              <Building2 size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                value={profile.industry}
+                onChange={(e) => setProfile((p) => ({ ...p, industry: e.target.value }))}
+                disabled={!isEditing}
+                className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all disabled:opacity-60"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Año de fundación</label>
+            <div className="relative">
+              <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                value={profile.foundedYear}
+                onChange={(e) => setProfile((p) => ({ ...p, foundedYear: e.target.value }))}
+                disabled={!isEditing}
+                className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all disabled:opacity-60"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Número de empleados</label>
+            <div className="relative">
+              <Users size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+              <input
+                value={profile.employees}
+                onChange={(e) => setProfile((p) => ({ ...p, employees: e.target.value }))}
+                disabled={!isEditing}
+                className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all disabled:opacity-60"
+              />
+            </div>
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">Principales</label>
+            <input
+              value={profile.highlights}
+              onChange={(e) => setProfile((p) => ({ ...p, highlights: e.target.value }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all disabled:opacity-60"
+              placeholder="Ej: Servicios, productos, beneficios, cultura..."
+            />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-slate-300 mb-2">Descripción de la empresa</label>
+            <textarea
+              value={profile.description}
+              onChange={(e) => setProfile((p) => ({ ...p, description: e.target.value }))}
+              disabled={!isEditing}
+              rows={4}
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all resize-none disabled:opacity-60"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700/50 p-6">
+        <div className="flex items-center justify-between gap-4 mb-4">
+          <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+            <ImageIcon className="w-5 h-5 text-cyan-400" />
+            Equipo
+          </h3>
+          <div className="text-xs text-slate-400">{profile.teamMembers.length} miembros</div>
+        </div>
+
+        {isEditing && (
+          <div className="rounded-xl border border-slate-700/50 bg-slate-900/30 p-4 mb-4">
+            <div className="grid md:grid-cols-5 gap-3 items-end">
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-slate-300 mb-1">Nombre</label>
+                <input
+                  value={newMember.name}
+                  onChange={(e) => setNewMember((m) => ({ ...m, name: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
+                  placeholder="Ej: Ana López"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Edad</label>
+                <input
+                  value={newMember.age}
+                  onChange={(e) => setNewMember((m) => ({ ...m, age: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
+                  placeholder="29"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Cargo</label>
+                <input
+                  value={newMember.role}
+                  onChange={(e) => setNewMember((m) => ({ ...m, role: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
+                  placeholder="Recruiter"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-300 mb-1">Tiempo</label>
+                <input
+                  value={newMember.tenure}
+                  onChange={(e) => setNewMember((m) => ({ ...m, tenure: e.target.value }))}
+                  className="w-full px-3 py-2.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
+                  placeholder="2 años"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-3">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs font-medium text-slate-300">Imagen (URL)</label>
+                  <input
+                    value={newMember.image}
+                    onChange={(e) => setNewMember((m) => ({ ...m, image: e.target.value }))}
+                    className="w-[220px] px-3 py-2 rounded-xl bg-slate-900/50 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
+                    placeholder="/t1.jpeg o https://..."
+                  />
+                </div>
+                <div className="h-10 w-10 rounded-xl overflow-hidden border border-slate-700/50 bg-slate-900/40">
+                  <img src={newMember.image || "/t1.jpeg"} alt="new-member" className="h-full w-full object-cover" />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={addTeamMember}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-400 hover:to-blue-500 transition-all text-sm font-semibold"
+              >
+                <PlusCircle size={16} />
+                Agregar
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-3">
+              {Array.from({ length: 10 }).map((_, i) => {
+                const src = `/t${i + 1}.jpeg`;
+                return (
+                  <button
+                    key={src}
+                    type="button"
+                    onClick={() => setNewMember((m) => ({ ...m, image: src }))}
+                    className="h-10 w-10 rounded-xl overflow-hidden border border-slate-700/50 hover:border-cyan-500/40 transition-colors"
+                    aria-label={`pick-${src}`}
+                  >
+                    <img src={src} alt={src} className="h-full w-full object-cover" />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {profile.teamMembers.slice(0, 55).map((m) => (
+            <div key={m.id} className="rounded-xl border border-slate-700/50 bg-slate-900/30 overflow-hidden">
+              <div className="flex items-center gap-4 p-4">
+                <div className="h-14 w-14 rounded-xl overflow-hidden border border-slate-700/50 bg-slate-900/40 shrink-0">
+                  <img src={m.image} alt={m.name} className="h-full w-full object-cover" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="font-semibold text-white truncate">{m.name}</div>
+                  <div className="text-sm text-slate-400 truncate">{m.role}</div>
+                  <div className="text-xs text-slate-500 mt-1">{m.age} años • {m.tenure} en la empresa</div>
+                </div>
+                {isEditing && (
+                  <button
+                    type="button"
+                    onClick={() => setProfile((p) => ({ ...p, teamMembers: p.teamMembers.filter((x) => x.id !== m.id) }))}
+                    className="p-2 rounded-lg bg-black/30 border border-white/10 text-white hover:bg-black/50 transition-all"
+                    aria-label="remove-member"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

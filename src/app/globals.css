@@ -71,11 +71,17 @@ html {
 
 .noventa-marquee {
   overflow: hidden;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  contain: paint;
 }
 
 .noventa-marquee__track {
   width: max-content;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .noventa-marquee--left .noventa-marquee__track {

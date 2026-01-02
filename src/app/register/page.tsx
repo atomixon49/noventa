@@ -265,6 +265,14 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] flex flex-col lg:flex-row">
+      <div className="absolute top-4 left-4 z-20">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-black/30 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-black/40 transition-colors"
+        >
+          Regresar a Home
+        </Link>
+      </div>
       {/* Left Panel - Branding */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0891b2]/20 to-[#0f172a]" />

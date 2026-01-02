@@ -28,7 +28,6 @@ export function HeroDashboard() {
   const [activeTab, setActiveTab] = useState<"dashboard" | "create" | "candidates">("dashboard");
   const [showTooltip, setShowTooltip] = useState(true);
   const [messageIndex, setMessageIndex] = useState(0);
-  const [positionIndex, setPositionIndex] = useState(0);
 
   const messages = [
     "¡Prueba el dashboard!",
@@ -37,39 +36,12 @@ export function HeroDashboard() {
     "¿Deseas empezar? Regístrate"
   ];
 
-  const positions = ["bottom", "top", "right"] as const;
-
   useEffect(() => {
     const interval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % messages.length);
-      setPositionIndex((prev) => (prev + 1) % positions.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [messages.length, positions.length]);
-
-  const currentPosition = positions[positionIndex];
-  
-  const getPositionClasses = () => {
-    switch (currentPosition) {
-      case "top":
-        return {
-          container: "absolute -top-16 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap",
-          arrow: "absolute left-1/2 -translate-x-1/2 -bottom-1 w-3 h-3 bg-teal-500 rotate-45"
-        };
-      case "bottom":
-        return {
-          container: "absolute -bottom-16 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap",
-          arrow: "absolute left-1/2 -translate-x-1/2 -top-1 w-3 h-3 bg-teal-500 rotate-45"
-        };
-      case "right":
-        return {
-          container: "absolute -right-48 top-1/2 -translate-y-1/2 z-50 whitespace-nowrap",
-          arrow: "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-3 h-3 bg-teal-500 rotate-45"
-        };
-    }
-  };
-
-  const positionClasses = getPositionClasses();
+  }, [messages.length]);
 
   return (
     <div className="relative rounded-xl border border-slate-700/50 bg-slate-800/90 shadow-2xl shadow-black/40 backdrop-blur-sm overflow-visible h-[420px] flex flex-col">
@@ -77,19 +49,19 @@ export function HeroDashboard() {
       <AnimatePresence mode="wait">
         {showTooltip && (
           <motion.div
-            key={`${messageIndex}-${positionIndex}`}
+            key={`${messageIndex}`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.4, type: "spring" }}
-            className={positionClasses.container}
+            className="absolute -top-16 left-1/2 -translate-x-1/2 z-50 whitespace-nowrap"
           >
             <div className="relative">
               <div className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 py-2.5 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-2">
                 <MousePointerClick size={16} className="animate-pulse" />
                 {messages[messageIndex]}
               </div>
-              <div className={positionClasses.arrow} />
+              <div className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-3 h-3 bg-teal-500 rotate-45" />
             </div>
           </motion.div>
         )}
@@ -120,26 +92,74 @@ export function HeroDashboard() {
             />
           </div>
           
-          <button 
+          <motion.button
             onClick={() => setActiveTab("dashboard")}
-            className={`p-2 rounded-lg transition-all duration-200 ${activeTab === "dashboard" ? "bg-teal-500/20 text-teal-400" : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"}`}
+            animate={
+              activeTab === "dashboard"
+                ? { scale: [1, 1.05, 1] }
+                : { scale: 1 }
+            }
+            transition={
+              activeTab === "dashboard"
+                ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.15 }
+            }
+            whileHover={{ scale: 1.06, y: -1 }}
+            className={`p-2 rounded-lg transition-all duration-150 will-change-transform flex items-center justify-center ${activeTab === "dashboard" ? "bg-teal-500/20 text-teal-400" : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"}`}
           >
-            <LayoutDashboard size={20} />
-          </button>
+            <span className="relative inline-flex">
+              {activeTab !== "dashboard" && (
+                <span className="absolute -inset-1 rounded-md bg-teal-400/20 animate-ping" />
+              )}
+              <LayoutDashboard size={20} className="relative z-10" />
+            </span>
+          </motion.button>
           
-          <button 
+          <motion.button
             onClick={() => setActiveTab("create")}
-            className={`p-2 rounded-lg transition-all duration-200 ${activeTab === "create" ? "bg-teal-500/20 text-teal-400" : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"}`}
+            animate={
+              activeTab === "create"
+                ? { scale: [1, 1.05, 1] }
+                : { scale: 1 }
+            }
+            transition={
+              activeTab === "create"
+                ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.15 }
+            }
+            whileHover={{ scale: 1.06, y: -1 }}
+            className={`p-2 rounded-lg transition-all duration-150 will-change-transform flex items-center justify-center ${activeTab === "create" ? "bg-teal-500/20 text-teal-400" : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"}`}
           >
-            <Briefcase size={20} />
-          </button>
+            <span className="relative inline-flex">
+              {activeTab !== "create" && (
+                <span className="absolute -inset-1 rounded-md bg-teal-400/20 animate-ping" />
+              )}
+              <Briefcase size={20} className="relative z-10" />
+            </span>
+          </motion.button>
           
-          <button 
+          <motion.button
             onClick={() => setActiveTab("candidates")}
-            className={`p-2 rounded-lg transition-all duration-200 ${activeTab === "candidates" ? "bg-teal-500/20 text-teal-400" : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"}`}
+            animate={
+              activeTab === "candidates"
+                ? { scale: [1, 1.05, 1] }
+                : { scale: 1 }
+            }
+            transition={
+              activeTab === "candidates"
+                ? { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+                : { duration: 0.15 }
+            }
+            whileHover={{ scale: 1.06, y: -1 }}
+            className={`p-2 rounded-lg transition-all duration-150 will-change-transform flex items-center justify-center ${activeTab === "candidates" ? "bg-teal-500/20 text-teal-400" : "text-slate-500 hover:text-slate-300 hover:bg-slate-800"}`}
           >
-            <Users size={20} />
-          </button>
+            <span className="relative inline-flex">
+              {activeTab !== "candidates" && (
+                <span className="absolute -inset-1 rounded-md bg-teal-400/20 animate-ping" />
+              )}
+              <Users size={20} className="relative z-10" />
+            </span>
+          </motion.button>
 
           <div className="mt-auto p-2 rounded-lg text-slate-500 hover:text-slate-300 transition-colors">
             <Settings size={20} />

@@ -79,6 +79,14 @@ export default function LoginPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="absolute top-4 left-4 z-20">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-black/30 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-black/40 transition-colors"
+        >
+          Regresar a Home
+        </Link>
+      </div>
       <video
         className="hidden lg:block absolute inset-0 h-full w-full object-cover"
         autoPlay

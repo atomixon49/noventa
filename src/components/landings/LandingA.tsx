@@ -28,77 +28,71 @@ export function LandingA() {
   const { t } = useLanguage();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isShowcasePaused, setIsShowcasePaused] = useState(false);
+  const [selectedShowcaseImage, setSelectedShowcaseImage] = useState<{
+    src: string;
+    title: string;
+  } | null>(null);
 
   const showcaseCards = [
     {
       title: "Problem Statement and Roadmap",
       description: "How we’re building a pause button for biology.",
       author: "The Unit Team",
-      image:
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80&auto=format&fit=crop",
+      image: "/t1.jpeg",
     },
     {
       title: "Founder Letter",
       description: "A letter from Laura and Hunter.",
       author: "Laura Deming & Hunter Davis",
-      image:
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80&auto=format&fit=crop",
+      image: "/t2.jpeg",
     },
     {
       title: "Glass",
       description: "When to zoom out and when to zoom in.",
       author: "Katrina Lake",
-      image:
-        "https://images.unsplash.com/photo-1471879832106-c7ab9e0cee23?w=800&q=80&auto=format&fit=crop",
+      image: "/t3.jpeg",
     },
     {
       title: "The Hiring Playbook",
       description: "Signals that actually predict performance.",
       author: "Noventa Research",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80&auto=format&fit=crop",
+      image: "/t4.jpeg",
     },
     {
       title: "Design Systems",
       description: "How to scale UX without slowing teams down.",
       author: "Product Studio",
-      image:
-        "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&q=80&auto=format&fit=crop",
+      image: "/t5.jpeg",
     },
     {
       title: "Metrics that Matter",
       description: "From vanity numbers to actionable insights.",
       author: "Analytics Team",
-      image:
-        "https://images.unsplash.com/photo-1454165205744-3b78555e5572?w=800&q=80&auto=format&fit=crop",
+      image: "/t6.jpeg",
     },
     {
       title: "Case Study",
       description: "A recruiting pipeline rebuilt in 14 days.",
       author: "Customer Stories",
-      image:
-        "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&q=80&auto=format&fit=crop",
+      image: "/t7.jpeg",
     },
     {
       title: "Onboarding",
       description: "First-week experiences that retain talent.",
       author: "People Ops",
-      image:
-        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80&auto=format&fit=crop",
+      image: "/t8.jpeg",
     },
     {
       title: "AI in Recruiting",
       description: "Automate the boring parts, keep the human ones.",
       author: "Applied AI",
-      image:
-        "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80&auto=format&fit=crop",
+      image: "/t9.jpeg",
     },
     {
       title: "Recruiting Ops",
       description: "A simple framework for consistent hiring.",
       author: "Ops Team",
-      image:
-        "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80&auto=format&fit=crop",
+      image: "/t10.jpeg",
     },
   ];
 
@@ -115,7 +109,7 @@ export function LandingA() {
   }) {
     return (
       <div
-        className="w-[420px] shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm transition-all hover:shadow-md"
+        className="w-[420px] shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm transition-transform will-change-transform hover:-translate-y-0.5"
       >
         <div className="flex items-stretch justify-between gap-6 p-5">
           <div className="min-w-0">
@@ -127,9 +121,23 @@ export function LandingA() {
             </div>
           </div>
 
-          <div className="h-[96px] w-[120px] overflow-hidden rounded-xl bg-slate-100">
-            <img src={image} alt={title} className="h-full w-full object-cover" />
-          </div>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedShowcaseImage({ src: image, title });
+            }}
+            className="h-[96px] w-[120px] overflow-hidden rounded-xl bg-slate-100"
+            aria-label={`open-${title}`}
+          >
+            <img
+              src={image}
+              alt={title}
+              className="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
         </div>
       </div>
     );
@@ -156,11 +164,6 @@ export function LandingA() {
             className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-teal-500/10 blur-3xl"
             animate={{ y: [0, 16, 0], opacity: [0.4, 0.65, 0.4] }}
             transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-          />
-          <MotionDiv
-            className="absolute left-1/3 bottom-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl"
-            animate={{ y: [0, -20, 0], opacity: [0.35, 0.55, 0.35] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
           />
           <MotionDiv
             className="absolute left-1/4 top-1/2 h-3 w-3 rounded-full bg-white/50"
@@ -246,6 +249,49 @@ export function LandingA() {
 
       <div className="bg-slate-50 dark:bg-slate-900 py-24">
         <Section className="relative">
+          <AnimatePresence>
+            {selectedShowcaseImage && (
+              <MotionDiv
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+                onClick={() => setSelectedShowcaseImage(null)}
+              >
+                <MotionDiv
+                  initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                  transition={{ duration: 0.25 }}
+                  className="relative w-full max-w-4xl rounded-2xl bg-white shadow-2xl overflow-hidden"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setSelectedShowcaseImage(null)}
+                    className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-black/60 text-white hover:bg-black/75 transition-colors"
+                    aria-label="close"
+                  >
+                    <span className="text-xl leading-none">×</span>
+                  </button>
+
+                  <div className="bg-slate-100">
+                    <img
+                      src={selectedShowcaseImage.src}
+                      alt={selectedShowcaseImage.title}
+                      className="w-full max-h-[70vh] object-contain"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="px-5 py-4 border-t border-slate-200">
+                    <div className="text-sm font-semibold text-slate-900">{selectedShowcaseImage.title}</div>
+                  </div>
+                </MotionDiv>
+              </MotionDiv>
+            )}
+          </AnimatePresence>
+
           <div className="mb-12 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t.sections.whyTitle}</h2>
             <p className="mt-4 text-slate-600 dark:text-slate-300">Enterprise-grade recruitment tools for modern companies.</p>
