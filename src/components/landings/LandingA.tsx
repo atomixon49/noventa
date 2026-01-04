@@ -5,13 +5,19 @@ import { AnimatePresence } from "framer-motion";
 import { MotionDiv } from "@/components/Motion";
 import { Section } from "@/components/Section";
 import { useLanguage } from "@/components/LanguageProvider";
-import { 
-  Briefcase, 
-  Users, 
-  CheckCircle2, 
+import {
+  Briefcase,
+  Users,
+  CheckCircle2,
   Building2,
   ArrowRight,
   ChevronDown,
+  Phone,
+  DoorOpen,
+  Zap,
+  Car,
+  BarChart3,
+  Filter,
 } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -25,7 +31,7 @@ const ShaderBackground = dynamic(
 );
 
 export function LandingA() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [isShowcasePaused, setIsShowcasePaused] = useState(false);
   const [selectedShowcaseImage, setSelectedShowcaseImage] = useState<{
@@ -223,8 +229,13 @@ export function LandingA() {
               
               <div className="mt-8 flex items-center gap-4 text-sm text-slate-400">
                 <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="h-8 w-8 rounded-full border-2 border-slate-900 bg-gradient-to-br from-slate-600 to-slate-700" />
+                  {[Phone, DoorOpen, Zap, Car, BarChart3].map((Icon, i) => (
+                    <div
+                      key={i}
+                      className="h-8 w-8 rounded-full border-2 border-slate-900 bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center"
+                    >
+                      <Icon size={14} className="text-white/85" />
+                    </div>
                   ))}
                 </div>
                 <div>{t.hero.trustNote}</div>
@@ -294,7 +305,11 @@ export function LandingA() {
 
           <div className="mb-12 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t.sections.whyTitle}</h2>
-            <p className="mt-4 text-slate-600 dark:text-slate-300">Enterprise-grade recruitment tools for modern companies.</p>
+            <p className="mt-4 text-slate-600 dark:text-slate-300">
+              {lang === "de"
+                ? "Dann bist du nicht alleine. Noventa ist genau dafür gebaut."
+                : "Enterprise-grade recruitment tools for modern companies."}
+            </p>
           </div>
 
           <div className="space-y-6">
@@ -512,41 +527,77 @@ export function LandingA() {
 
         <Section className="relative">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Vertrauen von führenden Unternehmen</h2>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+              {lang === "de"
+                ? "Zahlen, die erklären, warum Noventa nötig ist"
+                : "Vertrauen von führenden Unternehmen"}
+            </h2>
           </div>
 
           <div className="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2">
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
-              <Building2 className="mx-auto h-9 w-9 text-slate-900" />
-              <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
-                <CountUp value={500} suffix="+" />
-              </div>
-              <div className="mt-2 text-sm font-medium text-slate-600">Unternehmen</div>
-            </div>
+            {lang === "de" ? (
+              <>
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <Filter className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
+                    160+
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Filterkombinationen</div>
+                </div>
 
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
-              <Briefcase className="mx-auto h-9 w-9 text-slate-900" />
-              <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
-                <CountUp value={10000} suffix="+" />
-              </div>
-              <div className="mt-2 text-sm font-medium text-slate-600">Stellenangebote</div>
-            </div>
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <BarChart3 className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">72%</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Wechselbereitschaft von Vertriebskräften (09/2025)</div>
+                </div>
 
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
-              <Users className="mx-auto h-9 w-9 text-slate-900" />
-              <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
-                <CountUp value={5000} suffix="+" />
-              </div>
-              <div className="mt-2 text-sm font-medium text-slate-600">Erfolgreiche Einstellungen</div>
-            </div>
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <Users className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">~890.000</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Vertriebler in DE</div>
+                </div>
 
-            <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
-              <CheckCircle2 className="mx-auto h-9 w-9 text-slate-900" />
-              <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
-                <CountUp value={98} suffix="%" />
-              </div>
-              <div className="mt-2 text-sm font-medium text-slate-600">Zufriedenheit</div>
-            </div>
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <Building2 className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">~4700€</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Hiring-Kosten pro Einstellung in Deutschland</div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <Building2 className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
+                    <CountUp value={500} suffix="+" />
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Unternehmen</div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <Briefcase className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
+                    <CountUp value={10000} suffix="+" />
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Stellenangebote</div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <Users className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
+                    <CountUp value={5000} suffix="+" />
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Erfolgreiche Einstellungen</div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
+                  <CheckCircle2 className="mx-auto h-9 w-9 text-slate-900" />
+                  <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
+                    <CountUp value={98} suffix="%" />
+                  </div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">Zufriedenheit</div>
+                </div>
+              </>
+            )}
           </div>
         </Section>
       </div>
@@ -560,7 +611,15 @@ export function LandingA() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">{t.sections.aboutTitle}</h2>
+            <Link
+              href="#about"
+              className="inline-flex"
+              aria-label="about"
+            >
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 hover:underline underline-offset-4">
+                {t.sections.aboutTitle}
+              </h2>
+            </Link>
             <p className="text-xl text-teal-600 dark:text-teal-400 mb-8">{t.sections.aboutSubtitle}</p>
             <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-12">
               {t.sections.aboutText}

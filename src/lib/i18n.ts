@@ -67,16 +67,16 @@ export const translations: Record<Language, Translations> = {
     },
     hero: {
       eyebrow: "Für Unternehmen (Beta)",
-      title: "Veröffentliche seriöse Stellenangebote in Minuten — nicht in Tagen.",
+      title: "Gezieltes Recruiting für deinen Vertrieb",
       subtitle:
-        "Noventa hilft dir, Sales-Jobs sauber, vergleichbar und filterbar zu veröffentlichen. Mit Pflichtangaben wie Gehaltsrange und Ansprechpartner:in — für mehr Vertrauen und bessere Bewerbungen.",
-      primaryCta: "Jetzt registrieren",
+        "Noventa ist eine Plattform für alle Arten von Vertrieb. Von Quereinsteigern bis zu erfahrenen Sales-Profis – Unternehmen können sich präsentieren oder gezielt Vertriebler kontaktieren, die den nächsten Schritt suchen.",
+      primaryCta: "Unternehmensprofil erstellen",
       secondaryCta: "So funktioniert’s",
       trustNote:
-        "Beta & kostenlos. Keine unnötigen Marketing-Texte — nur klare Felder und klare Ergebnisse.",
+        "Beta-Version (kostenlos) •  In wenigen Schritten startklar – bevor Kandidatenkontakt startet",
     },
     sections: {
-      whyTitle: "Warum Noventa für Unternehmen?",
+      whyTitle: "Kennst du das aus deinem Vertriebsalltag?",
       whyCards: [
         {
           title: "Mehr Vertrauen",
@@ -94,76 +94,77 @@ export const translations: Record<Language, Translations> = {
             "Profil erstellen, Job posten, fertig. Der Rest wächst Schritt für Schritt — transparent im Dashboard.",
         },
       ],
-      howTitle: "So läuft Phase 1 ab",
+      howTitle: "So läuft die Beta für Unternehmen ab",
       howSteps: [
         {
-          title: "Unternehmensprofil",
+          title: "Unternehmensprofil anlegen",
           description:
-            "Wer seid ihr? Stabil, seltene Änderungen. Separate Basis für mehrere Stellen.",
+            "Du legst einmal die Basis fest – so, wie dein Unternehmen den Vertrieblern präsentiert werden soll.",
         },
         {
-          title: "Stellenanzeige erstellen",
+          title: "Kampagne starten",
           description:
-            "Wen sucht ihr jetzt? Strukturierte Pflichtfelder — kein leeres Bla Bla.",
+            "Du gibst die Eckdaten vor – wir übersetzen sie in eine Kampagne, die später automatisch auf passende Profile matcht.",
         },
         {
-          title: "Dashboard & nächste Schritte",
-          description:
-            "Du siehst klar, was als Nächstes kommt: Bewerbungen, Chats, Leads — alles als ‚coming soon‘ sichtbar.",
+          title: "Live-Check",
+          description: "Vorschau prüfen, live schalten – und bei Bedarf jederzeit nachziehen.",
         },
         {
-          title: "Verkäufer anziehen",
+          title: "Vertriebler-Setup (mit Countdown-Teaser)",
           description:
-            "Attraktive Profile und klare Angebote ziehen die besten Verkäufer auf die Plattform.",
+            "Der Countdown läuft im Dashboard bereits mit. So bist du startklar, sobald der Kandidatenpool freigeschaltet wird.",
         },
         {
-          title: "Leads generieren",
+          title: "Vertriebler-Launch (Payoff)",
           description:
-            "Mit Noventa kannst du Leads generieren und deine Verkaufsstrategie optimieren.",
+            "Du filterst und vergleichst Profile – mit zwei Scores: Skills-Fit (%) und Wunsch-Fit (%). Weil deine Kampagne schon sauber steht, läuft Kontakt in beide Richtungen: du sprichst Kandidaten an – passende Vertriebler kontaktieren dich.",
         },
       ],
-      structuredTitle: "Eine Anzeige, die automatisch ‚gut‘ ist",
+      structuredTitle: "Eine Kampagne, die Vertriebler sofort verstehen.",
       structuredSubtitle:
-        "Noventa baut aus deinen Antworten eine klare, vergleichbare Anzeige. Ohne individuelle Textwüsten.",
+        "Du gibst klare Kriterien vor – Noventa macht daraus zwei Perspektiven: Skills-Fit (%) und Wunsch-Fit (%). So sehen beide Seiten sofort, ob es passt.",
       structuredTags: [
-        "Rolle (AE/SDR/D2D)",
+        "Rolle (D2D/Führungskraft/Telesales)",
         "Remote/Hybrid/Onsite",
         "Stadt + Radius",
         "Startdatum",
-        "Fix/OTE/Kommission",
+        "Fix/Provision/Zielgehalt",
         "Branche",
-        "B2B/B2C",
+        "Neben-/Hauptberuflichkeit",
         "Lead-Quelle",
-        "Sales-Cycle",
+        "Ausbildung/Traineeprogramm",
         "Erfahrung",
-        "Sprache",
+        "Reisebereitschaft",
+        "Individuelle Ausschlusskriterien",
       ],
-      comingSoonTitle: "Dashboard (Fase 1) — mit klaren Hinweisen",
+      comingSoonTitle: "Noventa (Phase 2) – darauf könnt ihr euch freuen und profitieren",
       comingSoonCards: [
         {
-          title: "Eingehende Bewerbungen (coming soon)",
+          title: "Vertrieblerpool freischalten",
           description:
-            "Hier werden später Bewerbungen und Status sichtbar — sauber, schnell, ohne Chaos.",
+            "Kontakt in beide Richtungen: ihr sprecht Kandidaten an, passende Kandidaten melden sich auch bei euch",
         },
         {
-          title: "Chats (coming soon)",
+          title: "Employer Spotlight",
           description:
-            "Direkte Kommunikation mit Kandidat:innen — sobald das Modul live geht.",
+            "Stellt euch den Vertrieblern in einem Kurzvideo vor. Warum sollte man bei euch verkaufen?",
         },
         {
-          title: "Leads freischalten (coming soon)",
+          title: "Dual-Score-Matching",
           description:
-            "Transparente Lead-Mechanik für den nächsten Schritt der Plattform.",
+            "Skills und Motivation getrennt sichtbar – damit ihr schneller die richtigen Gespräche führt",
         },
         {
-          title: "Vendors beobachten (coming soon)",
+          title: "Leaderboard für Vertriebler und Unternehmen",
           description:
-            "Später: Performance-Ansicht für externe Verkäufer:innen — klar gekennzeichnet.",
+            "Wir fragen Vertriebler und belohnen Ausbildungsqualität, Onboarding, Transparenz, schnelle Rückmeldungen und beste Karrierechancen",
         },
       ],
       aboutTitle: "Über Noventa",
-      aboutSubtitle: "Wir bauen die transparenteste Sales-Job-Plattform",
-      aboutText: "Noventa wurde gegründet, um den Vertriebsarbeitsmarkt zu revolutionieren. Wir glauben an Transparenz, klare Strukturen und faire Bedingungen für beide Seiten. Unser Team arbeitet daran, eine Plattform zu schaffen, die Vertrauen schafft und echte Matches ermöglicht.",
+      aboutSubtitle: "Von Vertrieblern, für Vertriebler",
+      aboutText:
+        "Sales entscheidet nicht nur über Einkommen – sondern über Lebensqualität. Und trotzdem sehen wir zu oft, wie gute Leute im Vertrieb unter Wert arbeiten: nicht wegen fehlendem Talent, sondern weil sie den Markt nicht überblicken, in der falschen Rolle landen oder in einer Bubble feststecken, die nur wenige Optionen zeigt.\nUnsere Mission ist Orientierung über den gesamten Sales-Markt: mehr Möglichkeiten sichtbar machen, Zugänge schaffen – und Menschen dabei helfen, den Weg zu finden, der wirklich zu ihrer Persönlichkeit und ihrem Leben passt.",
       socialTitle: "Folge uns auf Social Media",
       socialSubtitle: "Bleib auf dem Laufenden mit unseren neuesten Updates",
       followUs: "Folge @noventacrew",
@@ -202,14 +203,13 @@ export const translations: Record<Language, Translations> = {
           a: "Transparenz schafft Vertrauen. Ein echter Name und eine Position zeigen, dass Ihr Unternehmen seriös ist und reduzieren Fake-Job-Bedenken erheblich.",
         },
       ],
-      finalCtaTitle: "Bereit, die erste Stelle auf Noventa zu posten?",
-      finalCtaSubtitle:
-        "Strukturierte Felder, klare Filter, mehr Vertrauen. Starte jetzt — in der Beta kostenlos.",
+      finalCtaTitle: "Bereit, deine erste Kampagne auf Noventa zu starten?",
+      finalCtaSubtitle: "Bereite dich und dein Unternehmen vor für den Launch – in der Beta kostenlos",
       finalCta: "Unternehmen registrieren",
     },
     footer: {
-      note: "Noventa ist in Beta. Einige Module sind als ‚coming soon' markiert.",
-      socialMedia: "Folgen Sie uns",
+      note: "Noventa ist in der Beta. Einige Module sind als ‚coming soon‘ markiert und werden schrittweise freigeschaltet.",
+      socialMedia: "Social Media",
     },
   },
   es: {
@@ -227,16 +227,16 @@ export const translations: Record<Language, Translations> = {
     },
     hero: {
       eyebrow: "Para empresas (Beta)",
-      title: "Publica ofertas serias en minutos — no en días.",
+      title: "Reclutamiento dirigido para tu equipo comercial",
       subtitle:
-        "Noventa te ayuda a publicar empleos de ventas de forma limpia, comparable y filtrable. Con campos obligatorios como rango salarial y contacto público para generar confianza.",
-      primaryCta: "Registrarme",
+        "Noventa es una plataforma para todo tipo de ventas. Desde personas sin experiencia previa hasta profesionales senior: las empresas pueden presentarse o contactar directamente a vendedores que buscan dar el siguiente paso.",
+      primaryCta: "Crear perfil de empresa",
       secondaryCta: "Cómo funciona",
       trustNote:
-        "Beta y gratis. Cero marketing vacío: solo campos claros y resultados claros.",
+        "Beta (gratis) • Listo en pocos pasos — antes de habilitar el contacto con candidatos",
     },
     sections: {
-      whyTitle: "¿Por qué Noventa para empresas?",
+      whyTitle: "¿Te suena esto en tu día a día en ventas?",
       whyCards: [
         {
           title: "Más confianza",
@@ -254,76 +254,78 @@ export const translations: Record<Language, Translations> = {
             "Perfil, oferta, listo. Y el dashboard muestra qué viene después (coming soon) para dar claridad.",
         },
       ],
-      howTitle: "Así funciona la Fase 1",
+      howTitle: "Así funciona la beta para empresas",
       howSteps: [
         {
-          title: "Perfil de empresa",
+          title: "Crear perfil de empresa",
           description:
-            "¿Quiénes somos? Estable y separado de las ofertas para que puedas publicar varias.",
+            "Defines una sola vez la base — cómo quieres que tu empresa se muestre a los vendedores.",
         },
         {
-          title: "Crear oferta",
+          title: "Lanzar campaña",
           description:
-            "¿A quién buscas ahora? Campos estructurados obligatorios: sin textos eternos.",
+            "Indicas los datos clave — nosotros lo convertimos en una campaña que luego matchea con perfiles relevantes.",
         },
         {
-          title: "Dashboard y siguientes pasos",
+          title: "Revisión final",
           description:
-            "Verás claro lo que viene: candidaturas, chats, leads — marcado como ‘próximamente’.",
+            "Revisas la vista previa, publicas — y puedes ajustar cuando lo necesites.",
         },
         {
-          title: "Atraer los vendedores a la plataforma",
+          title: "Setup de vendedores (con cuenta regresiva)",
           description:
-            "Perfiles atractivos y ofertas claras atraen a los mejores vendedores.",
+            "La cuenta regresiva ya corre en el dashboard. Así estás listo cuando se habilite el pool de candidatos.",
         },
         {
-          title: "Generar leads",
+          title: "Lanzamiento (resultado)",
           description:
-            "Con Noventa puedes generar leads y optimizar tu estrategia de ventas.",
+            "Filtras y comparas perfiles con dos scores: Skills-Fit (%) y Wish-Fit (%). Como tu campaña ya está lista, el contacto funciona en ambas direcciones.",
         },
       ],
-      structuredTitle: "Una oferta que se construye ‘bien’ automáticamente",
+      structuredTitle: "Una campaña que los vendedores entienden al instante.",
       structuredSubtitle:
-        "Noventa genera una oferta limpia y comparable a partir de respuestas. Sin humo.",
+        "Tú defines criterios claros — Noventa los traduce a dos perspectivas: Skills-Fit (%) y Wish-Fit (%). Así ambos lados ven rápido si encaja.",
       structuredTags: [
-        "Rol (AE/SDR/D2D)",
+        "Rol (D2D/Líder/Telesales)",
         "Remoto/Híbrido/Presencial",
         "Ciudad + radio",
         "Inicio",
-        "Fijo/OTE/Comisión",
+        "Fijo/Comisión/Objetivo",
         "Industria",
-        "B2B/B2C",
+        "Parcial/Completo",
         "Origen de leads",
-        "Ciclo de ventas",
+        "Formación/Programa trainee",
         "Experiencia",
-        "Idiomas",
+        "Disponibilidad de viaje",
+        "Criterios de exclusión",
       ],
-      comingSoonTitle: "Dashboard (Fase 1) — con pistas claras",
+      comingSoonTitle: "Noventa (Fase 2) — lo que viene y por qué te beneficiará",
       comingSoonCards: [
         {
-          title: "Candidaturas entrantes (próximamente)",
+          title: "Desbloquear pool de vendedores",
           description:
-            "Aquí verás candidaturas y estados — ordenado y rápido.",
+            "Contacto en ambas direcciones: tú contactas candidatos y candidatos relevantes también te contactan.",
         },
         {
-          title: "Chats (próximamente)",
+          title: "Employer Spotlight",
           description:
-            "Mensajería directa con candidatos cuando el módulo esté listo.",
+            "Preséntate con un video corto. ¿Por qué alguien debería vender en tu empresa?",
         },
         {
-          title: "Leads desbloqueados (próximamente)",
+          title: "Dual-Score matching",
           description:
-            "Mecánica transparente de leads para el siguiente paso.",
+            "Skills y motivación visibles por separado — para ir directo a las conversaciones correctas.",
         },
         {
-          title: "Vendedores en observación (próximamente)",
+          title: "Leaderboard para vendedores y empresas",
           description:
-            "Más adelante: panel de performance de vendedores externos.",
+            "Recompensamos calidad de formación, onboarding, transparencia, rapidez de respuesta y mejores oportunidades.",
         },
       ],
       aboutTitle: "Sobre Noventa",
-      aboutSubtitle: "Construyendo la plataforma de empleos de ventas más transparente",
-      aboutText: "Noventa nació para revolucionar el mercado laboral de ventas. Creemos en la transparencia, estructuras claras y condiciones justas para ambas partes. Nuestro equipo trabaja para crear una plataforma que genere confianza y permita matches reales.",
+      aboutSubtitle: "De vendedores, para vendedores",
+      aboutText:
+        "Las ventas no solo deciden ingresos — también calidad de vida. Y aun así vemos demasiado a menudo cómo buenas personas trabajan por debajo de su valor: no por falta de talento, sino porque no ven el mercado completo, terminan en el rol equivocado o quedan atrapadas en una burbuja con pocas opciones.\nNuestra misión es dar orientación sobre el mercado de ventas: hacer visibles más oportunidades, abrir accesos — y ayudar a cada persona a encontrar el camino que realmente encaja con su personalidad y su vida.",
       socialTitle: "Síguenos en redes sociales",
       socialSubtitle: "Mantente al día con nuestras últimas novedades",
       followUs: "Sigue a @noventacrew",
@@ -362,13 +364,12 @@ export const translations: Record<Language, Translations> = {
           a: "La transparencia genera confianza. Un nombre real y cargo muestran que tu empresa es seria y reduce enormemente las dudas sobre ofertas falsas.",
         },
       ],
-      finalCtaTitle: "¿Listo para publicar tu primera oferta en Noventa?",
-      finalCtaSubtitle:
-        "Campos estructurados, filtros claros, más confianza. Empieza hoy — beta gratis.",
+      finalCtaTitle: "¿Listo para lanzar tu primera campaña en Noventa?",
+      finalCtaSubtitle: "Prepara tu empresa para el lanzamiento — en beta gratis",
       finalCta: "Registrar empresa",
     },
     footer: {
-      note: "Noventa está en beta. Algunos módulos aparecen como 'próximamente'.",
+      note: "Noventa está en beta. Algunos módulos están marcados como 'próximamente' y se irán habilitando paso a paso.",
       socialMedia: "Síguenos",
     },
   },
@@ -387,16 +388,16 @@ export const translations: Record<Language, Translations> = {
     },
     hero: {
       eyebrow: "For companies (Beta)",
-      title: "Publish serious job campaigns in minutes — not days.",
+      title: "Targeted recruiting for your sales team",
       subtitle:
-        "Noventa helps you post sales roles in a clean, comparable, fully filterable format. With mandatory fields like salary range and a public contact — to build trust.",
-      primaryCta: "Get started",
+        "Noventa is a platform for all kinds of sales. From career changers to experienced sales pros — companies can present themselves or directly contact sellers ready for the next step.",
+      primaryCta: "Create company profile",
       secondaryCta: "How it works",
       trustNote:
-        "Beta & free. No empty marketing — just clear fields and clear outcomes.",
+        "Beta (free) • Ready in a few steps — before candidate contact starts",
     },
     sections: {
-      whyTitle: "Why Noventa for companies",
+      whyTitle: "Does this sound like your day-to-day in sales?",
       whyCards: [
         {
           title: "Higher trust",
@@ -414,76 +415,78 @@ export const translations: Record<Language, Translations> = {
             "Create profile, post a job, done. The dashboard shows what’s next (coming soon) with clarity.",
         },
       ],
-      howTitle: "How Phase 1 works",
+      howTitle: "How the beta works for companies",
       howSteps: [
         {
-          title: "Company profile",
+          title: "Create a company profile",
           description:
-            "Who are you? Stable, rarely changed — and separate from job postings.",
+            "Set the foundation once — how your company should be presented to sellers.",
         },
         {
-          title: "Create a job post",
+          title: "Launch a campaign",
           description:
-            "Who do you need now? Structured mandatory fields — no long text walls.",
+            "You provide key inputs — we translate them into a campaign that later matches the right profiles.",
         },
         {
-          title: "Dashboard & next steps",
+          title: "Live check",
           description:
-            "You’ll clearly see what’s next: applications, chats, leads — labeled as coming soon.",
+            "Review the preview, go live — and adjust anytime if needed.",
         },
         {
-          title: "Attract sellers to the platform",
+          title: "Seller setup (with countdown teaser)",
           description:
-            "Attractive profiles and clear offers attract the best sellers to the platform.",
+            "A countdown already runs in the dashboard. You’ll be ready once the candidate pool goes live.",
         },
         {
-          title: "Generate leads",
+          title: "Seller launch (payoff)",
           description:
-            "With Noventa, you can generate leads and optimize your sales strategy.",
+            "Filter and compare profiles using two scores: Skills-Fit (%) and Wish-Fit (%). Because your campaign is clean, contact works both ways.",
         },
       ],
-      structuredTitle: "A job post that becomes ‘good’ by default",
+      structuredTitle: "A campaign sellers instantly understand.",
       structuredSubtitle:
-        "Noventa builds a clean, comparable posting from your answers. No fluff.",
+        "You define clear criteria — Noventa turns them into two perspectives: Skills-Fit (%) and Wish-Fit (%). Both sides see fast if it matches.",
       structuredTags: [
-        "Role (AE/SDR/D2D)",
+        "Role (D2D/Leader/Telesales)",
         "Remote/Hybrid/Onsite",
         "City + radius",
         "Start date",
-        "Fixed/OTE/Commission",
+        "Base/commission/target",
         "Industry",
-        "B2B/B2C",
+        "Part-time/Full-time",
         "Lead source",
-        "Sales cycle",
+        "Training/trainee program",
         "Experience",
-        "Languages",
+        "Travel willingness",
+        "Exclusion criteria",
       ],
-      comingSoonTitle: "Dashboard (Phase 1) — with clear hints",
+      comingSoonTitle: "Noventa (Phase 2) — what’s next and why it helps",
       comingSoonCards: [
         {
-          title: "Incoming applications (coming soon)",
+          title: "Unlock the seller pool",
           description:
-            "A clean view of applicants and statuses — once the module is live.",
+            "Two-way contact: you reach out to candidates, and relevant candidates reach out to you as well.",
         },
         {
-          title: "Chats (coming soon)",
+          title: "Employer Spotlight",
           description:
-            "Direct messaging with candidates when the feature ships.",
+            "Introduce yourself in a short video. Why should someone sell with you?",
         },
         {
-          title: "Unlocked leads (coming soon)",
+          title: "Dual-score matching",
           description:
-            "A transparent lead mechanic for the next platform step.",
+            "Skills and motivation shown separately — so you get to the right conversations faster.",
         },
         {
-          title: "Vendor watch (coming soon)",
+          title: "Leaderboard for sellers and companies",
           description:
-            "Later: performance view for external sellers — clearly labeled.",
+            "We reward training quality, onboarding, transparency, fast responses, and the best career opportunities.",
         },
       ],
       aboutTitle: "About Noventa",
-      aboutSubtitle: "Building the most transparent sales job platform",
-      aboutText: "Noventa was founded to revolutionize the sales job market. We believe in transparency, clear structures, and fair conditions for both sides. Our team is working to create a platform that builds trust and enables real matches.",
+      aboutSubtitle: "By sellers, for sellers",
+      aboutText:
+        "Sales doesn’t just decide income — it also impacts quality of life. Yet we still see great people working below their value: not because they lack talent, but because they can’t see the market, end up in the wrong role, or get stuck in a bubble with too few options.\nOur mission is to provide orientation across the entire sales market: make more opportunities visible, create access — and help people find the path that truly fits their personality and life.",
       socialTitle: "Follow us on social media",
       socialSubtitle: "Stay updated with our latest news",
       followUs: "Follow @noventacrew",
@@ -522,13 +525,12 @@ export const translations: Record<Language, Translations> = {
           a: "Transparency builds trust. A real name and position show your company is legitimate and significantly reduce fake job concerns.",
         },
       ],
-      finalCtaTitle: "Ready to post your first role on Noventa?",
-      finalCtaSubtitle:
-        "Structured fields, clear filters, higher trust. Start today — beta is free.",
-      finalCta: "Register your company",
+      finalCtaTitle: "Ready to launch your first campaign on Noventa?",
+      finalCtaSubtitle: "Get your company ready for the launch — free in beta",
+      finalCta: "Register company",
     },
     footer: {
-      note: "Noventa is in beta. Some modules are labeled as coming soon.",
+      note: "Noventa is in beta. Some modules are marked as 'coming soon' and will roll out step by step.",
       socialMedia: "Follow us",
     },
   },

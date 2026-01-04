@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useLanguage } from "@/components/LanguageProvider";
 import {
   LayoutDashboard,
   Briefcase,
@@ -25,16 +26,22 @@ import {
 } from "lucide-react";
 
 export function HeroDashboard() {
+  const { lang } = useLanguage();
   const [activeTab, setActiveTab] = useState<"dashboard" | "create" | "candidates">("dashboard");
   const [showTooltip, setShowTooltip] = useState(true);
   const [messageIndex, setMessageIndex] = useState(0);
 
-  const messages = [
-    "¡Prueba el dashboard!",
-    "¿Deseas probar? Regístrate",
-    "¿Quieres ver más? Regístrate",
-    "¿Deseas empezar? Regístrate"
-  ];
+  const messages =
+    lang === "de"
+      ? ["Teste das Dashboard"]
+      : lang === "en"
+        ? ["Try the dashboard!", "Want to try it? Sign up", "See more? Sign up", "Ready to start? Sign up"]
+        : [
+            "¡Prueba el dashboard!",
+            "¿Deseas probar? Regístrate",
+            "¿Quieres ver más? Regístrate",
+            "¿Deseas empezar? Regístrate",
+          ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -186,6 +193,8 @@ export function HeroDashboard() {
 }
 
 function DashboardView() {
+  const { lang } = useLanguage();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -198,14 +207,18 @@ function DashboardView() {
         <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/30">
           <div className="flex items-center gap-2 mb-1">
             <Briefcase size={12} className="text-teal-400" />
-            <span className="text-[10px] text-slate-500 uppercase tracking-wider">Active</span>
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider">
+              {lang === "de" ? "Aktiv" : "Active"}
+            </span>
           </div>
           <div className="text-xl font-bold text-white">5</div>
         </div>
         <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700/30">
           <div className="flex items-center gap-2 mb-1">
             <Users size={12} className="text-cyan-400" />
-            <span className="text-[10px] text-slate-500 uppercase tracking-wider">Candidates</span>
+            <span className="text-[10px] text-slate-500 uppercase tracking-wider">
+              {lang === "de" ? "Kandidaten" : "Candidates"}
+            </span>
           </div>
           <div className="text-xl font-bold text-white">47</div>
         </div>
@@ -220,13 +233,30 @@ function DashboardView() {
 
       <div className="rounded-lg border border-slate-700/30 bg-slate-800/30 overflow-hidden mb-4">
         <div className="px-3 py-2 border-b border-slate-700/30 flex items-center justify-between bg-slate-800/50">
-          <span className="text-xs font-medium text-slate-300">Recent Job Campaigns</span>
+          <span className="text-xs font-medium text-slate-300">
+            {lang === "de" ? "Zuletzt veröffentlichte Angebote" : "Recent Job Campaigns"}
+          </span>
         </div>
         <div className="divide-y divide-slate-700/20">
           {[
-            { title: "Senior Sales Manager", status: "Active", apps: 12, color: "bg-teal-500" },
-            { title: "B2B Representative", status: "Active", apps: 8, color: "bg-teal-500" },
-            { title: "Account Executive", status: "Draft", apps: 0, color: "bg-slate-500" },
+            {
+              title: lang === "de" ? "Sales Consultant Software" : "Senior Sales Manager",
+              status: lang === "de" ? "Aktiv" : "Active",
+              apps: 12,
+              color: "bg-teal-500",
+            },
+            {
+              title: lang === "de" ? "Immobilienmakler (Vertrieb & Vermarktung)" : "B2B Representative",
+              status: lang === "de" ? "Aktiv" : "Active",
+              apps: 8,
+              color: "bg-teal-500",
+            },
+            {
+              title: lang === "de" ? "Verkaufsberater Automobil" : "Account Executive",
+              status: lang === "de" ? "Entwurf" : "Draft",
+              apps: 0,
+              color: "bg-slate-500",
+            },
           ].map((job, i) => (
             <div key={i} className="px-3 py-2.5 flex items-center justify-between hover:bg-slate-800/50 transition-colors cursor-pointer group">
               <div className="flex items-center gap-2">
@@ -234,8 +264,14 @@ function DashboardView() {
                 <span className="text-xs text-slate-300 group-hover:text-white transition-colors">{job.title}</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[10px] text-slate-500">{job.apps} apps</span>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded ${job.status === 'Active' ? 'bg-teal-500/10 text-teal-400' : 'bg-slate-700/30 text-slate-400'}`}>{job.status}</span>
+                <span className="text-[10px] text-slate-500">
+                  {job.apps} {lang === "de" ? "Bewerbungen" : "apps"}
+                </span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.5 rounded ${job.status === (lang === "de" ? "Aktiv" : "Active") ? "bg-teal-500/10 text-teal-400" : "bg-slate-700/30 text-slate-400"}`}
+                >
+                  {job.status}
+                </span>
               </div>
             </div>
           ))}
@@ -260,6 +296,29 @@ function DashboardView() {
 }
 
 function CreateOfferView() {
+  const { lang } = useLanguage();
+  const departmentOptions =
+    lang === "de"
+      ? [
+          "SaaS/IT",
+          "Energie/PV/Wärmepumpe",
+          "Versicherungen / Finanzen",
+          "Telekommunikation / Internet",
+          "Immobilien",
+          "E-Commerce",
+          "Coaching/Bildung",
+          "Automobil",
+          "Consulting",
+          "Dienstleistung",
+          "Gesundheit/MedTech",
+          "Industrie/Maschinenbau",
+          "Handwerk/Bau",
+          "Großhandel/Distribution",
+          "Logistik/Transport",
+          "Anderes",
+        ]
+      : ["Sales", "Marketing"];
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -269,31 +328,48 @@ function CreateOfferView() {
       className="p-4 h-full flex flex-col"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white">Create New Offer</h3>
+        <h3 className="text-sm font-semibold text-white">
+          {lang === "de" ? "Neue Stelle" : "Create New Offer"}
+        </h3>
         <button className="text-[10px] bg-teal-500 hover:bg-teal-400 text-white px-2 py-1 rounded transition-colors">
-          Save Draft
+          {lang === "de" ? "Entwurf sichern" : "Save Draft"}
         </button>
       </div>
 
       <div className="space-y-3 flex-1 overflow-hidden">
         <div className="space-y-1">
-          <label className="text-[10px] text-slate-400">Job Title</label>
-          <input type="text" placeholder="e.g. Sales Representative" className="w-full bg-slate-800/50 border border-slate-700/50 rounded p-2 text-xs text-white focus:border-teal-500/50 outline-none transition-colors" />
+          <label className="text-[10px] text-slate-400">
+            {lang === "de" ? "Jobbezeichnung" : "Job Title"}
+          </label>
+          <input
+            type="text"
+            placeholder={
+              lang === "de"
+                ? "z.B. Junior Sales Manager – Neukunden (B2B)"
+                : "e.g. Sales Representative"
+            }
+            className="w-full bg-slate-800/50 border border-slate-700/50 rounded p-2 text-xs text-white focus:border-teal-500/50 outline-none transition-colors"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-2">
           <div className="space-y-1">
-            <label className="text-[10px] text-slate-400">Department</label>
+            <label className="text-[10px] text-slate-400">
+              {lang === "de" ? "Branche" : "Department"}
+            </label>
             <div className="relative">
               <select className="w-full bg-slate-800/50 border border-slate-700/50 rounded p-2 text-xs text-white appearance-none outline-none">
-                <option>Sales</option>
-                <option>Marketing</option>
+                {departmentOptions.map((opt) => (
+                  <option key={opt}>{opt}</option>
+                ))}
               </select>
               <ChevronDown size={12} className="absolute right-2 top-2.5 text-slate-500 pointer-events-none" />
             </div>
           </div>
           <div className="space-y-1">
-            <label className="text-[10px] text-slate-400">Location</label>
+            <label className="text-[10px] text-slate-400">
+              {lang === "de" ? "Standort" : "Location"}
+            </label>
             <div className="relative">
               <MapPin size={12} className="absolute left-2 top-2.5 text-slate-500" />
               <input type="text" placeholder="Remote" className="w-full bg-slate-800/50 border border-slate-700/50 rounded p-2 pl-7 text-xs text-white outline-none" />
@@ -302,7 +378,9 @@ function CreateOfferView() {
         </div>
 
         <div className="space-y-1">
-          <label className="text-[10px] text-slate-400">Description</label>
+          <label className="text-[10px] text-slate-400">
+            {lang === "de" ? "Beschreibung" : "Description"}
+          </label>
           <div className="h-24 bg-slate-800/50 border border-slate-700/50 rounded p-2">
             <div className="flex gap-2 border-b border-slate-700/30 pb-1 mb-1">
               <div className="h-1.5 w-10 bg-slate-600/30 rounded" />
@@ -322,11 +400,32 @@ function CreateOfferView() {
 }
 
 function CandidatesView() {
-  const candidates = [
-    { name: "Sarah Müller", role: "Senior Sales", exp: "8y", match: 94 },
-    { name: "Marc Weber", role: "Account Executive", exp: "5y", match: 88 },
-    { name: "Julia Schmidt", role: "B2B Sales", exp: "3y", match: 82 },
-  ];
+  const { lang } = useLanguage();
+
+  const candidates =
+    lang === "de"
+      ? [
+          {
+            name: "Sarah Müller",
+            subtitle: "Account Executive • B2B SaaS • 5-8 Jahre",
+            match: 94,
+          },
+          {
+            name: "Marc Weber",
+            subtitle: "Außendienstvertrieb • Energie / PV • 1-3 Jahre",
+            match: 88,
+          },
+          {
+            name: "Julia Schmidt",
+            subtitle: "Vertriebsingenieur • Industrie (Technischer Vertrieb) • 7+ Jahre",
+            match: 82,
+          },
+        ]
+      : [
+          { name: "Sarah Müller", subtitle: "Senior Sales • 8y exp", match: 94 },
+          { name: "Marc Weber", subtitle: "Account Executive • 5y exp", match: 88 },
+          { name: "Julia Schmidt", subtitle: "B2B Sales • 3y exp", match: 82 },
+        ];
 
   return (
     <motion.div
@@ -337,7 +436,10 @@ function CandidatesView() {
       className="p-4 h-full flex flex-col"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white">Candidates <span className="text-slate-500 font-normal">(12)</span></h3>
+        <h3 className="text-sm font-semibold text-white">
+          {lang === "de" ? "Kandidaten" : "Candidates"}{" "}
+          <span className="text-slate-500 font-normal">(12)</span>
+        </h3>
         <div className="flex gap-1">
           <div className="p-1 rounded bg-slate-800 text-slate-400"><Filter size={12} /></div>
           <div className="p-1 rounded bg-slate-800 text-slate-400"><Search size={12} /></div>
@@ -354,7 +456,7 @@ function CandidatesView() {
                 </div>
                 <div>
                   <div className="text-xs font-semibold text-white">{c.name}</div>
-                  <div className="text-[10px] text-slate-400">{c.role} • {c.exp} exp</div>
+                  <div className="text-[10px] text-slate-400">{c.subtitle}</div>
                 </div>
               </div>
               <div className="text-xs font-bold text-teal-400">{c.match}%</div>
@@ -374,7 +476,7 @@ function CandidatesView() {
               {/* Overlay Label */}
               <div className="absolute inset-0 flex items-center justify-center bg-slate-900/10 backdrop-blur-[1px]">
                 <span className="text-[8px] font-medium text-slate-500 bg-slate-900/80 px-1.5 py-0.5 rounded border border-slate-700/50">
-                  Hidden details
+                  {lang === "de" ? "Kontakt freischalten" : "Hidden details"}
                 </span>
               </div>
             </div>
