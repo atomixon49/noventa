@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useLanguage } from "@/components/LanguageProvider";
 import { CopyEditorPanel } from "./CopyEditorPanel";
@@ -146,7 +146,8 @@ type StoredState = {
   changes: CopyChange[];
 };
 
-export function CopyEditProvider({ children }: { children: React.ReactNode }) {
+// Componente interno que usa useSearchParams, envuelto en Suspense
+function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { lang } = useLanguage();
@@ -379,6 +380,15 @@ export function CopyEditProvider({ children }: { children: React.ReactNode }) {
         }}
       />
     </CopyEditContext.Provider>
+  );
+}
+
+// Wrapper que envuelve el componente interno con Suspense
+export function CopyEditProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={children}>
+      <CopyEditProviderInner>{children}</CopyEditProviderInner>
+    </Suspense>
   );
 }
 
