@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/components/LanguageProvider";
 import { useTheme } from "@/components/ThemeProvider";
+import { CopyText } from "@/components/CopyEditProvider";
 import { Sun, Moon, ChevronDown } from "lucide-react";
 
 const languages = [
@@ -122,16 +123,16 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-6 sm:flex">
           <Link href="#about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-            {t.nav.about}
+            <CopyText copyId="siteHeader.nav.about" defaultText={t.nav.about} as="span" />
           </Link>
           <Link href="#faq" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-            {t.nav.faq}
+            <CopyText copyId="siteHeader.nav.faq" defaultText={t.nav.faq} as="span" />
           </Link>
           <Link href="#updates" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-            {t.nav.updates}
+            <CopyText copyId="siteHeader.nav.updates" defaultText={t.nav.updates} as="span" />
           </Link>
           <Link href="/login" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-            {t.nav.login}
+            <CopyText copyId="siteHeader.nav.login" defaultText={t.nav.login} as="span" />
           </Link>
         </nav>
 
@@ -167,8 +168,6 @@ export function SiteHeader() {
                 className="h-7 w-auto object-contain"
               />
             </Link>
-            <NavLink href="/variant-b">B</NavLink>
-            <NavLink href="/variant-c">C</NavLink>
           </nav>
         </div>
       </div>

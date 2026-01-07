@@ -1,12 +1,13 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Instagram, Music2, ExternalLink } from "lucide-react";
 
 interface SocialMediaGalleryProps {
-  title: string;
-  subtitle: string;
-  followText: string;
+  title: ReactNode;
+  subtitle: ReactNode;
+  followText: ReactNode;
 }
 
 export function SocialMediaGallery({ title, subtitle, followText }: SocialMediaGalleryProps) {

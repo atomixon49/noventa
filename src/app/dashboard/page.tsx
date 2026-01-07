@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home,
@@ -51,6 +51,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/LanguageProvider";
+import { CopyText, useCopyString } from "@/components/CopyEditProvider";
 
 // --- Translations ---
 
@@ -59,23 +60,23 @@ const dashboardTranslations = {
     sidebar: {
       home: "Startseite",
       myProfile: "Mein Profil",
-      myOffers: "Meine Angebote",
-      jobOffers: "Stellenangebote",
-      createOffer: "Angebot erstellen",
-      candidates: "Kandidaten",
+      myOffers: "Kampagnen",
+      jobOffers: "Kampagnen",
+      createOffer: "Kampagne erstellen",
+      candidates: "Vertriebler – Headhunter-Modus",
       settings: "Einstellungen",
       logout: "Abmelden"
     },
     header: {
-      dashboard: "Dashboard",
-      dashboardDesc: "Übersicht Ihrer Aktivitäten",
+      dashboard: "Willkommen",
+      dashboardDesc: "Alles Wichtige auf einen Blick",
       jobOffers: "Stellenangebote",
       jobOffersDesc: "Verwalten Sie Ihre {count} veröffentlichten Angebote",
       createOffer: "Neues Angebot erstellen",
       createOfferDesc: "Konfigurieren Sie die Details Ihrer neuen Stelle",
       candidates: "Kandidatenverwaltung",
       candidatesDesc: "Überprüfen und verwalten Sie eingegangene Bewerbungen",
-      newOffer: "Neues Angebot"
+      newOffer: "Neue Kampagne"
     },
     stats: {
       totalOffers: "Gesamtangebote",
@@ -143,17 +144,17 @@ const dashboardTranslations = {
       publish: "Angebot veröffentlichen"
     },
     candidates: {
-      total: "Gesamt",
-      new: "Neu",
-      reviewing: "In Prüfung",
-      interviews: "Vorstellungsgespräche",
+      total: "Mitarbeiter",
+      new: "in Vorbereitung",
+      reviewing: "Start in Kürze…",
+      interviews: "abgeschlossen",
       filterByOffer: "Nach Angebot filtern",
       allOffers: "Alle",
       status: "Status",
       all: "Alle",
-      newStatus: "Neu",
-      reviewingStatus: "In Prüfung",
-      interviewStatus: "Vorstellungsgespräch",
+      newStatus: "in Vorbereitung",
+      reviewingStatus: "Start in Kürze…",
+      interviewStatus: "abgeschlossen",
       hired: "Eingestellt",
       rejected: "Abgelehnt",
       noResults: "Keine Kandidaten für diese Auswahl",
@@ -173,7 +174,7 @@ const dashboardTranslations = {
       active: "Aktiv",
       draft: "Entwurf",
       expired: "Abgelaufen"
-    }
+    },
   },
   en: {
     sidebar: {
@@ -636,6 +637,36 @@ export default function DashboardPage() {
   const { lang } = useLanguage();
   const tr = dashboardTranslations[lang as keyof typeof dashboardTranslations] || dashboardTranslations.de;
 
+  const companyName = "TechCorp GmbH";
+  const welcomePrefix = useCopyString(
+    "dashboard.header.welcomePrefix",
+    lang === "de" ? "Willkommen," : "Bienvenido,"
+  );
+  const suggestionsTitleShort = useCopyString(
+    "dashboard.header.suggestionsShort",
+    lang === "de" ? "Deine Vorschläge" : "Sugerencias"
+  );
+  const suggestionsTitleLong = useCopyString(
+    "dashboard.header.suggestionsTitle",
+    lang === "de" ? "Deine Vorschläge" : "Sugerencias para la versión final"
+  );
+  const dashboardDescEs = useCopyString(
+    "dashboard.header.dashboardDesc.es",
+    "Panel de control de tu empresa"
+  );
+  const profileDesc = useCopyString(
+    "dashboard.header.profileDesc",
+    lang === "de" ? "Verwalte dein Unternehmensprofil" : "Gestiona la información de tu empresa"
+  );
+  const listDesc = useCopyString(
+    "dashboard.header.listDesc",
+    lang === "de" ? `Verwalte deine ${jobs.length} Kampagnen` : `Gestiona tus ${jobs.length} ofertas publicadas`
+  );
+  const suggestionsDesc = useCopyString(
+    "dashboard.header.suggestionsDesc",
+    lang === "de" ? "Hilf uns, die Plattform mit deinen Ideen zu verbessern" : "Ayúdanos a mejorar la plataforma con tus ideas"
+  );
+
   // Load from localStorage on mount
   useEffect(() => {
     const savedJobs = localStorage.getItem("noventa_jobs");
@@ -703,42 +734,42 @@ export default function DashboardPage() {
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto custom-scrollbar">
           <SidebarItem
             icon={Home}
-            label={tr.sidebar.home}
+            label={<CopyText copyId="dashboard.sidebar.home" defaultText={tr.sidebar.home} as="span" />}
             active={currentView === "stats"}
             collapsed={!sidebarOpen}
             onClick={() => setCurrentView("stats")}
           />
           <SidebarItem
             icon={User}
-            label={tr.sidebar.myProfile}
+            label={<CopyText copyId="dashboard.sidebar.myProfile" defaultText={tr.sidebar.myProfile} as="span" />}
             active={currentView === "profile"}
             collapsed={!sidebarOpen}
             onClick={() => setCurrentView("profile" as View)}
           />
           <SidebarItem
             icon={Briefcase}
-            label={tr.sidebar.myOffers}
+            label={<CopyText copyId="dashboard.sidebar.myOffers" defaultText={tr.sidebar.myOffers} as="span" />}
             active={currentView === "list"}
             collapsed={!sidebarOpen}
             onClick={() => setCurrentView("list")}
           />
           <SidebarItem
             icon={PlusCircle}
-            label={tr.sidebar.createOffer}
+            label={<CopyText copyId="dashboard.sidebar.createOffer" defaultText={tr.sidebar.createOffer} as="span" />}
             active={currentView === "create"}
             collapsed={!sidebarOpen}
             onClick={() => setCurrentView("create")}
           />
           <SidebarItem
             icon={Users}
-            label={tr.sidebar.candidates}
+            label={<CopyText copyId="dashboard.sidebar.candidates" defaultText={tr.sidebar.candidates} as="span" />}
             active={currentView === "candidates"}
             collapsed={!sidebarOpen}
             onClick={() => setCurrentView("candidates")}
           />
           <SidebarItem
             icon={Settings}
-            label={tr.sidebar.settings}
+            label={<CopyText copyId="dashboard.sidebar.settings" defaultText={tr.sidebar.settings} as="span" />}
             collapsed={!sidebarOpen}
             onClick={() => {}}
           />
@@ -770,7 +801,9 @@ export default function DashboardPage() {
               className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-slate-600 text-slate-400 hover:text-white hover:border-slate-500 hover:bg-slate-800 transition-all text-sm font-medium"
             >
               <LogOut size={16} />
-              <span>{tr.sidebar.logout}</span>
+              <span>
+                <CopyText copyId="dashboard.sidebar.logout" defaultText={tr.sidebar.logout} as="span" />
+              </span>
             </button>
           )}
         </div>
@@ -798,20 +831,35 @@ export default function DashboardPage() {
             
             <div className="flex-1 min-w-0">
               <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white truncate">
-                {currentView === "stats" && "Bienvenido, TechCorp GmbH"}
+                {currentView === "stats" && (
+                  <>
+                    <CopyText copyId="dashboard.header.welcomePrefix" defaultText={welcomePrefix} as="span" />{" "}
+                    <span>{companyName}</span>
+                  </>
+                )}
                 {currentView === "profile" && tr.sidebar.myProfile}
                 {currentView === "list" && tr.sidebar.myOffers}
                 {currentView === "create" && tr.header.createOffer}
                 {currentView === "candidates" && tr.header.candidates}
-                {currentView === "suggestions" && "Sugerencias para la versión final"}
+                {currentView === "suggestions" && (
+                  <CopyText copyId="dashboard.header.suggestionsTitle" defaultText={suggestionsTitleLong} as="span" />
+                )}
               </h1>
               <p className="text-slate-400 text-xs sm:text-sm mt-1">
-                {currentView === "stats" && "Panel de control de tu empresa"}
-                {currentView === "profile" && "Gestiona la información de tu empresa"}
-                {currentView === "list" && `Gestiona tus ${jobs.length} ofertas publicadas`}
+                {currentView === "stats" && (
+                  lang === "de" ? tr.header.dashboardDesc : <CopyText copyId="dashboard.header.dashboardDesc.es" defaultText={dashboardDescEs} as="span" />
+                )}
+                {currentView === "profile" && (
+                  <CopyText copyId="dashboard.header.profileDesc" defaultText={profileDesc} as="span" />
+                )}
+                {currentView === "list" && (
+                  <CopyText copyId="dashboard.header.listDesc" defaultText={listDesc} as="span" />
+                )}
                 {currentView === "create" && tr.header.createOfferDesc}
                 {currentView === "candidates" && tr.header.candidatesDesc}
-                {currentView === "suggestions" && "Ayúdanos a mejorar la plataforma con tus ideas"}
+                {currentView === "suggestions" && (
+                  <CopyText copyId="dashboard.header.suggestionsDesc" defaultText={suggestionsDesc} as="span" />
+                )}
               </p>
             </div>
           </div>
@@ -826,7 +874,9 @@ export default function DashboardPage() {
             >
               <div className="flex items-center gap-2">
                 <Sparkles size={16} className="text-purple-400 animate-pulse" />
-                <span className="text-purple-400 font-medium text-sm hidden sm:inline">Sugerencias</span>
+                <span className="text-purple-400 font-medium text-sm hidden sm:inline">
+                  <CopyText copyId="dashboard.header.suggestionsShort" defaultText={suggestionsTitleShort} as="span" />
+                </span>
               </div>
             </button>
             <button
@@ -880,6 +930,64 @@ export default function DashboardPage() {
 // Suggestions View Component
 function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => void }) {
   const [submitted, setSubmitted] = useState(false);
+  const { lang } = useLanguage();
+
+  const feedbackThanksTitle = useCopyString(
+    "dashboard.suggestions.thanksTitle",
+    lang === "de" ? "Danke für dein Feedback!" : "¡Gracias por tu feedback!"
+  );
+  const feedbackThanksDesc = useCopyString(
+    "dashboard.suggestions.thanksDesc",
+    lang === "de" ? "Deine Vorschläge helfen uns, besser zu werden" : "Tus sugerencias nos ayudan a mejorar"
+  );
+  const shareIdeasTitle = useCopyString(
+    "dashboard.suggestions.shareIdeasTitle",
+    lang === "de" ? "Teile deine Ideen" : "Comparte tus ideas"
+  );
+  const shareIdeasDesc = useCopyString(
+    "dashboard.suggestions.shareIdeasDesc",
+    lang === "de" ? "Hilf uns, die beste Plattform zu bauen" : "Ayúdanos a construir la mejor plataforma"
+  );
+  const wishFeatureLabel = useCopyString(
+    "dashboard.suggestions.wishFeatureLabel",
+    lang === "de" ? "Welche Funktion wünschst du dir?" : "¿Qué funcionalidad te gustaría ver?"
+  );
+  const wishFeaturePlaceholder = useCopyString(
+    "dashboard.suggestions.wishFeaturePlaceholder",
+    lang === "de" ? "Beschreibe deine Idee..." : "Describe tu idea..."
+  );
+  const improveDashboardLabel = useCopyString(
+    "dashboard.suggestions.improveDashboardLabel",
+    lang === "de" ? "Was würdest du am aktuellen Dashboard verbessern?" : "¿Qué mejorarías del dashboard actual?"
+  );
+  const improveDashboardPlaceholder = useCopyString(
+    "dashboard.suggestions.improveDashboardPlaceholder",
+    lang === "de" ? "Deine Vorschläge..." : "Tus sugerencias..."
+  );
+  const priorityLabel = useCopyString(
+    "dashboard.suggestions.priorityLabel",
+    lang === "de" ? "Priorität" : "Prioridad"
+  );
+  const priorityLow = useCopyString(
+    "dashboard.suggestions.priority.low",
+    lang === "de" ? "Niedrig" : "Baja"
+  );
+  const priorityMedium = useCopyString(
+    "dashboard.suggestions.priority.medium",
+    lang === "de" ? "Mittel" : "Media"
+  );
+  const priorityHigh = useCopyString(
+    "dashboard.suggestions.priority.high",
+    lang === "de" ? "Hoch" : "Alta"
+  );
+  const cancelText = useCopyString(
+    "dashboard.suggestions.cancel",
+    lang === "de" ? "Abbrechen" : "Cancelar"
+  );
+  const submitText = useCopyString(
+    "dashboard.suggestions.submit",
+    lang === "de" ? "Vorschlag senden" : "Enviar Sugerencia"
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -900,8 +1008,12 @@ function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => v
           <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 size={40} className="text-white" />
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2">¡Gracias por tu feedback!</h3>
-          <p className="text-slate-400">Tus sugerencias nos ayudan a mejorar</p>
+          <h3 className="text-2xl font-bold text-white mb-2">
+            <CopyText copyId="dashboard.suggestions.thanksTitle" defaultText={feedbackThanksTitle} as="span" />
+          </h3>
+          <p className="text-slate-400">
+            <CopyText copyId="dashboard.suggestions.thanksDesc" defaultText={feedbackThanksDesc} as="span" />
+          </p>
         </div>
       </motion.div>
     );
@@ -921,43 +1033,47 @@ function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => v
             <Sparkles className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">Comparte tus ideas</h2>
-            <p className="text-slate-400 text-sm">Ayúdanos a construir la mejor plataforma</p>
+            <h2 className="text-xl font-bold text-white">
+              <CopyText copyId="dashboard.suggestions.shareIdeasTitle" defaultText={shareIdeasTitle} as="span" />
+            </h2>
+            <p className="text-slate-400 text-sm">
+              <CopyText copyId="dashboard.suggestions.shareIdeasDesc" defaultText={shareIdeasDesc} as="span" />
+            </p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              ¿Qué funcionalidad te gustaría ver?
+              <CopyText copyId="dashboard.suggestions.wishFeatureLabel" defaultText={wishFeatureLabel} as="span" />
             </label>
             <textarea
               className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all resize-none"
               rows={4}
-              placeholder="Describe tu idea..."
+              placeholder={wishFeaturePlaceholder}
               required
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              ¿Qué mejorarías del dashboard actual?
+              <CopyText copyId="dashboard.suggestions.improveDashboardLabel" defaultText={improveDashboardLabel} as="span" />
             </label>
             <textarea
               className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all resize-none"
               rows={3}
-              placeholder="Tus sugerencias..."
+              placeholder={improveDashboardPlaceholder}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Prioridad
+              <CopyText copyId="dashboard.suggestions.priorityLabel" defaultText={priorityLabel} as="span" />
             </label>
             <select className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all">
-              <option value="low">Baja</option>
-              <option value="medium">Media</option>
-              <option value="high">Alta</option>
+              <option value="low">{priorityLow}</option>
+              <option value="medium">{priorityMedium}</option>
+              <option value="high">{priorityHigh}</option>
             </select>
           </div>
 
@@ -967,13 +1083,13 @@ function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => v
               onClick={() => setCurrentView("stats")}
               className="flex-1 px-6 py-3 bg-slate-800 border border-slate-700 rounded-xl text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
             >
-              Cancelar
+              <CopyText copyId="dashboard.suggestions.cancel" defaultText={cancelText} as="span" />
             </button>
             <button
               type="submit"
               className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl text-white font-semibold hover:from-purple-400 hover:to-pink-400 transition-all shadow-lg shadow-purple-500/25"
             >
-              Enviar Sugerencia
+              <CopyText copyId="dashboard.suggestions.submit" defaultText={submitText} as="span" />
             </button>
           </div>
         </form>
@@ -982,14 +1098,109 @@ function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => v
   );
 }
 
-// Profile View Component
 function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
   const activeJobs = jobs.filter(j => j.status === 'active').length;
   const closedPositions = 12; // Simulado
   const acceptedCandidates = 8; // Simulado
-  const interviews = 15; // Simulado
-
+  const interviews = 5; // Simulado
   const [isEditing, setIsEditing] = useState(false);
+  const { lang } = useLanguage();
+
+  const profileSave = useCopyString("dashboard.profile.actions.save", lang === "de" ? "Speichern" : "Guardar");
+  const profileEdit = useCopyString("dashboard.profile.actions.edit", lang === "de" ? "Bearbeiten" : "Editar");
+  const profileBadge = useCopyString("dashboard.profile.badge", "Beta-Member");
+
+  const labelLocation = useCopyString("dashboard.profile.labels.location", lang === "de" ? "Firmensitz" : "Ubicación");
+  const labelIndustry = useCopyString("dashboard.profile.labels.industry", lang === "de" ? "Branche" : "Industria");
+  const labelFounded = useCopyString("dashboard.profile.labels.foundedYear", lang === "de" ? "Gründungsjahr" : "Año de fundación");
+  const labelEmployees = useCopyString("dashboard.profile.labels.employees", lang === "de" ? "Mitarbeiter" : "Número de empleados");
+  const labelHighlights = useCopyString("dashboard.profile.labels.highlights", lang === "de" ? "Highlights" : "Principales");
+  const highlightsPlaceholder = useCopyString(
+    "dashboard.profile.placeholders.highlights",
+    lang === "de" ? "z.B. Services, Produkte, Benefits, Kultur..." : "Ej: Servicios, productos, beneficios, cultura..."
+  );
+  const labelDescription = useCopyString(
+    "dashboard.profile.labels.description",
+    lang === "de" ? "Unternehmensbeschreibung" : "Descripción de la empresa"
+  );
+
+  const teamTitle = useCopyString("dashboard.profile.team.title", lang === "de" ? "Team" : "Equipo");
+  const teamMembersLabel = useCopyString("dashboard.profile.team.membersLabel", lang === "de" ? "Mitglieder" : "miembros");
+
+  const newMemberNameLabel = useCopyString("dashboard.profile.team.add.name.label", lang === "de" ? "Name" : "Nombre");
+  const newMemberNamePlaceholder = useCopyString(
+    "dashboard.profile.team.add.name.placeholder",
+    lang === "de" ? "z.B. Anna" : "Ej: Ana López"
+  );
+  const newMemberAgeLabel = useCopyString("dashboard.profile.team.add.age.label", lang === "de" ? "Alter" : "Edad");
+  const newMemberRoleLabel = useCopyString("dashboard.profile.team.add.role.label", lang === "de" ? "Rolle" : "Cargo");
+  const newMemberTenureLabel = useCopyString("dashboard.profile.team.add.tenure.label", lang === "de" ? "Dauer" : "Tiempo");
+  const newMemberTenurePlaceholder = useCopyString(
+    "dashboard.profile.team.add.tenure.placeholder",
+    lang === "de" ? "z.B. 2 Jahre" : "2 años"
+  );
+  const newMemberImageLabel = useCopyString("dashboard.profile.team.add.image.label", lang === "de" ? "Bild (URL)" : "Imagen (URL)");
+  const newMemberImagePlaceholder = useCopyString(
+    "dashboard.profile.team.add.image.placeholder",
+    lang === "de" ? "/t1.jpeg oder https://..." : "/t1.jpeg o https://..."
+  );
+  const addMemberBtn = useCopyString("dashboard.profile.team.add.button", lang === "de" ? "Mitglied hinzufügen" : "Agregar");
+
+  const statOffersLabel = useCopyString("dashboard.profile.stats.offers.label", lang === "de" ? "Kampagnen" : "Ofertas Publicadas");
+  const statOffersFoot = useCopyString("dashboard.profile.stats.offers.foot", lang === "de" ? "Aktiv" : "Activas ahora");
+  const statClosedLabel = useCopyString(
+    "dashboard.profile.stats.closed.label",
+    lang === "de" ? "Abgeschlossene Kampagnen" : "Vacantes Cerradas"
+  );
+  const statClosedFoot = useCopyString("dashboard.profile.stats.closed.foot", lang === "de" ? "Letzte 6 Monate" : "Últimos 6 meses");
+  const statAcceptedLabel = useCopyString(
+    "dashboard.profile.stats.accepted.label",
+    lang === "de" ? "Akzeptierte Kandidaten" : "Candidatos Aceptados"
+  );
+  const statAcceptedFoot = useCopyString("dashboard.profile.stats.accepted.foot", lang === "de" ? "Diesen Monat" : "Este mes");
+  const statInterviewsLabel = useCopyString("dashboard.profile.stats.interviews.label", lang === "de" ? "Interviews" : "Entrevistas");
+  const statInterviewsFoot = useCopyString("dashboard.profile.stats.interviews.foot", lang === "de" ? "Geplant" : "Programadas");
+
+  const performanceTitle = useCopyString("dashboard.profile.performance.title", lang === "de" ? "Performance" : "Rendimiento");
+  const performanceResponseRate = useCopyString(
+    "dashboard.profile.performance.responseRate",
+    lang === "de" ? "Antwortquote" : "Tasa de respuesta"
+  );
+  const performanceTimeToHire = useCopyString(
+    "dashboard.profile.performance.timeToHire",
+    lang === "de" ? "Ø Zeit bis Einstellung" : "Tiempo promedio de contratación"
+  );
+  const performanceSatisfaction = useCopyString(
+    "dashboard.profile.performance.satisfaction",
+    lang === "de" ? "Kandidat:innen-Zufriedenheit" : "Satisfacción de candidatos"
+  );
+
+  const lastActivityTitle = useCopyString("dashboard.profile.lastActivity.title", lang === "de" ? "Letzte Aktivität" : "Actividad Reciente");
+  const lastActivityItem1 = useCopyString(
+    "dashboard.profile.lastActivity.item1.title",
+    lang === "de" ? "Neuer Kandidat" : "Nueva aplicación recibida"
+  );
+  const lastActivityItem1Time = useCopyString(
+    "dashboard.profile.lastActivity.item1.time",
+    lang === "de" ? "Vor 2 Stunden" : "Hace 2 horas"
+  );
+  const lastActivityItem2 = useCopyString(
+    "dashboard.profile.lastActivity.item2.title",
+    lang === "de" ? "Kampagne erstellt" : "Oferta publicada exitosamente"
+  );
+  const lastActivityItem2Time = useCopyString(
+    "dashboard.profile.lastActivity.item2.time",
+    lang === "de" ? "Vor 5 Stunden" : "Hace 5 horas"
+  );
+  const lastActivityItem3 = useCopyString(
+    "dashboard.profile.lastActivity.item3.title",
+    lang === "de" ? "Interview geplant" : "Entrevista programada"
+  );
+  const lastActivityItem3Time = useCopyString(
+    "dashboard.profile.lastActivity.item3.time",
+    lang === "de" ? "Vor 1 Tag" : "Hace 1 día"
+  );
+
   const [profile, setProfile] = useState<{
     companyName: string;
     location: string;
@@ -1120,15 +1331,16 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
                   onClick={() => setIsEditing((v) => !v)}
                   className="px-4 py-2 rounded-xl bg-slate-900/40 border border-slate-700/50 text-slate-200 hover:text-white hover:bg-slate-900/60 transition-all text-sm font-medium"
                 >
-                  {isEditing ? "Guardar" : "Editar"}
+                  {isEditing ? (
+                    <CopyText copyId="dashboard.profile.actions.save" defaultText={profileSave} as="span" />
+                  ) : (
+                    <CopyText copyId="dashboard.profile.actions.edit" defaultText={profileEdit} as="span" />
+                  )}
                 </button>
               </div>
               <div className="flex flex-wrap gap-2">
                 <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-medium border border-cyan-500/20">
-                  Verificada
-                </span>
-                <span className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-medium border border-blue-500/20">
-                  Premium
+                  <CopyText copyId="dashboard.profile.badge" defaultText={profileBadge} as="span" />
                 </span>
               </div>
             </div>
@@ -1139,7 +1351,9 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
       <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-2xl border border-slate-700/50 p-6">
         <div className="grid md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Ubicación</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              <CopyText copyId="dashboard.profile.labels.location" defaultText={labelLocation} as="span" />
+            </label>
             <div className="relative">
               <MapPin size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
@@ -1152,7 +1366,9 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Industria</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              <CopyText copyId="dashboard.profile.labels.industry" defaultText={labelIndustry} as="span" />
+            </label>
             <div className="relative">
               <Building2 size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
@@ -1165,7 +1381,9 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Año de fundación</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              <CopyText copyId="dashboard.profile.labels.foundedYear" defaultText={labelFounded} as="span" />
+            </label>
             <div className="relative">
               <Calendar size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
@@ -1178,7 +1396,9 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Número de empleados</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              <CopyText copyId="dashboard.profile.labels.employees" defaultText={labelEmployees} as="span" />
+            </label>
             <div className="relative">
               <Users size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
@@ -1191,18 +1411,22 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-slate-300 mb-2">Principales</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              <CopyText copyId="dashboard.profile.labels.highlights" defaultText={labelHighlights} as="span" />
+            </label>
             <input
               value={profile.highlights}
               onChange={(e) => setProfile((p) => ({ ...p, highlights: e.target.value }))}
               disabled={!isEditing}
               className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all disabled:opacity-60"
-              placeholder="Ej: Servicios, productos, beneficios, cultura..."
+              placeholder={highlightsPlaceholder}
             />
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-slate-300 mb-2">Descripción de la empresa</label>
+            <label className="block text-sm font-medium text-slate-300 mb-2">
+              <CopyText copyId="dashboard.profile.labels.description" defaultText={labelDescription} as="span" />
+            </label>
             <textarea
               value={profile.description}
               onChange={(e) => setProfile((p) => ({ ...p, description: e.target.value }))}
@@ -1218,25 +1442,32 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
         <div className="flex items-center justify-between gap-4 mb-4">
           <h3 className="text-lg font-semibold text-white flex items-center gap-2">
             <ImageIcon className="w-5 h-5 text-cyan-400" />
-            Equipo
+            <CopyText copyId="dashboard.profile.team.title" defaultText={teamTitle} as="span" />
           </h3>
-          <div className="text-xs text-slate-400">{profile.teamMembers.length} miembros</div>
+          <div className="text-xs text-slate-400">
+            {profile.teamMembers.length}{" "}
+            <CopyText copyId="dashboard.profile.team.membersLabel" defaultText={teamMembersLabel} as="span" />
+          </div>
         </div>
 
         {isEditing && (
           <div className="rounded-xl border border-slate-700/50 bg-slate-900/30 p-4 mb-4">
             <div className="grid md:grid-cols-5 gap-3 items-end">
               <div className="md:col-span-2">
-                <label className="block text-xs font-medium text-slate-300 mb-1">Nombre</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <CopyText copyId="dashboard.profile.team.add.name.label" defaultText={newMemberNameLabel} as="span" />
+                </label>
                 <input
                   value={newMember.name}
                   onChange={(e) => setNewMember((m) => ({ ...m, name: e.target.value }))}
                   className="w-full px-3 py-2.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
-                  placeholder="Ej: Ana López"
+                  placeholder={newMemberNamePlaceholder}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Edad</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <CopyText copyId="dashboard.profile.team.add.age.label" defaultText={newMemberAgeLabel} as="span" />
+                </label>
                 <input
                   value={newMember.age}
                   onChange={(e) => setNewMember((m) => ({ ...m, age: e.target.value }))}
@@ -1245,7 +1476,9 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Cargo</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <CopyText copyId="dashboard.profile.team.add.role.label" defaultText={newMemberRoleLabel} as="span" />
+                </label>
                 <input
                   value={newMember.role}
                   onChange={(e) => setNewMember((m) => ({ ...m, role: e.target.value }))}
@@ -1254,12 +1487,14 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Tiempo</label>
+                <label className="block text-xs font-medium text-slate-300 mb-1">
+                  <CopyText copyId="dashboard.profile.team.add.tenure.label" defaultText={newMemberTenureLabel} as="span" />
+                </label>
                 <input
                   value={newMember.tenure}
                   onChange={(e) => setNewMember((m) => ({ ...m, tenure: e.target.value }))}
                   className="w-full px-3 py-2.5 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
-                  placeholder="2 años"
+                  placeholder={newMemberTenurePlaceholder}
                 />
               </div>
             </div>
@@ -1267,12 +1502,12 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-3">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
-                  <label className="text-xs font-medium text-slate-300">Imagen (URL)</label>
+                  <label className="text-xs font-medium text-slate-300">{lang === "de" ? "Bild (URL)" : "Imagen (URL)"}</label>
                   <input
                     value={newMember.image}
                     onChange={(e) => setNewMember((m) => ({ ...m, image: e.target.value }))}
                     className="w-[220px] px-3 py-2 rounded-xl bg-slate-900/50 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-500/50 transition-all"
-                    placeholder="/t1.jpeg o https://..."
+                    placeholder={lang === "de" ? "/t1.jpeg oder https://..." : "/t1.jpeg o https://..."}
                   />
                 </div>
                 <div className="h-10 w-10 rounded-xl overflow-hidden border border-slate-700/50 bg-slate-900/40">
@@ -1286,7 +1521,7 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-400 hover:to-blue-500 transition-all text-sm font-semibold"
               >
                 <PlusCircle size={16} />
-                Agregar
+                <CopyText copyId="dashboard.profile.team.add.button" defaultText={addMemberBtn} as="span" />
               </button>
             </div>
 
@@ -1319,7 +1554,9 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold text-white truncate">{m.name}</div>
                   <div className="text-sm text-slate-400 truncate">{m.role}</div>
-                  <div className="text-xs text-slate-500 mt-1">{m.age} años • {m.tenure} en la empresa</div>
+                  <div className="text-xs text-slate-500 mt-1">
+                    {lang === "de" ? `${m.age} Jahre • ${m.tenure} im Unternehmen` : `${m.age} años • ${m.tenure} en la empresa`}
+                  </div>
                 </div>
                 {isEditing && (
                   <button
@@ -1349,10 +1586,14 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
             <div className="p-2 bg-cyan-500/10 rounded-lg">
               <Briefcase className="w-5 h-5 text-cyan-400" />
             </div>
-            <span className="text-slate-400 text-sm">Ofertas Publicadas</span>
+            <span className="text-slate-400 text-sm">
+              <CopyText copyId="dashboard.profile.stats.offers.label" defaultText={statOffersLabel} as="span" />
+            </span>
           </div>
           <div className="text-3xl font-bold text-white">{activeJobs}</div>
-          <div className="text-xs text-slate-500 mt-1">Activas ahora</div>
+          <div className="text-xs text-slate-500 mt-1">
+            <CopyText copyId="dashboard.profile.stats.offers.foot" defaultText={statOffersFoot} as="span" />
+          </div>
         </motion.div>
 
         <motion.div
@@ -1365,10 +1606,14 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
             <div className="p-2 bg-green-500/10 rounded-lg">
               <CheckCircle2 className="w-5 h-5 text-green-400" />
             </div>
-            <span className="text-slate-400 text-sm">Vacantes Cerradas</span>
+            <span className="text-slate-400 text-sm">
+              <CopyText copyId="dashboard.profile.stats.closed.label" defaultText={statClosedLabel} as="span" />
+            </span>
           </div>
           <div className="text-3xl font-bold text-white">{closedPositions}</div>
-          <div className="text-xs text-slate-500 mt-1">Últimos 6 meses</div>
+          <div className="text-xs text-slate-500 mt-1">
+            <CopyText copyId="dashboard.profile.stats.closed.foot" defaultText={statClosedFoot} as="span" />
+          </div>
         </motion.div>
 
         <motion.div
@@ -1381,10 +1626,14 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
             <div className="p-2 bg-blue-500/10 rounded-lg">
               <Users className="w-5 h-5 text-blue-400" />
             </div>
-            <span className="text-slate-400 text-sm">Candidatos Aceptados</span>
+            <span className="text-slate-400 text-sm">
+              <CopyText copyId="dashboard.profile.stats.accepted.label" defaultText={statAcceptedLabel} as="span" />
+            </span>
           </div>
           <div className="text-3xl font-bold text-white">{acceptedCandidates}</div>
-          <div className="text-xs text-slate-500 mt-1">Este mes</div>
+          <div className="text-xs text-slate-500 mt-1">
+            <CopyText copyId="dashboard.profile.stats.accepted.foot" defaultText={statAcceptedFoot} as="span" />
+          </div>
         </motion.div>
 
         <motion.div
@@ -1397,10 +1646,14 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
             <div className="p-2 bg-purple-500/10 rounded-lg">
               <Calendar className="w-5 h-5 text-purple-400" />
             </div>
-            <span className="text-slate-400 text-sm">Entrevistas</span>
+            <span className="text-slate-400 text-sm">
+              <CopyText copyId="dashboard.profile.stats.interviews.label" defaultText={statInterviewsLabel} as="span" />
+            </span>
           </div>
           <div className="text-3xl font-bold text-white">{interviews}</div>
-          <div className="text-xs text-slate-500 mt-1">Programadas</div>
+          <div className="text-xs text-slate-500 mt-1">
+            <CopyText copyId="dashboard.profile.stats.interviews.foot" defaultText={statInterviewsFoot} as="span" />
+          </div>
         </motion.div>
       </div>
 
@@ -1409,19 +1662,25 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
         <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-cyan-400" />
-            Rendimiento
+            <CopyText copyId="dashboard.profile.performance.title" defaultText={performanceTitle} as="span" />
           </h3>
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-slate-400 text-sm">Tasa de respuesta</span>
+              <span className="text-slate-400 text-sm">
+                <CopyText copyId="dashboard.profile.performance.responseRate" defaultText={performanceResponseRate} as="span" />
+              </span>
               <span className="text-white font-semibold">87%</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-400 text-sm">Tiempo promedio de contratación</span>
+              <span className="text-slate-400 text-sm">
+                <CopyText copyId="dashboard.profile.performance.timeToHire" defaultText={performanceTimeToHire} as="span" />
+              </span>
               <span className="text-white font-semibold">18 días</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-400 text-sm">Satisfacción de candidatos</span>
+              <span className="text-slate-400 text-sm">
+                <CopyText copyId="dashboard.profile.performance.satisfaction" defaultText={performanceSatisfaction} as="span" />
+              </span>
               <span className="text-white font-semibold">4.8/5.0</span>
             </div>
           </div>
@@ -1430,28 +1689,40 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
         <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-xl border border-slate-700/50 p-6">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-blue-400" />
-            Actividad Reciente
+            <CopyText copyId="dashboard.profile.lastActivity.title" defaultText={lastActivityTitle} as="span" />
           </h3>
           <div className="space-y-3">
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 bg-cyan-400 rounded-full mt-2" />
               <div className="flex-1">
-                <p className="text-white text-sm">Nueva aplicación recibida</p>
-                <p className="text-slate-500 text-xs">Hace 2 horas</p>
+                <p className="text-white text-sm">
+                  <CopyText copyId="dashboard.profile.lastActivity.item1.title" defaultText={lastActivityItem1} as="span" />
+                </p>
+                <p className="text-slate-500 text-xs">
+                  <CopyText copyId="dashboard.profile.lastActivity.item1.time" defaultText={lastActivityItem1Time} as="span" />
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 bg-green-400 rounded-full mt-2" />
               <div className="flex-1">
-                <p className="text-white text-sm">Oferta publicada exitosamente</p>
-                <p className="text-slate-500 text-xs">Hace 5 horas</p>
+                <p className="text-white text-sm">
+                  <CopyText copyId="dashboard.profile.lastActivity.item2.title" defaultText={lastActivityItem2} as="span" />
+                </p>
+                <p className="text-slate-500 text-xs">
+                  <CopyText copyId="dashboard.profile.lastActivity.item2.time" defaultText={lastActivityItem2Time} as="span" />
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 bg-blue-400 rounded-full mt-2" />
               <div className="flex-1">
-                <p className="text-white text-sm">Entrevista programada</p>
-                <p className="text-slate-500 text-xs">Hace 1 día</p>
+                <p className="text-white text-sm">
+                  <CopyText copyId="dashboard.profile.lastActivity.item3.title" defaultText={lastActivityItem3} as="span" />
+                </p>
+                <p className="text-slate-500 text-xs">
+                  <CopyText copyId="dashboard.profile.lastActivity.item3.time" defaultText={lastActivityItem3Time} as="span" />
+                </p>
               </div>
             </div>
           </div>
@@ -1471,7 +1742,7 @@ function SidebarItem({
   onClick,
 }: {
   icon: LucideIcon;
-  label: string;
+  label: ReactNode;
   active?: boolean;
   collapsed?: boolean;
   onClick: () => void;
@@ -1523,6 +1794,86 @@ function StatsView({
   const topViewedJobs = [...jobs].sort((a, b) => b.views - a.views).slice(0, 3);
   // Get latest jobs
   const latestJobs = [...jobs].slice(0, 3);
+  const { lang } = useLanguage();
+
+  const progressBadge = useCopyString(
+    "dashboard.stats.progress.badge",
+    lang === "de" ? "in Vorbereitung" : "En progreso"
+  );
+  const progressLabel = useCopyString(
+    "dashboard.stats.progress.label",
+    lang === "de" ? "Kandidatenpool im Aufbau" : "Deadline del Proyecto"
+  );
+  const progressTitle = useCopyString(
+    "dashboard.stats.progress.title",
+    lang === "de" ? "Start in Kürze…" : "Cargando..."
+  );
+  const progressFooter = useCopyString(
+    "dashboard.stats.progress.footer",
+    lang === "de" ? "abgeschlossen" : "67% completado"
+  );
+  const comingSoonCampaigns = useCopyString(
+    "dashboard.stats.comingSoon.campaigns",
+    lang === "de" ? "Kampagnen" : "Ofertas Activas"
+  );
+  const comingSoonViews = useCopyString(
+    "dashboard.stats.comingSoon.views",
+    lang === "de" ? "Visualisierungen" : "Visualizaciones"
+  );
+  const comingSoonApplications = useCopyString(
+    "dashboard.stats.comingSoon.applications",
+    lang === "de" ? "Bewerbungen" : "Aplicaciones"
+  );
+  const vendorViewTitle = useCopyString(
+    "dashboard.stats.vendorView.title",
+    lang === "de" ? "Unternehmensprofil" : "Vista de Vendedores"
+  );
+  const companyShortDesc = useCopyString(
+    "dashboard.stats.vendorView.companyDesc",
+    "Empresa de tecnología líder en soluciones empresariales"
+  );
+  const companyBadgeText = useCopyString(
+    "dashboard.stats.vendorView.badge",
+    lang === "de" ? "Beta-Member" : "✓ Verificada"
+  );
+  const employeesLabel = useCopyString(
+    "dashboard.stats.vendorView.labels.employees",
+    lang === "de" ? "Mitarbeiter" : "Empleados"
+  );
+  const hqLabel = useCopyString(
+    "dashboard.stats.vendorView.labels.hq",
+    lang === "de" ? "Firmensitz" : "Ubicación"
+  );
+  const industryLabel = useCopyString(
+    "dashboard.stats.vendorView.labels.industry",
+    lang === "de" ? "Branche" : "Industria"
+  );
+  const foundedLabel = useCopyString(
+    "dashboard.stats.vendorView.labels.founded",
+    lang === "de" ? "Gründungsjahr" : "Fundada"
+  );
+  const viewProfileCta = useCopyString(
+    "dashboard.stats.vendorView.cta.viewProfile",
+    lang === "de" ? "Profil vollständig ansehen & bearbeiten" : "Ver perfil completo"
+  );
+
+  const nextStepsTitle = useCopyString("dashboard.stats.nextSteps.title", "Nächste Schritte");
+  const nextStepEditProfileTitle = useCopyString("dashboard.stats.nextSteps.editProfile.title", "Profil bearbeiten");
+  const nextStepEditProfileDesc = useCopyString(
+    "dashboard.stats.nextSteps.editProfile.desc",
+    "Firmensitz, Branche und Gründungsjahr prüfen."
+  );
+  const nextStepCreateCampaignTitle = useCopyString("dashboard.stats.nextSteps.createCampaign.title", "Kampagne erstellen");
+  const nextStepCreateCampaignDesc = useCopyString(
+    "dashboard.stats.nextSteps.createCampaign.desc",
+    "Erstelle deine erste Kampagne für den Launch."
+  );
+  const nextStepReadyTitle = useCopyString("dashboard.stats.nextSteps.ready.title", "Du bist bereit für den Launch");
+  const nextStepReadyDesc = useCopyString(
+    "dashboard.stats.nextSteps.ready.desc",
+    "Sobald der Kandidatenpool live geht, kannst du direkt starten."
+  );
+  const backToHomepage = useCopyString("dashboard.stats.backToHomepage", "Volver a la Homepage");
 
   return (
     <motion.div
@@ -1542,10 +1893,16 @@ function StatsView({
             <div className="p-3 rounded-2xl bg-white/5">
               <Clock className="w-6 h-6 text-cyan-400" />
             </div>
-            <span className="text-xs font-medium text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">En progreso</span>
+            <span className="text-xs font-medium text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded-full">
+              <CopyText copyId="dashboard.stats.progress.badge" defaultText={progressBadge} as="span" />
+            </span>
           </div>
-          <div className="text-sm text-slate-400 mb-1">Deadline del Proyecto</div>
-          <div className="text-2xl font-bold text-white mb-3">Cargando...</div>
+          <div className="text-sm text-slate-400 mb-1">
+            <CopyText copyId="dashboard.stats.progress.label" defaultText={progressLabel} as="span" />
+          </div>
+          <div className="text-2xl font-bold text-white mb-3">
+            <CopyText copyId="dashboard.stats.progress.title" defaultText={progressTitle} as="span" />
+          </div>
           <div className="w-full bg-slate-700/50 rounded-full h-2 mb-2">
             <motion.div 
               className="h-full bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full"
@@ -1554,13 +1911,15 @@ function StatsView({
               transition={{ duration: 1.5, ease: "easeOut" }}
             />
           </div>
-          <div className="text-xs text-slate-500">67% completado</div>
+          <div className="text-xs text-slate-500">
+            <CopyText copyId="dashboard.stats.progress.footer" defaultText={progressFooter} as="span" />
+          </div>
         </motion.div>
 
         {/* Coming Soon Cards */}
-        <StatCardComingSoon icon={Zap} label="Ofertas Activas" color="emerald" />
-        <StatCardComingSoon icon={Eye} label="Visualizaciones" color="violet" />
-        <StatCardComingSoon icon={Users} label="Aplicaciones" color="amber" />
+        <StatCardComingSoon icon={Zap} label={comingSoonCampaigns} color="emerald" />
+        <StatCardComingSoon icon={Eye} label={comingSoonViews} color="violet" />
+        <StatCardComingSoon icon={Users} label={comingSoonApplications} color="amber" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1568,7 +1927,7 @@ function StatsView({
         <div className="lg:col-span-2 flex flex-col">
           <h3 className="text-xl font-semibold flex items-center gap-2 mb-6">
             <Eye className="text-cyan-400" size={20} />
-            Vista de Vendedores
+            <CopyText copyId="dashboard.stats.vendorView.title" defaultText={vendorViewTitle} as="span" />
           </h3>
           <div className="bg-slate-800/40 rounded-3xl border border-slate-700/50 p-6 backdrop-blur-sm flex-1">
             <div className="flex items-start gap-6 mb-6">
@@ -1580,13 +1939,12 @@ function StatsView({
               {/* Company Info */}
               <div className="flex-1">
                 <h4 className="text-2xl font-bold text-white mb-2">TechCorp GmbH</h4>
-                <p className="text-slate-400 text-sm mb-3">Empresa de tecnología líder en soluciones empresariales</p>
+                <p className="text-slate-400 text-sm mb-3">
+                  <CopyText copyId="dashboard.stats.vendorView.companyDesc" defaultText={companyShortDesc} as="span" />
+                </p>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-medium border border-cyan-500/20">
-                    ✓ Verificada
-                  </span>
-                  <span className="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-xs font-medium border border-blue-500/20">
-                    Premium
+                    <CopyText copyId="dashboard.stats.vendorView.badge" defaultText={companyBadgeText} as="span" />
                   </span>
                 </div>
               </div>
@@ -1597,7 +1955,9 @@ function StatsView({
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
                 <div className="flex items-center gap-2 mb-2">
                   <Users className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs text-slate-400">Empleados</span>
+                  <span className="text-xs text-slate-400">
+                    <CopyText copyId="dashboard.stats.vendorView.labels.employees" defaultText={employeesLabel} as="span" />
+                  </span>
                 </div>
                 <div className="text-xl font-bold text-white">250-500</div>
               </div>
@@ -1605,7 +1965,9 @@ function StatsView({
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
                 <div className="flex items-center gap-2 mb-2">
                   <MapPin className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs text-slate-400">Ubicación</span>
+                  <span className="text-xs text-slate-400">
+                    <CopyText copyId="dashboard.stats.vendorView.labels.hq" defaultText={hqLabel} as="span" />
+                  </span>
                 </div>
                 <div className="text-xl font-bold text-white">Berlín, DE</div>
               </div>
@@ -1613,7 +1975,9 @@ function StatsView({
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
                 <div className="flex items-center gap-2 mb-2">
                   <Building2 className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs text-slate-400">Industria</span>
+                  <span className="text-xs text-slate-400">
+                    <CopyText copyId="dashboard.stats.vendorView.labels.industry" defaultText={industryLabel} as="span" />
+                  </span>
                 </div>
                 <div className="text-xl font-bold text-white">Tecnología</div>
               </div>
@@ -1621,7 +1985,9 @@ function StatsView({
               <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
                 <div className="flex items-center gap-2 mb-2">
                   <Calendar className="w-4 h-4 text-cyan-400" />
-                  <span className="text-xs text-slate-400">Fundada</span>
+                  <span className="text-xs text-slate-400">
+                    <CopyText copyId="dashboard.stats.vendorView.labels.founded" defaultText={foundedLabel} as="span" />
+                  </span>
                 </div>
                 <div className="text-xl font-bold text-white">2015</div>
               </div>
@@ -1633,7 +1999,7 @@ function StatsView({
               className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2"
             >
               <Eye size={18} />
-              Ver perfil completo
+              <CopyText copyId="dashboard.stats.vendorView.cta.viewProfile" defaultText={viewProfileCta} as="span" />
             </button>
           </div>
         </div>
@@ -1662,6 +2028,58 @@ function StatsView({
               </div>
             ))}
           </div>
+
+          {lang === "de" && (
+            <div className="mt-6 pt-6 border-t border-slate-700/50">
+              <h4 className="font-semibold text-base text-white mb-4">
+                <CopyText copyId="dashboard.stats.nextSteps.title" defaultText={nextStepsTitle} as="span" />
+              </h4>
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  onClick={() => setCurrentView("profile")}
+                  className="w-full text-left p-4 rounded-2xl bg-slate-900/50 border border-slate-700/50 hover:border-cyan-500/30 transition-all"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <div className="font-medium text-sm text-white">
+                        <CopyText copyId="dashboard.stats.nextSteps.editProfile.title" defaultText={nextStepEditProfileTitle} as="span" />
+                      </div>
+                      <div className="text-xs text-slate-400 mt-1">
+                        <CopyText copyId="dashboard.stats.nextSteps.editProfile.desc" defaultText={nextStepEditProfileDesc} as="span" />
+                      </div>
+                    </div>
+                    <ArrowRight size={16} className="text-slate-400" />
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCurrentView("create")}
+                  className="w-full text-left p-4 rounded-2xl bg-slate-900/50 border border-slate-700/50 hover:border-cyan-500/30 transition-all"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <div className="font-medium text-sm text-white">
+                        <CopyText copyId="dashboard.stats.nextSteps.createCampaign.title" defaultText={nextStepCreateCampaignTitle} as="span" />
+                      </div>
+                      <div className="text-xs text-slate-400 mt-1">
+                        <CopyText copyId="dashboard.stats.nextSteps.createCampaign.desc" defaultText={nextStepCreateCampaignDesc} as="span" />
+                      </div>
+                    </div>
+                    <ArrowRight size={16} className="text-slate-400" />
+                  </div>
+                </button>
+                <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-700/40">
+                  <div className="font-medium text-sm text-white">
+                    <CopyText copyId="dashboard.stats.nextSteps.ready.title" defaultText={nextStepReadyTitle} as="span" />
+                  </div>
+                  <div className="text-xs text-slate-400 mt-1">
+                    <CopyText copyId="dashboard.stats.nextSteps.ready.desc" defaultText={nextStepReadyDesc} as="span" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -1759,7 +2177,9 @@ function StatsView({
           className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-slate-800/50 to-slate-900/50 border border-slate-700/50 rounded-2xl hover:border-cyan-500/50 transition-all hover:shadow-lg hover:shadow-cyan-500/10"
         >
           <ArrowRight size={20} className="text-cyan-400 rotate-180 group-hover:-translate-x-1 transition-transform" />
-          <span className="text-white font-semibold">Volver a la Homepage</span>
+          <span className="text-white font-semibold">
+            <CopyText copyId="dashboard.stats.backToHomepage" defaultText={backToHomepage} as="span" />
+          </span>
         </Link>
       </div>
     </motion.div>
@@ -1796,6 +2216,7 @@ function StatCardComingSoon({ icon: Icon, label, color }: any) {
     violet: "from-violet-500/20 to-violet-600/5 border-violet-500/20 text-violet-400",
     amber: "from-amber-500/20 to-amber-600/5 border-amber-500/20 text-amber-400",
   };
+  const { lang } = useLanguage();
 
   return (
     <motion.div 
@@ -1822,9 +2243,9 @@ function StatCardComingSoon({ icon: Icon, label, color }: any) {
             }}
             className="text-lg font-bold text-white mb-1"
           >
-            Coming Soon
+            {lang === "de" ? "Demnächst" : "Coming Soon"}
           </motion.div>
-          <div className="text-xs text-slate-400">Próximamente</div>
+          <div className="text-xs text-slate-400">{lang === "de" ? "Demnächst" : "Próximamente"}</div>
         </motion.div>
       </div>
 
@@ -1880,6 +2301,72 @@ function QuickActionCard({ icon: Icon, title, desc, color, onClick }: any) {
 function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDelete: (id: string | number) => void, setCurrentView: (view: View) => void }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const { lang } = useLanguage();
+
+  const searchPlaceholder = useCopyString(
+    "dashboard.list.searchPlaceholder",
+    lang === "de" ? "Kampagnen suchen..." : "Buscar ofertas..."
+  );
+  const filterAll = useCopyString(
+    "dashboard.list.filter.all",
+    lang === "de" ? "Alle" : "Todos"
+  );
+  const filterActive = useCopyString(
+    "dashboard.list.filter.active",
+    lang === "de" ? "Aktiv" : "Activos"
+  );
+  const filterDraft = useCopyString(
+    "dashboard.list.filter.draft",
+    lang === "de" ? "Entwurf" : "Borradores"
+  );
+  const filterExpired = useCopyString(
+    "dashboard.list.filter.expired",
+    lang === "de" ? "Abgelaufen" : "Vencidos"
+  );
+  const emptyTitle = useCopyString(
+    "dashboard.list.empty.title",
+    lang === "de" ? "Keine Kampagnen gefunden" : "No se encontraron ofertas"
+  );
+  const emptyCta = useCopyString(
+    "dashboard.list.empty.createNew",
+    lang === "de" ? "Neue Kampagne erstellen" : "Crear una nueva oferta"
+  );
+  const statusActive = useCopyString(
+    "dashboard.list.status.active",
+    lang === "de" ? "Aktiv" : "Activo"
+  );
+  const statusDraft = useCopyString(
+    "dashboard.list.status.draft",
+    lang === "de" ? "Entwurf" : "Borrador"
+  );
+  const statusExpired = useCopyString(
+    "dashboard.list.status.expired",
+    lang === "de" ? "Abgelaufen" : "Vencido"
+  );
+  const salaryLabel = useCopyString(
+    "dashboard.list.labels.salary",
+    lang === "de" ? "Gehalt" : "Salario"
+  );
+  const candidatesLabel = useCopyString(
+    "dashboard.list.labels.candidates",
+    lang === "de" ? "Kandidaten" : "Candidatos"
+  );
+  const viewsLabel = useCopyString(
+    "dashboard.list.labels.views",
+    lang === "de" ? "Aufrufe" : "Vistas"
+  );
+  const publishedLabel = useCopyString(
+    "dashboard.list.labels.published",
+    lang === "de" ? "Veröffentlicht" : "Publicado"
+  );
+  const hintClickToSeeCandidates = useCopyString(
+    "dashboard.list.hint.clickToSeeCandidates",
+    lang === "de" ? "Klicken, um simulierte Kandidaten zu sehen" : "Click para ver candidatos simulados"
+  );
+  const viewCandidatesCta = useCopyString(
+    "dashboard.list.cta.viewCandidates",
+    lang === "de" ? "Kandidaten ansehen" : "Ver candidatos"
+  );
 
   const filtered = jobs.filter(j => {
     const matchesSearch = j.title.toLowerCase().includes(searchQuery.toLowerCase()) || j.company.toLowerCase().includes(searchQuery.toLowerCase());
@@ -1905,7 +2392,7 @@ function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDele
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Buscar ofertas..."
+              placeholder={searchPlaceholder}
               className="w-full pl-12 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all outline-none"
             />
           </div>
@@ -1920,7 +2407,18 @@ function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDele
                     : "bg-slate-700/30 text-slate-400 hover:bg-slate-700/50 hover:text-white"
                 }`}
               >
-                {status === 'all' ? 'Todos' : status === 'active' ? 'Activos' : status === 'draft' ? 'Borradores' : 'Vencidos'}
+                {status === "all" && (
+                  <CopyText copyId="dashboard.list.filter.all" defaultText={filterAll} as="span" />
+                )}
+                {status === "active" && (
+                  <CopyText copyId="dashboard.list.filter.active" defaultText={filterActive} as="span" />
+                )}
+                {status === "draft" && (
+                  <CopyText copyId="dashboard.list.filter.draft" defaultText={filterDraft} as="span" />
+                )}
+                {status === "expired" && (
+                  <CopyText copyId="dashboard.list.filter.expired" defaultText={filterExpired} as="span" />
+                )}
               </button>
             ))}
           </div>
@@ -1931,8 +2429,12 @@ function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDele
         {filtered.length === 0 ? (
           <div className="text-center py-20 text-slate-500">
             <Briefcase size={48} className="mx-auto mb-4 opacity-50" />
-            <p className="text-lg">No se encontraron ofertas</p>
-            <button onClick={() => setCurrentView("create")} className="mt-4 text-cyan-400 hover:underline">Crear una nueva oferta</button>
+            <p className="text-lg">
+              <CopyText copyId="dashboard.list.empty.title" defaultText={emptyTitle} as="span" />
+            </p>
+            <button onClick={() => setCurrentView("create")} className="mt-4 text-cyan-400 hover:underline">
+              <CopyText copyId="dashboard.list.empty.createNew" defaultText={emptyCta} as="span" />
+            </button>
           </div>
         ) : (
           filtered.map((job, idx) => (
@@ -1971,8 +2473,16 @@ function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDele
                         job.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
                         job.status === 'draft' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
                         'bg-red-500/10 text-red-400 border-red-500/20'
-                      }`}>
-                        {job.status === 'active' ? 'Activo' : job.status === 'draft' ? 'Borrador' : 'Vencido'}
+                      }`}> 
+                        {job.status === "active" && (
+                          <CopyText copyId="dashboard.list.status.active" defaultText={statusActive} as="span" />
+                        )}
+                        {job.status === "draft" && (
+                          <CopyText copyId="dashboard.list.status.draft" defaultText={statusDraft} as="span" />
+                        )}
+                        {job.status === "expired" && (
+                          <CopyText copyId="dashboard.list.status.expired" defaultText={statusExpired} as="span" />
+                        )}
                       </span>
                       <button
                         onClick={(e) => {
@@ -1995,27 +2505,37 @@ function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDele
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-4 border-t border-slate-700/30">
                     <div className="flex flex-col">
-                      <span className="text-xs text-slate-500 mb-1">Salario</span>
+                      <span className="text-xs text-slate-500 mb-1">
+                        <CopyText copyId="dashboard.list.labels.salary" defaultText={salaryLabel} as="span" />
+                      </span>
                       <span className="text-sm font-medium text-slate-300">{job.salary}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs text-slate-500 mb-1">Candidatos</span>
+                      <span className="text-xs text-slate-500 mb-1">
+                        <CopyText copyId="dashboard.list.labels.candidates" defaultText={candidatesLabel} as="span" />
+                      </span>
                       <span className="text-sm font-medium text-slate-300">{job.applications}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs text-slate-500 mb-1">Vistas</span>
+                      <span className="text-xs text-slate-500 mb-1">
+                        <CopyText copyId="dashboard.list.labels.views" defaultText={viewsLabel} as="span" />
+                      </span>
                       <span className="text-sm font-medium text-slate-300">{job.views}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs text-slate-500 mb-1">Publicado</span>
+                      <span className="text-xs text-slate-500 mb-1">
+                        <CopyText copyId="dashboard.list.labels.published" defaultText={publishedLabel} as="span" />
+                      </span>
                       <span className="text-sm font-medium text-slate-300">{job.createdAt}</span>
                     </div>
                   </div>
 
                   <div className="mt-5 flex items-center justify-between">
-                    <div className="text-xs text-slate-500">Click para ver candidatos simulados</div>
+                    <div className="text-xs text-slate-500">
+                      <CopyText copyId="dashboard.list.hint.clickToSeeCandidates" defaultText={hintClickToSeeCandidates} as="span" />
+                    </div>
                     <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-300 group-hover:bg-cyan-500/15">
-                      Ver candidatos
+                      <CopyText copyId="dashboard.list.cta.viewCandidates" defaultText={viewCandidatesCta} as="span" />
                       <ArrowRight size={14} />
                     </div>
                   </div>
@@ -2029,7 +2549,7 @@ function ListView({ jobs, onDelete, setCurrentView }: { jobs: JobOffer[], onDele
   );
 }
 
-function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (view: View) => void, onCreate: (job: JobOffer) => void, tr?: any }) {
+function CreateOfferView({ setCurrentView, onCreate, tr }: any) {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<any>({
     company: "",
@@ -2054,20 +2574,175 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
 
   const handleNext = () => setStep(step + 1);
   const handlePrev = () => setStep(step - 1);
+  const { lang } = useLanguage();
+
+  const stepLabel1 = useCopyString(
+    "dashboard.create.progress.step1",
+    lang === "de" ? "Grunddaten" : "Información Básica"
+  );
+  const stepLabel2 = useCopyString(
+    "dashboard.create.progress.step2",
+    lang === "de" ? "Details" : "Detalles"
+  );
+  const stepLabel3 = useCopyString(
+    "dashboard.create.progress.step3",
+    lang === "de" ? "Final" : "Configuración"
+  );
+
+  const step1Title = useCopyString(
+    "dashboard.create.step1.title",
+    lang === "de" ? "Hauptinformationen" : "Información Principal"
+  );
+  const companyLabel = useCopyString(
+    "dashboard.create.step1.company.label",
+    lang === "de" ? "Unternehmen" : "Empresa"
+  );
+  const companyPlaceholder = useCopyString(
+    "dashboard.create.step1.company.placeholder",
+    lang === "de" ? "Firmenname" : "Nombre de la empresa"
+  );
+  const campaignTitleLabel = useCopyString(
+    "dashboard.create.step1.campaignTitle.label",
+    lang === "de" ? "Kampagnen-Titel" : "Título del Puesto"
+  );
+  const campaignTitlePlaceholder = useCopyString(
+    "dashboard.create.step1.campaignTitle.placeholder",
+    lang === "de" ? "z.B. Senior Elektriker" : "Ej: Electricista Senior"
+  );
+  const cityLabel = useCopyString(
+    "dashboard.create.step1.city.label",
+    lang === "de" ? "Stadt" : "Ciudad"
+  );
+  const postalCodeLabel = useCopyString(
+    "dashboard.create.step1.postalCode.label",
+    lang === "de" ? "Postleitzahl" : "Código Postal"
+  );
+  const imageLabel = useCopyString(
+    "dashboard.create.step1.image.label",
+    lang === "de" ? "Kampagnenbild" : "Imagen de la oferta"
+  );
+  const uploadImageTitle = useCopyString(
+    "dashboard.create.step1.image.uploadTitle",
+    lang === "de" ? "Bild hochladen" : "Subir imagen"
+  );
+  const uploadImageHint = useCopyString(
+    "dashboard.create.step1.image.hint",
+    lang === "de" ? "Ziehen oder klicken zum Auswählen" : "Arrastra o haz clic para seleccionar"
+  );
+  const uploadImageTypes = useCopyString(
+    "dashboard.create.step1.image.types",
+    lang === "de" ? "PNG, JPG, WEBP bis 5 MB" : "PNG, JPG, WEBP hasta 5 MB"
+  );
+
+  const defaultNewCampaignTitle = useCopyString(
+    "dashboard.create.defaults.newCampaignTitle",
+    lang === "de" ? "Neue Kampagne" : "Nueva Oferta"
+  );
+  const defaultMyCompany = useCopyString(
+    "dashboard.create.defaults.myCompany",
+    lang === "de" ? "Mein Unternehmen" : "Mi Empresa"
+  );
+  const defaultLocation = useCopyString(
+    "dashboard.create.defaults.location",
+    lang === "de" ? "Firmensitz" : "Ubicación"
+  );
+  const defaultSalary = useCopyString(
+    "dashboard.create.defaults.salary",
+    lang === "de" ? "nach Vereinbarung" : "A convenir"
+  );
+
+  const step2Title = useCopyString(
+    "dashboard.create.step2.title",
+    lang === "de" ? "Details" : "Detalles del Puesto"
+  );
+  const descriptionLabel = useCopyString(
+    "dashboard.create.step2.description.label",
+    lang === "de" ? "Beschreibung" : "Descripción"
+  );
+  const descriptionPlaceholder = useCopyString(
+    "dashboard.create.step2.description.placeholder",
+    lang === "de" ? "Beschreibe die Aufgaben..." : "Describe las responsabilidades..."
+  );
+  const salaryLabel = useCopyString(
+    "dashboard.create.step2.salary.label",
+    lang === "de" ? "Gehalt" : "Salario"
+  );
+  const salaryPlaceholder = useCopyString(
+    "dashboard.create.step2.salary.placeholder",
+    lang === "de" ? "z.B. 30.000 - 40.000 €" : "Ej: 30.000 - 40.000 €"
+  );
+  const workHoursLabel = useCopyString(
+    "dashboard.create.step2.workHours.label",
+    lang === "de" ? "Arbeitszeit" : "Horario"
+  );
+  const workHoursPlaceholder = useCopyString(
+    "dashboard.create.step2.workHours.placeholder",
+    lang === "de" ? "z.B. Mo-Fr 9-18 Uhr" : "Ej: Lunes a Viernes 9-18h"
+  );
+
+  const step3Title = useCopyString(
+    "dashboard.create.step3.title",
+    lang === "de" ? "Endkonfiguration" : "Configuración Final"
+  );
+  const qualificationLabel = useCopyString(
+    "dashboard.create.step3.qualification.label",
+    lang === "de" ? "Erforderliche Qualifikation" : "Calificación Requerida"
+  );
+  const workMethodLabel = useCopyString(
+    "dashboard.create.step3.workMethod.label",
+    lang === "de" ? "Arbeitsweise" : "Método de Trabajo"
+  );
+  const deadlineLabel = useCopyString(
+    "dashboard.create.step3.deadline.label",
+    lang === "de" ? "Frist" : "Fecha límite"
+  );
+
+  const cancelText = useCopyString(
+    "dashboard.create.buttons.cancel",
+    lang === "de" ? "Abbrechen" : "Cancelar"
+  );
+  const backText = useCopyString(
+    "dashboard.create.buttons.back",
+    lang === "de" ? "Zurück" : "Atrás"
+  );
+  const nextText = useCopyString(
+    "dashboard.create.buttons.next",
+    lang === "de" ? "Weiter" : "Siguiente"
+  );
+  const publishText = useCopyString(
+    "dashboard.create.buttons.publish",
+    lang === "de" ? "Kampagne veröffentlichen" : "Publicar Oferta"
+  );
+
+  const getQualificationLabel = (value: string, fallback: string) => {
+    if (lang !== "de") return fallback;
+    if (value === "cambiador") return "Quereinsteiger";
+    if (value === "oficial") return "Fachkraft";
+    if (value === "maestro") return "Meister";
+    return fallback;
+  };
+
+  const getWorkMethodLabel = (value: string, fallback: string) => {
+    if (lang !== "de") return fallback;
+    if (value === "fulltime") return "Vollzeit";
+    if (value === "parttime") return "Teilzeit";
+    if (value === "independent") return "Selbstständig";
+    return fallback;
+  };
 
   const handleSubmit = () => {
     const newJob: JobOffer = {
       id: Date.now(),
-      title: formData.title || "Nueva Oferta",
-      company: formData.company || "Mi Empresa",
-      location: formData.city || "Ubicación",
+      title: formData.title || defaultNewCampaignTitle,
+      company: formData.company || defaultMyCompany,
+      location: formData.city || defaultLocation,
       postalCode: formData.postalCode,
       qualification: formData.qualification || "oficial",
       status: "active",
       validUntil: formData.validUntil || "2025-12-31",
       views: 0,
       applications: 0,
-      salary: formData.salary || "A convenir",
+      salary: formData.salary || defaultSalary,
       workMethod: formData.workMethod,
       description: formData.description,
       requirements: formData.requirements,
@@ -2083,9 +2758,15 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
       {/* Progress */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2 px-1">
-          <span className={`text-sm font-medium ${step >= 1 ? "text-cyan-400" : "text-slate-500"}`}>Información Básica</span>
-          <span className={`text-sm font-medium ${step >= 2 ? "text-cyan-400" : "text-slate-500"}`}>Detalles</span>
-          <span className={`text-sm font-medium ${step >= 3 ? "text-cyan-400" : "text-slate-500"}`}>Configuración</span>
+          <span className={`text-sm font-medium ${step >= 1 ? "text-cyan-400" : "text-slate-500"}`}>
+            <CopyText copyId="dashboard.create.progress.step1" defaultText={stepLabel1} as="span" />
+          </span>
+          <span className={`text-sm font-medium ${step >= 2 ? "text-cyan-400" : "text-slate-500"}`}>
+            <CopyText copyId="dashboard.create.progress.step2" defaultText={stepLabel2} as="span" />
+          </span>
+          <span className={`text-sm font-medium ${step >= 3 ? "text-cyan-400" : "text-slate-500"}`}>
+            <CopyText copyId="dashboard.create.progress.step3" defaultText={stepLabel3} as="span" />
+          </span>
         </div>
         <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
           <motion.div 
@@ -2106,10 +2787,14 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
       >
         {step === 1 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold mb-6">Información Principal</h2>
+            <h2 className="text-2xl font-bold mb-6">
+              <CopyText copyId="dashboard.create.step1.title" defaultText={step1Title} as="span" />
+            </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Empresa</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <CopyText copyId="dashboard.create.step1.company.label" defaultText={companyLabel} as="span" />
+                </label>
                 <div className="relative">
                   <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                   <input
@@ -2117,13 +2802,15 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                     name="company"
                     value={formData.company}
                     onChange={handleChange}
-                    placeholder="Nombre de la empresa"
+                    placeholder={companyPlaceholder}
                     className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all outline-none"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Título del Puesto</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <CopyText copyId="dashboard.create.step1.campaignTitle.label" defaultText={campaignTitleLabel} as="span" />
+                </label>
                 <div className="relative">
                   <BriefcaseIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                   <input
@@ -2131,14 +2818,16 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
-                    placeholder="Ej: Electricista Senior"
+                    placeholder={campaignTitlePlaceholder}
                     className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all outline-none"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Ciudad</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <CopyText copyId="dashboard.create.step1.city.label" defaultText={cityLabel} as="span" />
+                  </label>
                   <input
                     type="text"
                     name="city"
@@ -2148,7 +2837,9 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Código Postal</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <CopyText copyId="dashboard.create.step1.postalCode.label" defaultText={postalCodeLabel} as="span" />
+                  </label>
                   <input
                     type="text"
                     name="postalCode"
@@ -2161,14 +2852,22 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
 
               {/* Image Upload */}
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Imagen de la oferta</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <CopyText copyId="dashboard.create.step1.image.label" defaultText={imageLabel} as="span" />
+                </label>
                 <div className="border-2 border-dashed border-slate-600 rounded-2xl p-8 text-center hover:border-cyan-500/50 transition-all cursor-pointer group bg-slate-900/30">
                   <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-800 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors">
                     <ImageIcon className="text-slate-500 group-hover:text-cyan-400 transition-colors" size={32} />
                   </div>
-                  <p className="text-cyan-400 font-medium mb-1">Subir imagen</p>
-                  <p className="text-slate-500 text-sm">Arrastra o haz clic para seleccionar</p>
-                  <p className="text-slate-600 text-xs mt-2">PNG, JPG, WEBP hasta 5 MB</p>
+                  <p className="text-cyan-400 font-medium mb-1">
+                    <CopyText copyId="dashboard.create.step1.image.uploadTitle" defaultText={uploadImageTitle} as="span" />
+                  </p>
+                  <p className="text-slate-500 text-sm">
+                    <CopyText copyId="dashboard.create.step1.image.hint" defaultText={uploadImageHint} as="span" />
+                  </p>
+                  <p className="text-slate-600 text-xs mt-2">
+                    <CopyText copyId="dashboard.create.step1.image.types" defaultText={uploadImageTypes} as="span" />
+                  </p>
                 </div>
               </div>
             </div>
@@ -2177,22 +2876,28 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
 
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold mb-6">Detalles del Puesto</h2>
+            <h2 className="text-2xl font-bold mb-6">
+              <CopyText copyId="dashboard.create.step2.title" defaultText={step2Title} as="span" />
+            </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Descripción</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <CopyText copyId="dashboard.create.step2.description.label" defaultText={descriptionLabel} as="span" />
+                </label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
                   className="w-full px-4 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all outline-none resize-none"
-                  placeholder="Describe las responsabilidades..."
+                  placeholder={descriptionPlaceholder}
                 />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Salario</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <CopyText copyId="dashboard.create.step2.salary.label" defaultText={salaryLabel} as="span" />
+                  </label>
                   <div className="relative">
                     <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <input
@@ -2200,13 +2905,15 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                       name="salary"
                       value={formData.salary}
                       onChange={handleChange}
-                      placeholder="Ej: 30.000 - 40.000 €"
+                      placeholder={salaryPlaceholder}
                       className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all outline-none"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Horario</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <CopyText copyId="dashboard.create.step2.workHours.label" defaultText={workHoursLabel} as="span" />
+                  </label>
                   <div className="relative">
                     <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                     <input
@@ -2214,7 +2921,7 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                       name="workHours"
                       value={formData.workHours}
                       onChange={handleChange}
-                      placeholder="Ej: Lunes a Viernes 9-18h"
+                      placeholder={workHoursPlaceholder}
                       className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 border border-slate-600 rounded-xl focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all outline-none"
                     />
                   </div>
@@ -2226,10 +2933,14 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
 
         {step === 3 && (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold mb-6">Configuración Final</h2>
+            <h2 className="text-2xl font-bold mb-6">
+              <CopyText copyId="dashboard.create.step3.title" defaultText={step3Title} as="span" />
+            </h2>
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-3">Calificación Requerida</label>
+                <label className="block text-sm font-medium text-slate-300 mb-3">
+                  <CopyText copyId="dashboard.create.step3.qualification.label" defaultText={qualificationLabel} as="span" />
+                </label>
                 <div className="grid grid-cols-3 gap-3">
                   {qualificationOptions.map(opt => (
                     <button
@@ -2242,14 +2953,22 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                       }`}
                     >
                       <div className="text-2xl mb-1">{opt.icon}</div>
-                      <div className="text-sm font-medium">{opt.label}</div>
+                      <div className="text-sm font-medium">
+                        <CopyText
+                          copyId={`dashboard.create.step3.qualification.${opt.value}`}
+                          defaultText={getQualificationLabel(opt.value, opt.label)}
+                          as="span"
+                        />
+                      </div>
                     </button>
                   ))}
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-3">Método de Trabajo</label>
+                <label className="block text-sm font-medium text-slate-300 mb-3">
+                  <CopyText copyId="dashboard.create.step3.workMethod.label" defaultText={workMethodLabel} as="span" />
+                </label>
                 <div className="flex gap-3">
                   {workMethodOptions.map(opt => (
                     <button
@@ -2262,14 +2981,22 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
                       }`}
                     >
                       <opt.icon size={18} />
-                      <span className="text-sm font-medium">{opt.label}</span>
+                      <span className="text-sm font-medium">
+                        <CopyText
+                          copyId={`dashboard.create.step3.workMethod.${opt.value}`}
+                          defaultText={getWorkMethodLabel(opt.value, opt.label)}
+                          as="span"
+                        />
+                      </span>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Fecha límite</label>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <CopyText copyId="dashboard.create.step3.deadline.label" defaultText={deadlineLabel} as="span" />
+                </label>
                 <input
                   type="date"
                   name="validUntil"
@@ -2287,7 +3014,11 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
             onClick={step === 1 ? () => setCurrentView("list") : handlePrev}
             className="px-6 py-2.5 rounded-xl border border-slate-600 text-slate-300 hover:bg-slate-700/50 transition-all font-medium"
           >
-            {step === 1 ? "Cancelar" : "Atrás"}
+            {step === 1 ? (
+              <CopyText copyId="dashboard.create.buttons.cancel" defaultText={cancelText} as="span" />
+            ) : (
+              <CopyText copyId="dashboard.create.buttons.back" defaultText={backText} as="span" />
+            )}
           </button>
           
           <button
@@ -2295,9 +3026,13 @@ function CreateOfferView({ setCurrentView, onCreate, tr }: { setCurrentView: (vi
             className="px-8 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg shadow-cyan-500/25 flex items-center gap-2"
           >
             {step === 3 ? (
-              <>Publicar Oferta <CheckCircle2 size={18} /></>
+              <>
+                <CopyText copyId="dashboard.create.buttons.publish" defaultText={publishText} as="span" /> <CheckCircle2 size={18} />
+              </>
             ) : (
-              <>Siguiente <ArrowRight size={18} /></>
+              <>
+                <CopyText copyId="dashboard.create.buttons.next" defaultText={nextText} as="span" /> <ArrowRight size={18} />
+              </>
             )}
           </button>
         </div>
@@ -2310,6 +3045,51 @@ function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: J
   const [selectedJob, setSelectedJob] = useState<string | number>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [showUnlockModal, setShowUnlockModal] = useState(false);
+  const { lang } = useLanguage();
+
+  const comingSoonTitle = useCopyString(
+    "dashboard.candidates.overlay.title",
+    lang === "de" ? "Demnächst" : "Coming Soon"
+  );
+  const comingSoonSubtitle = useCopyString(
+    "dashboard.candidates.overlay.subtitle",
+    lang === "de" ? "Vertriebler – Headhunter-Modus" : "Gestión de Candidatos"
+  );
+  const comingSoonDesc = useCopyString(
+    "dashboard.candidates.overlay.desc",
+    lang === "de" ? "Demnächst" : "Esta funcionalidad estará disponible próximamente"
+  );
+
+  const unlockTitle = useCopyString(
+    "dashboard.candidates.unlock.title",
+    lang === "de" ? "Kandidatenpool im Aufbau" : "Desbloquear Candidatos"
+  );
+  const unlockDesc = useCopyString(
+    "dashboard.candidates.unlock.desc",
+    lang === "de"
+      ? "Start in Kürze…"
+      : "Activa tu suscripción Premium para ver los datos completos de los candidatos: foto, contacto, dirección y más."
+  );
+  const unlockPrimary = useCopyString(
+    "dashboard.candidates.unlock.primary",
+    lang === "de" ? "Demnächst" : "Activar Premium - 49€/mes"
+  );
+  const unlockLater = useCopyString(
+    "dashboard.candidates.unlock.later",
+    lang === "de" ? "Später" : "Quizás más tarde"
+  );
+
+  const formatAppliedDate = (value: string) => {
+    if (lang !== "de") return value;
+    return value
+      .replace(/^Hace\s+/i, "Vor ")
+      .replace(/\bhoras\b/i, "Std.")
+      .replace(/\bhora\b/i, "Std.")
+      .replace(/\bdías\b/i, "Tagen")
+      .replace(/\bdía\b/i, "Tag")
+      .replace(/\baños\b/i, "Jahren")
+      .replace(/\baño\b/i, "Jahr");
+  };
   
   useEffect(() => {
     const handleFilter = (event: Event) => {
@@ -2362,10 +3142,14 @@ function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: J
             }}
             className="text-5xl font-bold text-white mb-4"
           >
-            Coming Soon
+            <CopyText copyId="dashboard.candidates.overlay.title" defaultText={comingSoonTitle} as="span" />
           </motion.div>
-          <p className="text-xl text-slate-300 mb-2">Gestión de Candidatos</p>
-          <p className="text-slate-400">Esta funcionalidad estará disponible próximamente</p>
+          <p className="text-xl text-slate-300 mb-2">
+            <CopyText copyId="dashboard.candidates.overlay.subtitle" defaultText={comingSoonSubtitle} as="span" />
+          </p>
+          <p className="text-slate-400">
+            <CopyText copyId="dashboard.candidates.overlay.desc" defaultText={comingSoonDesc} as="span" />
+          </p>
         </motion.div>
       </div>
 
@@ -2392,19 +3176,21 @@ function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: J
                 <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
                   <Sparkles size={32} className="text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Desbloquear Candidatos</h3>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  <CopyText copyId="dashboard.candidates.unlock.title" defaultText={unlockTitle} as="span" />
+                </h3>
                 <p className="text-slate-400 mb-6">
-                  Activa tu suscripción Premium para ver los datos completos de los candidatos: foto, contacto, dirección y más.
+                  <CopyText copyId="dashboard.candidates.unlock.desc" defaultText={unlockDesc} as="span" />
                 </p>
                 <div className="space-y-3">
                   <button className="w-full py-3 px-6 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-cyan-500/25 transition-all">
-                    Activar Premium - 49€/mes
+                    <CopyText copyId="dashboard.candidates.unlock.primary" defaultText={unlockPrimary} as="span" />
                   </button>
                   <button 
                     onClick={() => setShowUnlockModal(false)}
                     className="w-full py-3 px-6 bg-slate-700/50 text-slate-300 font-medium rounded-xl hover:bg-slate-700 transition-all"
                   >
-                    Quizás más tarde
+                    <CopyText copyId="dashboard.candidates.unlock.later" defaultText={unlockLater} as="span" />
                   </button>
                 </div>
               </div>
@@ -2416,10 +3202,10 @@ function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: J
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Total", value: candidates.length, color: "cyan" },
-          { label: "Nuevos", value: candidates.filter(c => c.status === "new").length, color: "emerald" },
-          { label: "En revisión", value: candidates.filter(c => c.status === "reviewing").length, color: "amber" },
-          { label: "Entrevistas", value: candidates.filter(c => c.status === "interview").length, color: "violet" },
+          { label: lang === "de" ? "Mitarbeiter" : "Total", value: candidates.length, color: "cyan" },
+          { label: lang === "de" ? "in Vorbereitung" : "Nuevos", value: candidates.filter(c => c.status === "new").length, color: "emerald" },
+          { label: lang === "de" ? "Start in Kürze…" : "En revisión", value: candidates.filter(c => c.status === "reviewing").length, color: "amber" },
+          { label: lang === "de" ? "abgeschlossen" : "Entrevistas", value: candidates.filter(c => c.status === "interview").length, color: "violet" },
         ].map((stat, i) => (
           <motion.div 
             key={stat.label}
@@ -2567,16 +3353,16 @@ function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: J
                     {/* Stats Grid - Glass Effect */}
                     <div className="grid grid-cols-3 gap-2 mb-4">
                          <div className="bg-slate-800/40 rounded-xl p-2.5 border border-slate-700/30 flex flex-col items-center justify-center text-center group-hover:bg-slate-800/60 transition-colors">
-                            <span className="text-[9px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Exp</span>
+                            <span className="text-[9px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">{lang === "de" ? "Erf" : "Exp"}</span>
                             <span className="text-xs font-bold text-slate-200">{candidate.experience || "N/A"}</span>
                          </div>
                          <div className="bg-slate-800/40 rounded-xl p-2.5 border border-slate-700/30 flex flex-col items-center justify-center text-center group-hover:bg-slate-800/60 transition-colors">
-                            <span className="text-[9px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Edad</span>
+                            <span className="text-[9px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">{lang === "de" ? "Alter" : "Edad"}</span>
                             <span className="text-xs font-bold text-slate-200">{candidate.age || "?"}</span>
                          </div>
                          <div className="bg-slate-800/40 rounded-xl p-2.5 border border-slate-700/30 flex flex-col items-center justify-center text-center group-hover:bg-slate-800/60 transition-colors">
-                            <span className="text-[9px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Fecha</span>
-                            <span className="text-xs font-bold text-slate-200">{candidate.appliedDate.split(' ')[0]}</span>
+                            <span className="text-[9px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">{lang === "de" ? "Datum" : "Fecha"}</span>
+                            <span className="text-xs font-bold text-slate-200">{formatAppliedDate(candidate.appliedDate)}</span>
                          </div>
                     </div>
                 </div>
@@ -2604,7 +3390,7 @@ function CandidatesView({ candidates, jobs }: { candidates: Candidate[], jobs: J
                          >
                              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
                              <Unlock size={12} />
-                             <span className="relative z-10">Desbloquear</span>
+                             <span className="relative z-10">{lang === "de" ? "Freischalten" : "Desbloquear"}</span>
                          </button>
                     </div>
                 </div>

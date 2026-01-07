@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import { CopyEditProvider } from "@/components/CopyEditProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
@@ -33,8 +34,10 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <LanguageProvider>
-            <SiteHeader />
-            {children}
+            <CopyEditProvider>
+              <SiteHeader />
+              {children}
+            </CopyEditProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

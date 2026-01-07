@@ -41,6 +41,16 @@ export type Translations = {
     followUs: string;
     faqTitle: string;
     faqs: { q: string; a: string }[];
+    contactTitle: string;
+    contactForm: {
+      name: string;
+      email: string;
+      phone: string;
+      phoneOptional: string;
+      message: string;
+      privacy: string;
+      submit: string;
+    };
     finalCtaTitle: string;
     finalCtaSubtitle: string;
     finalCta: string;
@@ -171,38 +181,48 @@ export const translations: Record<Language, Translations> = {
       faqTitle: "FAQ",
       faqs: [
         {
-          q: "Warum ist die Gehaltsrange Pflicht?",
-          a: "Weil Gehalt einer der stärksten Filter ist. Ohne Range sinkt Vertrauen und die Matching-Qualität.",
+          q: "Warum startet Noventa zuerst mit Unternehmen in einer Beta-Phase?",
+          a: "In der Beta-Phase bereiten Unternehmen ihr Profil und ihre Stellenanzeigen vor, bevor Vertriebler gesammelt starten.",
         },
         {
-          q: "Ist Noventa kostenlos?",
-          a: "Ja, in der Beta ist Noventa kostenlos. Wir bauen zuerst eine saubere Basis mit hoher Vergleichbarkeit.",
+          q: "Gehe ich irgendeine Verpflichtung ein?",
+          a: "Nein. Die Beta-Phase dient ausschließlich der Vorbereitung. Es entstehen keine fixen Kosten und keine Abnahmeverpflichtungen.",
         },
         {
-          q: "Welche Rollen werden unterstützt?",
-          a: "Closer/Account Executive, Setter/SDR, D2D, Telesales, Team Lead/Head of Sales — fokussiert und filterbar.",
+          q: "Sind meine Unternehmensdaten öffentlich sichtbar?",
+          a: "Nein. Ihre Unternehmens- und Stellendaten sind nicht öffentlich einsehbar. Sie werden ausschließlich registrierten Vertrieblern angezeigt – und auch dort nur in dem Umfang, den Sie selbst festlegen.",
         },
         {
-          q: "Kann eine Firma mehrere Stellen posten?",
-          a: "Ja. Unternehmensprofil bleibt stabil, Stellenanzeigen sind variabel und können parallel laufen.",
+          q: "Warum sollte ich mein Profil jetzt schon anlegen, wenn die Vertriebler erst in Phase 2 kommen?",
+          a: "Alle Vertriebler werden gesammelt freigeschaltet – wer dann direkt vorbereitet ist, steht von Beginn an besser da. Zusätzlich können Sie die Plattform in der Beta-Phase ohne Fixpreise kennenlernen.",
         },
         {
-          q: "Wie lange dauert die Registrierung?",
-          a: "Weniger als 3 Minuten. Unternehmensprofil einmal ausfüllen, dann können Sie direkt Stellen veröffentlichen.",
+          q: "Was unterscheidet Noventa von klassischen Jobbörsen oder LinkedIn-Anzeigen?",
+          a: "Noventa ist gebaut von Vertrieblern für Vertriebler. Matching, Ratings und Suchlogik basieren auf realen Vertriebs-Pain-Points – nicht auf Algorithmen ohne Branchenverständnis oder Selbstdarstellung. Vertriebler lernen den ganzen Markt kennen – auch Produkte, an die normal niemand denkt.",
         },
         {
-          q: "Wann kommen Bewerbungen und Chats?",
-          a: "Diese Features sind als 'coming soon' markiert. Wir bauen die Plattform Schritt für Schritt auf und halten Sie transparent informiert.",
+          q: "Was passiert, wenn ich mich jetzt registriere, aber später nichts weiter unternehmen möchte?",
+          a: "Nichts. Keine Verpflichtung, kein Druck. Ihr Profil bleibt bestehen und Sie entscheiden jederzeit, ob und wann Sie aktiv werden.",
         },
         {
-          q: "Kann ich meine Stellenanzeigen bearbeiten?",
-          a: "Ja, Sie können Ihre Anzeigen jederzeit im Dashboard bearbeiten, pausieren oder löschen.",
+          q: "Muss ich meine Stellen oder Vergütung „schönreden“, um sichtbar zu sein?",
+          a: "Nein. Noventa ist auf Vergleichbarkeit und Ehrlichkeit ausgelegt. Unrealistische oder beschönigte Angaben führen nicht zu besseren Ergebnissen, sondern zu schlechterer Passung.",
         },
         {
-          q: "Warum ist ein öffentlicher Ansprechpartner wichtig?",
-          a: "Transparenz schafft Vertrauen. Ein echter Name und eine Position zeigen, dass Ihr Unternehmen seriös ist und reduzieren Fake-Job-Bedenken erheblich.",
+          q: "Kann ich Noventa auch nutzen, wenn ich nur sporadisch oder projektweise rekrutiere?",
+          a: "Ja. Noventa ist nicht auf Daueraktivität ausgelegt, sondern auf punktgenaue Nutzung. Sie werden nicht schlechter gestellt, wenn Sie zeitweise inaktiv sind.",
         },
       ],
+      contactTitle: "Kontaktformular",
+      contactForm: {
+        name: "Name",
+        email: "E-Mail-Adresse",
+        phone: "Telefonnummer",
+        phoneOptional: "optional",
+        message: "Anliegen / Nachricht",
+        privacy: "Ich stimme der Datenschutzerklärung zu",
+        submit: "Nachricht senden",
+      },
       finalCtaTitle: "Bereit, deine erste Kampagne auf Noventa zu starten?",
       finalCtaSubtitle: "Bereite dich und dein Unternehmen vor für den Launch – in der Beta kostenlos",
       finalCta: "Unternehmen registrieren",
@@ -332,38 +352,48 @@ export const translations: Record<Language, Translations> = {
       faqTitle: "Preguntas frecuentes",
       faqs: [
         {
-          q: "¿Por qué el rango salarial es obligatorio?",
-          a: "Porque es uno de los filtros más fuertes. Sin salario baja la confianza y la calidad del match.",
+          q: "¿Por qué Noventa comienza primero con empresas en una fase beta?",
+          a: "En la fase beta, las empresas preparan su perfil y sus anuncios de empleo antes de que los vendedores comiencen de forma colectiva.",
         },
         {
-          q: "¿Noventa es gratis?",
-          a: "Sí, en beta es gratis. Primero construimos una base limpia y totalmente filtrable.",
+          q: "¿Asumo algún compromiso?",
+          a: "No. La fase beta sirve exclusivamente para la preparación. No hay costes fijos ni obligaciones de compra.",
         },
         {
-          q: "¿Qué roles soporta?",
-          a: "Closer/Account Executive, Setter/SDR, D2D, Telesales y Team Lead/Head of Sales.",
+          q: "¿Son visibles públicamente los datos de mi empresa?",
+          a: "No. Los datos de su empresa y de sus puestos no son visibles públicamente. Solo se muestran a los vendedores registrados, y solo en la medida en que usted mismo lo determine.",
         },
         {
-          q: "¿Puedo publicar varias ofertas?",
-          a: "Sí. El perfil de empresa es estable; las ofertas son variables y pueden ser múltiples.",
+          q: "¿Por qué debería crear mi perfil ahora si los vendedores no llegan hasta la Fase 2?",
+          a: "Todos los vendedores se habilitarán de forma colectiva; quien ya esté preparado en ese momento estará en mejor posición desde el principio. Además, puede conocer la plataforma en la fase beta sin precios fijos.",
         },
         {
-          q: "¿Cuánto tarda el registro?",
-          a: "Menos de 3 minutos. Crea tu perfil de empresa una vez y luego publica ofertas directamente.",
+          q: "¿Qué diferencia a Noventa de las bolsas de trabajo clásicas o los anuncios de LinkedIn?",
+          a: "Noventa está construida por vendedores para vendedores. El matching, las valoraciones y la lógica de búsqueda se basan en puntos de dolor reales de las ventas, no en algoritmos sin conocimiento del sector o autopromoción. Los vendedores conocen todo el mercado, incluso productos en los que normalmente nadie piensa.",
         },
         {
-          q: "¿Cuándo llegan candidaturas y chats?",
-          a: "Estos módulos están marcados como 'próximamente'. Construimos la plataforma paso a paso con total transparencia.",
+          q: "¿Qué pasa si me registro ahora pero luego no quiero hacer nada más?",
+          a: "Nada. Sin compromiso, sin presión. Su perfil se mantiene y usted decide en cualquier momento si y cuándo activarse.",
         },
         {
-          q: "¿Puedo editar mis ofertas?",
-          a: "Sí, puedes editar, pausar o eliminar tus ofertas en cualquier momento desde el dashboard.",
+          q: "¿Tengo que 'maquillar' mis puestos o remuneración para ser visible?",
+          a: "No. Noventa está diseñado para la comparabilidad y la honestidad. Los datos poco realistas o maquillados no conducen a mejores resultados, sino a un peor ajuste.",
         },
         {
-          q: "¿Por qué es importante un contacto público?",
-          a: "La transparencia genera confianza. Un nombre real y cargo muestran que tu empresa es seria y reduce enormemente las dudas sobre ofertas falsas.",
+          q: "¿Puedo usar Noventa también si solo recluto de forma esporádica o por proyectos?",
+          a: "Sí. Noventa no está diseñado para una actividad constante, sino para un uso preciso. No se verá perjudicado si está inactivo temporalmente.",
         },
       ],
+      contactTitle: "Formulario de contacto",
+      contactForm: {
+        name: "Nombre",
+        email: "Correo electrónico",
+        phone: "Número de teléfono",
+        phoneOptional: "opcional",
+        message: "Asunto / Mensaje",
+        privacy: "Acepto la política de privacidad",
+        submit: "Enviar mensaje",
+      },
       finalCtaTitle: "¿Listo para lanzar tu primera campaña en Noventa?",
       finalCtaSubtitle: "Prepara tu empresa para el lanzamiento — en beta gratis",
       finalCta: "Registrar empresa",
@@ -493,38 +523,48 @@ export const translations: Record<Language, Translations> = {
       faqTitle: "FAQ",
       faqs: [
         {
-          q: "Why is salary range mandatory?",
-          a: "Salary is one of the strongest filters. Without it, trust and match quality drop.",
+          q: "Why is Noventa starting with companies in a beta phase first?",
+          a: "In the beta phase, companies prepare their profile and job postings before sellers join the platform collectively.",
         },
         {
-          q: "Is Noventa free?",
-          a: "Yes—during beta, it’s free. We’re building a clean, fully filterable foundation first.",
+          q: "Am I entering into any obligation?",
+          a: "No. The beta phase is purely for preparation. There are no fixed costs and no purchase obligations.",
         },
         {
-          q: "Which roles are supported?",
-          a: "Closer/Account Executive, Setter/SDR, D2D, Telesales, Team Lead/Head of Sales.",
+          q: "Is my company data publicly visible?",
+          a: "No. Your company and job data are not publicly viewable. They are only shown to registered sellers – and only to the extent that you define yourself.",
         },
         {
-          q: "Can a company post multiple roles?",
-          a: "Yes. Company profile is stable; job postings are variable and can run in parallel.",
+          q: "Why should I create my profile now if the sellers don't come until Phase 2?",
+          a: "All sellers will be activated collectively – whoever is prepared then will be in a better position from the start. Additionally, you can get to know the platform in the beta phase without fixed prices.",
         },
         {
-          q: "How long does registration take?",
-          a: "Less than 3 minutes. Fill out your company profile once, then post jobs directly.",
+          q: "What distinguishes Noventa from classic job boards or LinkedIn ads?",
+          a: "Noventa is built by sellers for sellers. Matching, ratings, and search logic are based on real sales pain points – not on algorithms without industry understanding or self-promotion. Sellers get to know the whole market – including products that normally nobody thinks of.",
         },
         {
-          q: "When are applications and chats coming?",
-          a: "These features are marked as 'coming soon'. We’re building the platform step by step with full transparency.",
+          q: "What happens if I register now but don't want to do anything further later?",
+          a: "Nothing. No obligation, no pressure. Your profile remains, and you decide at any time if and when to become active.",
         },
         {
-          q: "Can I edit my job postings?",
-          a: "Yes, you can edit, pause, or delete your postings anytime from the dashboard.",
+          q: "Do I have to 'sugarcoat' my jobs or compensation to be visible?",
+          a: "No. Noventa is designed for comparability and honesty. Unrealistic or sugarcoated information does not lead to better results, but to a worse fit.",
         },
         {
-          q: "Why is a public contact person important?",
-          a: "Transparency builds trust. A real name and position show your company is legitimate and significantly reduce fake job concerns.",
+          q: "Can I use Noventa even if I only recruit sporadically or on a project basis?",
+          a: "Yes. Noventa is not designed for continuous activity, but for precise use. You will not be at a disadvantage if you are inactive for periods of time.",
         },
       ],
+      contactTitle: "Contact Form",
+      contactForm: {
+        name: "Name",
+        email: "Email Address",
+        phone: "Phone Number",
+        phoneOptional: "optional",
+        message: "Subject / Message",
+        privacy: "I agree to the privacy policy",
+        submit: "Send Message",
+      },
       finalCtaTitle: "Ready to launch your first campaign on Noventa?",
       finalCtaSubtitle: "Get your company ready for the launch — free in beta",
       finalCta: "Register company",

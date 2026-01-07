@@ -1,226 +1,108 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Building2, 
   User, 
   Mail, 
-  Phone, 
-  Globe, 
   Lock, 
   Eye, 
   EyeOff,
   ArrowRight,
   CheckCircle,
-  Briefcase,
-  MapPin
+  Shield,
+  Loader2,
+  ChevronLeft,
+  Briefcase
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/components/LanguageProvider";
+import { CopyText, useCopyString } from "@/components/CopyEditProvider";
 import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+
+// Endpoints from environment variables
+const API_CREATE_COMPANY = process.env.NEXT_PUBLIC_API_CREATE_COMPANY || "https://loginnoventa.hjsolutions.site/public/create/company";
+const API_CREATE_USER = process.env.NEXT_PUBLIC_API_CREATE_USER || "https://loginnoventa.hjsolutions.site/public/create/user";
+
+type Role = "company" | "user";
 
 const registerTranslations = {
   de: {
-    steps: [
-      { title: "Unternehmen" },
-      { title: "Kontakt" },
-      { title: "Zugang" },
-    ],
-    leftPanel: {
-      title: "Treten Sie der modernsten Recruiting-Plattform bei",
-      subtitle: "Verbinden Sie sich mit den besten Vertriebstalenten. Veröffentlichen Sie Stellenangebote, verwalten Sie Kandidaten und bauen Sie Ihr ideales Team auf.",
-      features: [
-        "Stellenangebote in Minuten veröffentlichen",
-        "Intelligentes Matching mit Kandidaten",
-        "Professionelles und einfaches Dashboard",
-        "100% kostenlos während der Beta-Phase"
-      ]
+    title: "Firmenprofil erstelle",
+    subtitle: "Erzähl uns von deinem Unternehmen",
+    roles: {
+      company: "Unternehmen",
+      user: "Vertriebler"
     },
-    step1: {
-      title: "Unternehmensdaten",
-      subtitle: "Erzählen Sie uns von Ihrem Unternehmen",
-      companyName: "Firmenname *",
-      companyPlaceholder: "TechCorp GmbH",
-      website: "Webseite",
-      websitePlaceholder: "https://ihrefirma.de",
-      city: "Hauptstadt *",
-      cityPlaceholder: "Berlin"
+    form: {
+      firstName: "Vorname",
+      lastName: "Nachname",
+      username: "Benutzername",
+      email: "E-Mail",
+      password: "Passwort",
+      confirmPassword: "Passwort bestätigen",
+      submit: "Registrieren",
+      loading: "Wird verarbeitet...",
+      success: "Konto erfolgreich erstellt!",
+      error: "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     },
-    step2: {
-      title: "Kontaktinformationen",
-      subtitle: "Wer ist der Hauptansprechpartner?",
-      name: "Vollständiger Name *",
-      namePlaceholder: "Max Mustermann",
-      role: "Position *",
-      rolePlaceholder: "Wählen Sie Ihre Position",
-      roleOptions: {
-        ceo: "CEO / Gründer",
-        hr: "HR-Leiter",
-        sales: "Vertriebsleiter",
-        recruiting: "Recruiting Manager",
-        other: "Andere"
-      },
-      phone: "Telefon",
-      phonePlaceholder: "+49 123 456 7890"
-    },
-    step3: {
-      title: "Konto erstellen",
-      subtitle: "Richten Sie Ihre Zugangsdaten ein",
-      email: "Geschäftliche E-Mail *",
-      emailPlaceholder: "sie@firma.de",
-      password: "Passwort *",
-      passwordPlaceholder: "Mindestens 8 Zeichen",
-      confirmPassword: "Passwort bestätigen *",
-      confirmPlaceholder: "Passwort wiederholen",
-      terms: "Ich akzeptiere die",
-      termsLink: "Nutzungsbedingungen",
-      privacyLink: "Datenschutzrichtlinie",
-      and: "und die"
-    },
-    buttons: {
-      back: "Zurück",
-      continue: "Weiter",
-      createAccount: "Konto erstellen"
-    },
-    footer: {
-      hasAccount: "Haben Sie bereits ein Konto?",
-      login: "Anmelden"
+    passwordStrength: {
+      low: "Schwach",
+      medium: "Mittel",
+      high: "Stark"
     }
   },
   en: {
-    steps: [
-      { title: "Company" },
-      { title: "Contact" },
-      { title: "Access" },
-    ],
-    leftPanel: {
-      title: "Join the most modern recruiting platform",
-      subtitle: "Connect with the best sales talent. Post job offers, manage candidates, and build your ideal team.",
-      features: [
-        "Publish job offers in minutes",
-        "Intelligent matching with candidates",
-        "Professional and easy-to-use dashboard",
-        "100% free during beta phase"
-      ]
+    title: "Create a company profile",
+    subtitle: "Tell us about your company",
+    roles: {
+      company: "Company",
+      user: "Sales Pro"
     },
-    step1: {
-      title: "Company details",
-      subtitle: "Tell us about your company",
-      companyName: "Company name *",
-      companyPlaceholder: "TechCorp Inc.",
-      website: "Website",
-      websitePlaceholder: "https://yourcompany.com",
-      city: "Main city *",
-      cityPlaceholder: "Berlin"
+    form: {
+      firstName: "First Name",
+      lastName: "Last Name",
+      username: "Username",
+      email: "Email",
+      password: "Password",
+      confirmPassword: "Confirm Password",
+      submit: "Register",
+      loading: "Processing...",
+      success: "Account created successfully!",
+      error: "An error occurred. Please try again."
     },
-    step2: {
-      title: "Contact information",
-      subtitle: "Who is the main contact?",
-      name: "Full name *",
-      namePlaceholder: "John Smith",
-      role: "Position *",
-      rolePlaceholder: "Select your position",
-      roleOptions: {
-        ceo: "CEO / Founder",
-        hr: "HR Director",
-        sales: "Sales Director",
-        recruiting: "Recruiting Manager",
-        other: "Other"
-      },
-      phone: "Phone",
-      phonePlaceholder: "+49 123 456 7890"
-    },
-    step3: {
-      title: "Create your account",
-      subtitle: "Set up your access credentials",
-      email: "Business email *",
-      emailPlaceholder: "you@company.com",
-      password: "Password *",
-      passwordPlaceholder: "Minimum 8 characters",
-      confirmPassword: "Confirm password *",
-      confirmPlaceholder: "Repeat your password",
-      terms: "I accept the",
-      termsLink: "Terms of Service",
-      privacyLink: "Privacy Policy",
-      and: "and the"
-    },
-    buttons: {
-      back: "Back",
-      continue: "Continue",
-      createAccount: "Create account"
-    },
-    footer: {
-      hasAccount: "Already have an account?",
-      login: "Sign in"
+    passwordStrength: {
+      low: "Weak",
+      medium: "Medium",
+      high: "Strong"
     }
   },
   es: {
-    steps: [
-      { title: "Empresa" },
-      { title: "Contacto" },
-      { title: "Acceso" },
-    ],
-    leftPanel: {
-      title: "Únete a la plataforma de reclutamiento más moderna",
-      subtitle: "Conecta con los mejores talentos en ventas. Publica ofertas, gestiona candidatos y construye tu equipo ideal.",
-      features: [
-        "Publicación de ofertas en minutos",
-        "Matching inteligente con candidatos",
-        "Dashboard profesional y fácil de usar",
-        "100% gratis durante la fase beta"
-      ]
+    title: "Crear perfil de empresa",
+    subtitle: "Cuéntanos sobre tu empresa",
+    roles: {
+      company: "Empresa",
+      user: "Vendedor"
     },
-    step1: {
-      title: "Datos de tu empresa",
-      subtitle: "Cuéntanos sobre tu empresa",
-      companyName: "Nombre de la empresa *",
-      companyPlaceholder: "TechCorp GmbH",
-      website: "Página web",
-      websitePlaceholder: "https://tuempresa.com",
-      city: "Ciudad principal *",
-      cityPlaceholder: "Berlín"
+    form: {
+      firstName: "Nombre",
+      lastName: "Apellido",
+      username: "Usuario",
+      email: "Email",
+      password: "Contraseña",
+      confirmPassword: "Confirmar Contraseña",
+      submit: "Registrarse",
+      loading: "Procesando...",
+      success: "¡Cuenta creada con éxito!",
+      error: "Ocurrió un error. Por favor intenta de nuevo."
     },
-    step2: {
-      title: "Información de contacto",
-      subtitle: "¿Quién será el contacto principal?",
-      name: "Nombre completo *",
-      namePlaceholder: "Max Mustermann",
-      role: "Cargo *",
-      rolePlaceholder: "Selecciona tu cargo",
-      roleOptions: {
-        ceo: "CEO / Fundador",
-        hr: "Director de RRHH",
-        sales: "Director Comercial",
-        recruiting: "Recruiting Manager",
-        other: "Otro"
-      },
-      phone: "Teléfono",
-      phonePlaceholder: "+49 123 456 7890"
-    },
-    step3: {
-      title: "Crea tu cuenta",
-      subtitle: "Configura tus credenciales de acceso",
-      email: "Email corporativo *",
-      emailPlaceholder: "tu@empresa.com",
-      password: "Contraseña *",
-      passwordPlaceholder: "Mínimo 8 caracteres",
-      confirmPassword: "Confirmar contraseña *",
-      confirmPlaceholder: "Repite tu contraseña",
-      terms: "Acepto los",
-      termsLink: "Términos de Servicio",
-      privacyLink: "Política de Privacidad",
-      and: "y la"
-    },
-    buttons: {
-      back: "Atrás",
-      continue: "Continuar",
-      createAccount: "Crear cuenta"
-    },
-    footer: {
-      hasAccount: "¿Ya tienes cuenta?",
-      login: "Inicia sesión"
+    passwordStrength: {
+      low: "Baja",
+      medium: "Media",
+      high: "Alta"
     }
   }
 };
@@ -229,427 +111,420 @@ export default function RegisterPage() {
   const { lang } = useLanguage();
   const tr = registerTranslations[lang as keyof typeof registerTranslations] || registerTranslations.de;
   const router = useRouter();
-  
-  const [step, setStep] = useState(1);
+
+  const [role, setRole] = useState<Role>("company");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({
-    companyName: "",
-    website: "",
-    city: "",
-    contactName: "",
-    contactRole: "",
+    firstName: "",
+    lastName: "",
+    username: "",
     email: "",
-    phone: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const backToHomepageText = useCopyString(
+    "auth.register.backToHomepage",
+    lang === "de" ? "Zurück zur Homepage" : lang === "es" ? "Volver a la página principal" : "Back to homepage"
+  );
+  const firstNamePlaceholder = useCopyString("auth.register.form.firstName.placeholder", "...");
+  const lastNamePlaceholder = useCopyString("auth.register.form.lastName.placeholder", "...");
+  const usernamePlaceholder = useCopyString("auth.register.form.username.placeholder", "john_doe");
+  const emailPlaceholder = useCopyString("auth.register.form.email.placeholder", "john@example.com");
+  const passwordPlaceholder = useCopyString("auth.register.form.password.placeholder", "••••••••");
+
+  const [passwordStrength, setPasswordStrength] = useState(0);
+
+  useEffect(() => {
+    const pass = formData.password;
+    let score = 0;
+    if (pass.length > 6) score++;
+    if (pass.length > 10) score++;
+    if (/[A-Z]/.test(pass) && /[0-9]/.test(pass)) score++;
+    setPasswordStrength(score);
+  }, [formData.password]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
-  
-  const handleSubmit = () => {
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-    router.push("/dashboard");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus("idle");
+
+    const endpoint = role === "company" ? API_CREATE_COMPANY : API_CREATE_USER;
+    
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          password: formData.password,
+          username: formData.username
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const decoded: any = jwtDecode(data.access_token);
+        
+        // Almacenamiento seguro con nombres ofuscados para prevenir ataques
+        const sessionData = {
+          _nv_session: data.access_token, // access_token ofuscado
+          _nv_sync: data.refresh_token,   // refresh_token ofuscado
+          roles: decoded.realm_access?.roles || [], // roles se mantiene igual por petición
+          _nv_identity: {
+            id: decoded.sub,
+            u: decoded.preferred_username,
+            e: decoded.email,
+            n: decoded.name
+          }
+        };
+
+        localStorage.setItem("noventa_session_meta", JSON.stringify(sessionData));
+        
+        console.log("Session saved securely");
+        setStatus("success");
+        setTimeout(() => router.push("/login"), 2000);
+      } else {
+        setStatus("error");
+        setErrorMessage(tr.form.error);
+      }
+    } catch (error) {
+      setStatus("error");
+      setErrorMessage(tr.form.error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const steps = [
-    { num: 1, title: tr.steps[0].title, icon: Building2 },
-    { num: 2, title: tr.steps[1].title, icon: User },
-    { num: 3, title: tr.steps[2].title, icon: Lock },
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] flex flex-col lg:flex-row">
-      <div className="absolute top-4 left-4 z-20">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-black/30 px-4 py-2 text-sm font-medium text-white backdrop-blur hover:bg-black/40 transition-colors"
-        >
-          Regresar a Home
-        </Link>
+    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-4 overflow-hidden relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px]" />
       </div>
-      {/* Left Panel - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0891b2]/20 to-[#0f172a]" />
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80')" }}
-        />
-        
-        <div className="relative z-10 flex flex-col justify-center px-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="inline-block mb-12 p-3 bg-white/10 backdrop-blur-sm rounded-2xl border-2 border-white/20">
-              <Image 
-                src="/noventa-1.jpeg" 
-                alt="Noventa" 
-                width={200} 
-                height={60}
-                className=""
-              />
-            </div>
-            
-            <h1 className="text-4xl font-bold text-white mb-6">
-              {tr.leftPanel.title}
-            </h1>
-            <p className="text-xl text-slate-300 mb-12">
-              {tr.leftPanel.subtitle}
-            </p>
 
-            <div className="space-y-4">
-              {tr.leftPanel.features.map((feature, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                  className="flex items-center gap-3 text-slate-200"
-                >
-                  <div className="h-6 w-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                    <CheckCircle size={14} className="text-cyan-400" />
+      <Link
+        href="/"
+        className="absolute top-8 left-8 z-50 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+      >
+        <ChevronLeft size={20} />
+        <span className="text-sm font-medium">
+          <CopyText copyId="auth.register.backToHomepage" defaultText={backToHomepageText} as="span" />
+        </span>
+      </Link>
+
+      <motion.div 
+        layout
+        className="relative w-full max-w-5xl bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[700px]"
+      >
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={role}
+            initial={{ opacity: 0, x: role === "company" ? -20 : 20, filter: "blur(10px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            exit={{ opacity: 0, x: role === "company" ? 20 : -20, filter: "blur(10px)" }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            className={`flex flex-col md:flex-row w-full h-full ${role === "user" ? "md:flex-row-reverse" : ""}`}
+          >
+            {/* Form Side */}
+            <div className="flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+              <div className="mb-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h1 className="text-3xl font-bold text-white">
+                    <CopyText copyId="auth.register.title" defaultText={tr.title} as="span" />
+                  </h1>
+                  <div className="flex p-1 bg-slate-800 rounded-xl">
+                    <button
+                      onClick={() => setRole("company")}
+                      className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${role === "company" ? "bg-teal-500 text-white shadow-lg" : "text-slate-400 hover:text-slate-200"}`}
+                    >
+                      <CopyText copyId="auth.register.roles.company" defaultText={tr.roles.company} as="span" />
+                    </button>
+                    <button
+                      onClick={() => setRole("user")}
+                      className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${role === "user" ? "bg-cyan-500 text-white shadow-lg" : "text-slate-400 hover:text-slate-200"}`}
+                    >
+                      <CopyText copyId="auth.register.roles.user" defaultText={tr.roles.user} as="span" />
+                    </button>
                   </div>
-                  <span>{feature}</span>
+                </div>
+                <p className="text-slate-400">
+                  <CopyText copyId="auth.register.subtitle" defaultText={tr.subtitle} as="span" />
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-slate-300 ml-1">
+                      <CopyText copyId="auth.register.form.firstName.label" defaultText={tr.form.firstName} as="span" />
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                      <input
+                        required
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="w-full bg-slate-800/50 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 outline-none transition-all"
+                        placeholder={firstNamePlaceholder}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium text-slate-300 ml-1">
+                      <CopyText copyId="auth.register.form.lastName.label" defaultText={tr.form.lastName} as="span" />
+                    </label>
+                    <div className="relative">
+                      <input
+                        required
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="w-full bg-slate-800/50 border border-white/10 rounded-2xl px-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 outline-none transition-all"
+                        placeholder={lastNamePlaceholder}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-slate-300 ml-1">
+                    <CopyText copyId="auth.register.form.username.label" defaultText={tr.form.username} as="span" />
+                  </label>
+                  <div className="relative">
+                    <Shield className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                    <input
+                      required
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      className="w-full bg-slate-800/50 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 outline-none transition-all"
+                      placeholder={usernamePlaceholder}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-slate-300 ml-1">
+                    <CopyText copyId="auth.register.form.email.label" defaultText={tr.form.email} as="span" />
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                    <input
+                      required
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full bg-slate-800/50 border border-white/10 rounded-2xl pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:border-teal-500 outline-none transition-all"
+                      placeholder={emailPlaceholder}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-slate-300 ml-1">
+                    <CopyText copyId="auth.register.form.password.label" defaultText={tr.form.password} as="span" />
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                    <input
+                      required
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full bg-slate-800/50 border border-white/10 rounded-2xl pl-12 pr-12 py-3 text-white placeholder-slate-500 focus:border-teal-500 outline-none transition-all"
+                      placeholder={passwordPlaceholder}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                  {/* Password Strength */}
+                  <div className="flex gap-1.5 mt-2 px-1">
+                    {[1, 2, 3].map((level) => (
+                      <div 
+                        key={level}
+                        className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                          passwordStrength >= level 
+                            ? (passwordStrength === 1 ? "bg-red-500" : passwordStrength === 2 ? "bg-yellow-500" : "bg-teal-500")
+                            : "bg-slate-800"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider ml-1">
+                    {passwordStrength === 1 && (
+                      <CopyText copyId="auth.register.passwordStrength.low" defaultText={tr.passwordStrength.low} as="span" />
+                    )}
+                    {passwordStrength === 2 && (
+                      <CopyText copyId="auth.register.passwordStrength.medium" defaultText={tr.passwordStrength.medium} as="span" />
+                    )}
+                    {passwordStrength >= 3 && (
+                      <CopyText copyId="auth.register.passwordStrength.high" defaultText={tr.passwordStrength.high} as="span" />
+                    )}
+                  </p>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full h-14 rounded-2xl flex items-center justify-center gap-3 font-bold text-white transition-all shadow-xl ${
+                    role === "company" 
+                      ? "bg-gradient-to-r from-teal-500 to-teal-600 hover:scale-[1.02] shadow-teal-500/20" 
+                      : "bg-gradient-to-r from-cyan-500 to-cyan-600 hover:scale-[1.02] shadow-cyan-500/20"
+                  } disabled:opacity-50 disabled:scale-100`}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="animate-spin" size={20} />
+                      <CopyText copyId="auth.register.form.loading" defaultText={tr.form.loading} as="span" />
+                    </>
+                  ) : (
+                    <>
+                      <CopyText copyId="auth.register.form.submit" defaultText={tr.form.submit} as="span" />
+                      <ArrowRight size={20} />
+                    </>
+                  )}
+                </button>
+
+                {status === "success" && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }} 
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 rounded-xl bg-teal-500/20 border border-teal-500/30 text-teal-400 text-center font-medium"
+                  >
+                    <CopyText copyId="auth.register.form.success" defaultText={tr.form.success} as="span" />
+                  </motion.div>
+                )}
+                {status === "error" && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }} 
+                    animate={{ opacity: 1, y: 0 }}
+                    className="p-4 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 text-center font-medium"
+                  >
+                    <CopyText copyId="auth.register.form.error" defaultText={errorMessage} as="span" />
+                  </motion.div>
+                )}
+              </form>
+
+              <div className="mt-8 text-center">
+                <p className="text-slate-400">
+                  <CopyText
+                    copyId="auth.register.footer.alreadyHaveAccount"
+                    defaultText={lang === "de" ? "Du hast bereits ein Konto?" : lang === "es" ? "¿Ya tienes una cuenta?" : "Already have an account?"}
+                    as="span"
+                  />{" "}
+                  <Link href="/login" className="text-teal-400 font-bold hover:underline">
+                    <CopyText
+                      copyId="auth.register.footer.login"
+                      defaultText={lang === "de" ? "Anmelden" : lang === "es" ? "Iniciar sesión" : "Log in"}
+                      as="span"
+                    />
+                  </Link>
+                </p>
+              </div>
+            </div>
+
+            {/* Video/Image Side */}
+            <div className="flex-1 relative hidden md:block group">
+              <div className="absolute inset-0 z-10 bg-gradient-to-br from-slate-900/40 to-transparent" />
+              <div className={`absolute inset-0 h-full w-full transition-all duration-1000 ${role === "company" ? "clip-path-company" : "clip-path-user"}`}>
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                  poster={role === "company" ? "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800" : "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800"}
+                >
+                  <source 
+                    src={role === "company" ? "https://assets.mixkit.co/videos/preview/mixkit-business-partners-working-together-in-office-23131-large.mp4" : "https://assets.mixkit.co/videos/preview/mixkit-woman-working-at-her-desk-in-an-office-23126-large.mp4"} 
+                    type="video/mp4" 
+                  />
+                </video>
+                <div className={`absolute inset-0 ${role === "company" ? "bg-teal-500/20" : "bg-cyan-500/20"} mix-blend-overlay`} />
+              </div>
+
+              {/* Float Cards */}
+              <div className="absolute inset-0 z-20 p-12 flex flex-col justify-end pointer-events-none">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-3xl max-w-sm"
+                >
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="h-12 w-12 rounded-2xl bg-white/20 flex items-center justify-center">
+                      {role === "company" ? <Building2 className="text-white" /> : <Briefcase className="text-white" />}
+                    </div>
+                    <div>
+                      <h4 className="text-white font-bold">
+                        <CopyText
+                          copyId="auth.register.sideCard.title"
+                          defaultText={role === "company" ? "Enterprise Beta" : "Sales Pro Network"}
+                          as="span"
+                        />
+                      </h4>
+                      <div className="flex items-center gap-1">
+                        <CheckCircle size={12} className="text-teal-400" />
+                        <span className="text-teal-400 text-[10px] font-bold uppercase">
+                          <CopyText copyId="auth.register.sideCard.badge" defaultText="Verified Access" as="span" />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-slate-200 text-sm leading-relaxed">
+                    <CopyText
+                      copyId="auth.register.sideCard.body"
+                      defaultText={
+                        role === "company"
+                          ? "Find top sales talent and build your remote-first sales organization with structured matching."
+                          : "Access the best sales opportunities. Compare offers based on real data, not just promises."
+                      }
+                      as="span"
+                    />
+                  </p>
                 </motion.div>
-              ))}
+              </div>
+
+              {/* Shape Divider */}
+              <div className={`absolute top-0 bottom-0 w-px bg-white/20 z-30 transition-all duration-1000 ${role === "company" ? "left-0" : "right-0"}`} />
             </div>
           </motion.div>
-        </div>
+        </AnimatePresence>
+      </motion.div>
 
-        {/* 3D Floating Elements */}
-        <motion.div
-          animate={{ 
-            y: [0, -20, 0],
-            rotateZ: [0, 5, 0]
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-20 right-20 w-32 h-32 bg-gradient-to-br from-cyan-500/30 to-blue-600/30 rounded-2xl backdrop-blur-sm border border-white/10"
-        />
-        <motion.div
-          animate={{ 
-            y: [0, 20, 0],
-            rotateZ: [0, -5, 0]
-          }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute top-40 right-40 w-20 h-20 bg-gradient-to-br from-cyan-400/20 to-teal-500/20 rounded-xl backdrop-blur-sm border border-white/10"
-        />
-      </div>
-
-      {/* Right Panel - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 min-h-screen lg:min-h-0">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-[95%] sm:max-w-md"
-        >
-          {/* Mobile Logo */}
-          <div className="lg:hidden mb-6 sm:mb-8 text-center">
-            <div className="inline-block p-2.5 bg-white/10 backdrop-blur-sm rounded-xl border-2 border-white/20">
-              <Image 
-                src="/noventa-1.jpeg" 
-                alt="Noventa" 
-                width={150} 
-                height={45}
-                className="w-28 sm:w-36"
-              />
-            </div>
-          </div>
-
-          {/* Progress Steps */}
-          <div className="flex items-center justify-between mb-6 sm:mb-8">
-            {steps.map((s, i) => (
-              <div key={s.num} className="flex items-center">
-                <motion.div
-                  animate={{
-                    scale: step === s.num ? 1.1 : 1,
-                    backgroundColor: step >= s.num ? "#0891b2" : "#334155"
-                  }}
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
-                >
-                  {step > s.num ? <CheckCircle size={16} className="sm:w-5 sm:h-5" /> : <s.icon size={14} className="sm:w-[18px] sm:h-[18px]" />}
-                </motion.div>
-                {i < steps.length - 1 && (
-                  <div className={`w-8 sm:w-16 h-1 mx-1 sm:mx-2 rounded ${step > s.num ? 'bg-cyan-500' : 'bg-slate-600'}`} />
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div className="bg-slate-800/50 backdrop-blur-xl rounded-2xl border border-slate-700/50 p-5 sm:p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-white mb-2">
-              {step === 1 && tr.step1.title}
-              {step === 2 && tr.step2.title}
-              {step === 3 && tr.step3.title}
-            </h2>
-            <p className="text-slate-400 mb-6">
-              {step === 1 && tr.step1.subtitle}
-              {step === 2 && tr.step2.subtitle}
-              {step === 3 && tr.step3.subtitle}
-            </p>
-
-            <form
-              className="space-y-5"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (step < 3) {
-                  nextStep();
-                } else {
-                  handleSubmit();
-                }
-              }}
-            >
-              {/* Step 1: Company Info */}
-              {step === 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="space-y-5"
-                >
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step1.companyName}
-                    </label>
-                    <div className="relative">
-                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type="text"
-                        name="companyName"
-                        value={formData.companyName}
-                        onChange={handleChange}
-                        placeholder={tr.step1.companyPlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step1.website}
-                    </label>
-                    <div className="relative">
-                      <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type="url"
-                        name="website"
-                        value={formData.website}
-                        onChange={handleChange}
-                        placeholder={tr.step1.websitePlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step1.city}
-                    </label>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type="text"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        placeholder={tr.step1.cityPlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Step 2: Contact Info */}
-              {step === 2 && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="space-y-5"
-                >
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step2.name}
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type="text"
-                        name="contactName"
-                        value={formData.contactName}
-                        onChange={handleChange}
-                        placeholder={tr.step2.namePlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step2.role}
-                    </label>
-                    <div className="relative">
-                      <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <select
-                        name="contactRole"
-                        value={formData.contactRole}
-                        onChange={handleChange}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all appearance-none"
-                      >
-                        <option value="">{tr.step2.rolePlaceholder}</option>
-                        <option value="ceo">{tr.step2.roleOptions.ceo}</option>
-                        <option value="hr">{tr.step2.roleOptions.hr}</option>
-                        <option value="sales">{tr.step2.roleOptions.sales}</option>
-                        <option value="recruiting">{tr.step2.roleOptions.recruiting}</option>
-                        <option value="other">{tr.step2.roleOptions.other}</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step2.phone}
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder={tr.step2.phonePlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Step 3: Account */}
-              {step === 3 && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="space-y-5"
-                >
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step3.email}
-                    </label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder={tr.step3.emailPlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step3.password}
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder={tr.step3.passwordPlaceholder}
-                        className="w-full pl-11 pr-12 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-                      >
-                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
-                      {tr.step3.confirmPassword}
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        placeholder={tr.step3.confirmPlaceholder}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 pt-2">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-500"
-                    />
-                    <label htmlFor="terms" className="text-sm text-slate-400">
-                      {tr.step3.terms} <a href="#" className="text-cyan-400 hover:underline">{tr.step3.termsLink}</a> {tr.step3.and} <a href="#" className="text-cyan-400 hover:underline">{tr.step3.privacyLink}</a>
-                    </label>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Navigation Buttons */}
-              <div className="flex gap-4 pt-4">
-                {step > 1 && (
-                  <button
-                    type="button"
-                    onClick={prevStep}
-                    className="flex-1 py-3 px-6 border border-slate-600 rounded-xl text-white font-semibold hover:bg-slate-700/50 transition-all"
-                  >
-                    {tr.buttons.back}
-                  </button>
-                )}
-                
-                {step < 3 ? (
-                  <button
-                    type="button"
-                    onClick={nextStep}
-                    className="flex-1 py-3 px-6 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25"
-                  >
-                    {tr.buttons.continue} <ArrowRight size={18} />
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    className="flex-1 py-3 px-6 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl text-white font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25"
-                  >
-                    {tr.buttons.createAccount} <CheckCircle size={18} />
-                  </button>
-                )}
-              </div>
-            </form>
-
-            <p className="text-center text-slate-400 mt-6">
-              {tr.footer.hasAccount}{" "}
-              <Link href="/login" className="text-cyan-400 hover:underline font-medium">
-                {tr.footer.login}
-              </Link>
-            </p>
-          </div>
-        </motion.div>
-      </div>
+      <style jsx global>{`
+        .clip-path-company {
+          clip-path: ellipse(120% 100% at 100% 50%);
+        }
+        .clip-path-user {
+          clip-path: ellipse(120% 100% at 0% 50%);
+        }
+        @media (max-width: 768px) {
+          .clip-path-company, .clip-path-user {
+            clip-path: none;
+          }
+        }
+      `}</style>
     </div>
   );
 }

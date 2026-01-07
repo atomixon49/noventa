@@ -5,6 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { MotionDiv } from "@/components/Motion";
 import { Section } from "@/components/Section";
 import { useLanguage } from "@/components/LanguageProvider";
+import { CopyText } from "@/components/CopyEditProvider";
 import {
   Briefcase,
   Users,
@@ -114,38 +115,25 @@ export function LandingA() {
     image: string;
   }) {
     return (
-      <div
-        className="w-[420px] shrink-0 rounded-2xl border border-slate-200 bg-white shadow-sm transition-transform will-change-transform hover:-translate-y-0.5"
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedShowcaseImage({ src: image, title });
+        }}
+        className="group relative h-[320px] w-[240px] shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all will-change-transform hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/40"
+        aria-label={`open-${title}`}
       >
-        <div className="flex items-stretch justify-between gap-6 p-5">
-          <div className="min-w-0">
-            <div className="text-sm font-semibold text-slate-900 truncate">{title}</div>
-            <div className="mt-1 max-h-10 overflow-hidden text-sm leading-5 text-slate-600">{description}</div>
-            <div className="mt-4 flex items-center gap-2 text-xs text-slate-500">
-              <div className="h-6 w-6 rounded-full bg-slate-200" />
-              <div className="truncate">{author}</div>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedShowcaseImage({ src: image, title });
-            }}
-            className="h-[96px] w-[120px] overflow-hidden rounded-xl bg-slate-100"
-            aria-label={`open-${title}`}
-          >
-            <img
-              src={image}
-              alt={title}
-              className="h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-          </button>
-        </div>
-      </div>
+        <img
+          src={image}
+          alt={title}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+          loading="lazy"
+          decoding="async"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-black/0 to-black/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/0 transition-colors duration-300 group-hover:ring-white/20" />
+      </button>
     );
   }
 
@@ -201,14 +189,14 @@ export function LandingA() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-400"></span>
                 </span>
-                <span>{t.hero.eyebrow}</span>
+                <CopyText copyId="landingA.hero.eyebrow" defaultText={t.hero.eyebrow} as="span" />
               </div>
               
               <h1 className="mt-8 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl leading-[1.1]">
-                {t.hero.title}
+                <CopyText copyId="landingA.hero.title" defaultText={t.hero.title} as="span" />
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
-                {t.hero.subtitle}
+                <CopyText copyId="landingA.hero.subtitle" defaultText={t.hero.subtitle} as="span" />
               </p>
 
               <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -216,14 +204,14 @@ export function LandingA() {
                   href="/register"
                   className="group inline-flex h-14 items-center justify-center rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 px-8 text-sm font-semibold text-white transition-all hover:from-teal-400 hover:to-cyan-400 shadow-lg shadow-teal-500/25 hover:shadow-xl hover:shadow-teal-500/30 hover:scale-105"
                 >
-                  {t.hero.primaryCta}
+                  <CopyText copyId="landingA.hero.primaryCta" defaultText={t.hero.primaryCta} as="span" />
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
                   href="#how"
                   className="inline-flex h-14 items-center justify-center rounded-xl border border-slate-600 bg-slate-800/50 px-8 text-sm font-semibold text-white transition-colors hover:bg-slate-800 backdrop-blur-sm"
                 >
-                  {t.hero.secondaryCta}
+                  <CopyText copyId="landingA.hero.secondaryCta" defaultText={t.hero.secondaryCta} as="span" />
                 </a>
               </div>
               
@@ -238,7 +226,9 @@ export function LandingA() {
                     </div>
                   ))}
                 </div>
-                <div>{t.hero.trustNote}</div>
+                <div>
+                  <CopyText copyId="landingA.hero.trustNote" defaultText={t.hero.trustNote} as="span" />
+                </div>
               </div>
             </div>
 
@@ -304,11 +294,19 @@ export function LandingA() {
           </AnimatePresence>
 
           <div className="mb-12 text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t.sections.whyTitle}</h2>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+              <CopyText copyId="landingA.sections.whyTitle" defaultText={t.sections.whyTitle} as="span" />
+            </h2>
             <p className="mt-4 text-slate-600 dark:text-slate-300">
-              {lang === "de"
-                ? "Dann bist du nicht alleine. Noventa ist genau dafür gebaut."
-                : "Enterprise-grade recruitment tools for modern companies."}
+              <CopyText
+                copyId="landingA.sections.whySubtitle"
+                defaultText={
+                  lang === "de"
+                    ? "Dann bist du nicht alleine. Noventa ist genau dafür gebaut."
+                    : "Enterprise-grade recruitment tools for modern companies."
+                }
+                as="span"
+              />
             </p>
           </div>
 
@@ -380,7 +378,9 @@ export function LandingA() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-16 text-center">{t.sections.howTitle}</h2>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-16 text-center">
+              <CopyText copyId="landingA.sections.howTitle" defaultText={t.sections.howTitle} as="span" />
+            </h2>
           </MotionDiv>
 
           <div className="relative max-w-4xl mx-auto">
@@ -407,8 +407,12 @@ export function LandingA() {
                     <div className="lg:hidden mb-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/30 text-xs font-bold text-teal-600 dark:text-white">
                       0{idx + 1}
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 mb-3 group-hover:text-teal-600 transition-colors">{s.title}</h3>
-                    <p className="text-slate-600 dark:text-slate-700 leading-relaxed text-lg">{s.description}</p>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-slate-900 mb-3 group-hover:text-teal-600 transition-colors">
+                      <CopyText copyId={`landingA.howSteps.${idx}.title`} defaultText={s.title} as="span" />
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-700 leading-relaxed text-lg">
+                      <CopyText copyId={`landingA.howSteps.${idx}.description`} defaultText={s.description} as="span" />
+                    </p>
                   </div>
                 </MotionDiv>
               ))}
@@ -435,8 +439,12 @@ export function LandingA() {
               </div>
               
               <div className="p-8 md:p-16 relative z-10">
-                <h3 className="text-3xl font-bold text-white dark:text-slate-900 mb-4">{t.sections.structuredTitle}</h3>
-                <p className="text-lg text-slate-400 dark:text-slate-600 leading-relaxed max-w-2xl">{t.sections.structuredSubtitle}</p>
+                <h3 className="text-3xl font-bold text-white dark:text-slate-900 mb-4">
+                  <CopyText copyId="landingA.sections.structuredTitle" defaultText={t.sections.structuredTitle} as="span" />
+                </h3>
+                <p className="text-lg text-slate-400 dark:text-slate-600 leading-relaxed max-w-2xl">
+                  <CopyText copyId="landingA.sections.structuredSubtitle" defaultText={t.sections.structuredSubtitle} as="span" />
+                </p>
                 <div className="mt-10 flex flex-wrap gap-3">
                   {t.sections.structuredTags.map((tag, i) => (
                     <MotionDiv
@@ -447,7 +455,7 @@ export function LandingA() {
                       transition={{ delay: i * 0.05 }}
                       className="rounded-lg border border-slate-700 dark:border-slate-200 bg-slate-800/50 dark:bg-slate-50 px-4 py-2 text-sm text-teal-200 dark:text-teal-700 font-mono hover:bg-slate-800 dark:hover:bg-white hover:border-teal-500/50 transition-colors cursor-default"
                     >
-                      {tag}
+                      <CopyText copyId={`landingA.sections.structuredTags.${i}`} defaultText={tag} as="span" />
                     </MotionDiv>
                   ))}
                 </div>
@@ -471,7 +479,9 @@ export function LandingA() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-16 text-center">{t.sections.comingSoonTitle}</h2>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-16 text-center">
+              <CopyText copyId="landingA.sections.comingSoonTitle" defaultText={t.sections.comingSoonTitle} as="span" />
+            </h2>
           </MotionDiv>
           
           <div className="grid gap-6 sm:grid-cols-2">
@@ -485,10 +495,16 @@ export function LandingA() {
                 className="group rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 backdrop-blur-sm transition-all hover:border-teal-500/30 hover:shadow-xl hover:-translate-y-1"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-900 group-hover:text-teal-600 transition-colors">{c.title}</h3>
-                  <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:bg-teal-50 dark:group-hover:bg-teal-900/30 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">Soon</span>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-900 group-hover:text-teal-600 transition-colors">
+                    <CopyText copyId={`landingA.sections.comingSoonCards.${i}.title`} defaultText={c.title} as="span" />
+                  </h3>
+                  <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:bg-teal-50 dark:group-hover:bg-teal-900/30 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                    <CopyText copyId="landingA.sections.comingSoonBadge" defaultText="Soon" as="span" />
+                  </span>
                 </div>
-                <p className="text-slate-600 dark:text-slate-700 leading-relaxed">{c.description}</p>
+                <p className="text-slate-600 dark:text-slate-700 leading-relaxed">
+                  <CopyText copyId={`landingA.sections.comingSoonCards.${i}.description`} defaultText={c.description} as="span" />
+                </p>
               </MotionDiv>
             ))}
           </div>
@@ -528,9 +544,11 @@ export function LandingA() {
         <Section className="relative">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-              {lang === "de"
-                ? "Zahlen, die erklären, warum Noventa nötig ist"
-                : "Vertrauen von führenden Unternehmen"}
+              <CopyText
+                copyId="landingA.sections.statsTitle"
+                defaultText={lang === "de" ? "Zahlen, die erklären, warum Noventa nötig ist" : "Vertrauen von führenden Unternehmen"}
+                as="span"
+              />
             </h2>
           </div>
 
@@ -542,25 +560,33 @@ export function LandingA() {
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
                     160+
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Filterkombinationen</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.de.filterCombinations" defaultText="Filterkombinationen" as="span" />
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
                   <BarChart3 className="mx-auto h-9 w-9 text-slate-900" />
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">72%</div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Wechselbereitschaft von Vertriebskräften (09/2025)</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.de.switchReadiness" defaultText="Wechselbereitschaft von Vertriebskräften (09/2025)" as="span" />
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
                   <Users className="mx-auto h-9 w-9 text-slate-900" />
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">~890.000</div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Vertriebler in DE</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.de.salesPeopleDE" defaultText="Vertriebler in DE" as="span" />
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
                   <Building2 className="mx-auto h-9 w-9 text-slate-900" />
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">~4700€</div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Hiring-Kosten pro Einstellung in Deutschland</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.de.hiringCost" defaultText="Hiring-Kosten pro Einstellung in Deutschland" as="span" />
+                  </div>
                 </div>
               </>
             ) : (
@@ -570,7 +596,9 @@ export function LandingA() {
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
                     <CountUp value={500} suffix="+" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Unternehmen</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.es.companies" defaultText="Unternehmen" as="span" />
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
@@ -578,7 +606,9 @@ export function LandingA() {
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
                     <CountUp value={10000} suffix="+" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Stellenangebote</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.es.jobOffers" defaultText="Stellenangebote" as="span" />
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
@@ -586,7 +616,9 @@ export function LandingA() {
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
                     <CountUp value={5000} suffix="+" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Erfolgreiche Einstellungen</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.es.successfulHires" defaultText="Erfolgreiche Einstellungen" as="span" />
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 p-8 text-center shadow-sm">
@@ -594,7 +626,9 @@ export function LandingA() {
                   <div className="mt-5 text-4xl font-extrabold tracking-tight text-slate-900">
                     <CountUp value={98} suffix="%" />
                   </div>
-                  <div className="mt-2 text-sm font-medium text-slate-600">Zufriedenheit</div>
+                  <div className="mt-2 text-sm font-medium text-slate-600">
+                    <CopyText copyId="landingA.stats.es.satisfaction" defaultText="Zufriedenheit" as="span" />
+                  </div>
                 </div>
               </>
             )}
@@ -617,12 +651,14 @@ export function LandingA() {
               aria-label="about"
             >
               <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 hover:underline underline-offset-4">
-                {t.sections.aboutTitle}
+                <CopyText copyId="landingA.sections.aboutTitle" defaultText={t.sections.aboutTitle} as="span" />
               </h2>
             </Link>
-            <p className="text-xl text-teal-600 dark:text-teal-400 mb-8">{t.sections.aboutSubtitle}</p>
+            <p className="text-xl text-teal-600 dark:text-teal-400 mb-8">
+              <CopyText copyId="landingA.sections.aboutSubtitle" defaultText={t.sections.aboutSubtitle} as="span" />
+            </p>
             <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-12">
-              {t.sections.aboutText}
+              <CopyText copyId="landingA.sections.aboutText" defaultText={t.sections.aboutText} as="span" />
             </p>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img 
@@ -638,9 +674,9 @@ export function LandingA() {
 
       {/* Social Media Gallery */}
       <SocialMediaGallery 
-        title={t.sections.socialTitle}
-        subtitle={t.sections.socialSubtitle}
-        followText={t.sections.followUs}
+        title={<CopyText copyId="landingA.sections.socialTitle" defaultText={t.sections.socialTitle} as="span" />}
+        subtitle={<CopyText copyId="landingA.sections.socialSubtitle" defaultText={t.sections.socialSubtitle} as="span" />}
+        followText={<CopyText copyId="landingA.sections.followUs" defaultText={t.sections.followUs} as="span" />}
       />
 
       <div className="relative overflow-hidden bg-slate-50 dark:bg-slate-900">
@@ -668,47 +704,158 @@ export function LandingA() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-12 text-center">{t.sections.faqTitle}</h2>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-12 text-center">
+              <CopyText copyId="landingA.sections.faqTitle" defaultText={t.sections.faqTitle} as="span" />
+            </h2>
           </MotionDiv>
 
-          <div className="grid gap-4 lg:grid-cols-2 max-w-5xl mx-auto">
-            {t.sections.faqs.map((f, i) => (
-              <MotionDiv
-                key={f.q}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 backdrop-blur-sm hover:border-teal-500/20 hover:shadow-lg transition-all"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq((curr) => (curr === i ? null : i))}
-                  className="w-full p-6 flex items-start justify-between gap-4 text-left"
+          <div className="grid gap-4 lg:grid-cols-2 items-start max-w-5xl mx-auto">
+            {t.sections.faqs.map((f, i) => {
+              const isOpen = openFaq === i;
+              return (
+                <MotionDiv
+                  key={f.q}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.06 }}
+                  className="self-start h-fit rounded-2xl border border-slate-200 dark:border-slate-200 bg-white/90 dark:bg-white/95 backdrop-blur-sm hover:border-teal-500/20 hover:shadow-lg transition-all"
                 >
-                  <div className="text-lg font-bold text-slate-900 dark:text-slate-900">{f.q}</div>
-                  <ChevronDown
-                    className={`mt-1 h-5 w-5 shrink-0 text-slate-500 dark:text-slate-600 transition-transform ${openFaq === i ? "rotate-180" : "rotate-0"}`}
-                  />
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? null : i)}
+                    className="w-full p-6 flex items-start justify-between gap-4 text-left"
+                  >
+                    <div className="text-lg font-bold text-slate-900 dark:text-slate-900">
+                      <CopyText copyId={`landingA.sections.faqs.${i}.q`} defaultText={f.q} as="span" />
+                    </div>
+                    <ChevronDown
+                      className={`mt-1 h-5 w-5 shrink-0 text-slate-500 dark:text-slate-600 transition-transform ${isOpen ? "rotate-180" : "rotate-0"}`}
+                    />
+                  </button>
 
-                <AnimatePresence initial={false}>
-                  {openFaq === i ? (
-                    <MotionDiv
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.22, ease: "easeOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6 text-slate-600 dark:text-slate-700 leading-relaxed">{f.a}</div>
-                    </MotionDiv>
-                  ) : null}
-                </AnimatePresence>
-              </MotionDiv>
-            ))}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <MotionDiv
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.22, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-6 text-slate-600 dark:text-slate-700 leading-relaxed">
+                          <CopyText copyId={`landingA.sections.faqs.${i}.a`} defaultText={f.a} as="span" />
+                        </div>
+                      </MotionDiv>
+                    )}
+                  </AnimatePresence>
+                </MotionDiv>
+              );
+            })}
           </div>
+        </Section>
+      </div>
+
+      {/* Contact Form Section */}
+      <div className="bg-white dark:bg-slate-950 py-24 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-20 -left-24 h-72 w-72 rounded-full bg-teal-500/10 blur-3xl" />
+          <div className="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+        </div>
+        <Section id="contact" className="relative">
+          <MotionDiv
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-5xl mx-auto"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                <CopyText copyId="landingA.sections.contactTitle" defaultText={t.sections.contactTitle} as="span" />
+              </h2>
+            </div>
+
+            <div className="rounded-3xl border border-slate-200/70 dark:border-slate-800 bg-white/70 dark:bg-slate-900/40 backdrop-blur-md shadow-2xl shadow-slate-900/10 overflow-hidden">
+              <div className="grid gap-8 p-8 md:p-12 lg:grid-cols-5">
+                <div className="lg:col-span-2 rounded-2xl bg-gradient-to-br from-teal-500/10 to-cyan-500/10 border border-slate-200/60 dark:border-slate-800 p-6 md:p-8" />
+                <div className="lg:col-span-3">
+                  <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                    <div className="grid gap-6 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-900 dark:text-white ml-1">
+                          <CopyText copyId="landingA.contactForm.name" defaultText={t.sections.contactForm.name} as="span" />
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 text-slate-900 dark:text-white outline-none ring-0 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition"
+                          placeholder={t.sections.contactForm.name}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-slate-900 dark:text-white ml-1">
+                          <CopyText copyId="landingA.contactForm.email" defaultText={t.sections.contactForm.email} as="span" />
+                        </label>
+                        <input
+                          type="email"
+                          className="w-full h-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 text-slate-900 dark:text-white outline-none ring-0 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition"
+                          placeholder={t.sections.contactForm.email}
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-900 dark:text-white ml-1">
+                        <CopyText copyId="landingA.contactForm.phone" defaultText={t.sections.contactForm.phone} as="span" />{" "}
+                        <span className="text-slate-400 font-normal">(<CopyText copyId="landingA.contactForm.phoneOptional" defaultText={t.sections.contactForm.phoneOptional} as="span" />)</span>
+                      </label>
+                      <input
+                        type="tel"
+                        className="w-full h-12 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 text-slate-900 dark:text-white outline-none ring-0 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition"
+                        placeholder="+49..."
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-900 dark:text-white ml-1">
+                        <CopyText copyId="landingA.contactForm.message" defaultText={t.sections.contactForm.message} as="span" />
+                      </label>
+                      <textarea
+                        rows={5}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4 text-slate-900 dark:text-white outline-none ring-0 focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 transition resize-none"
+                        placeholder="..."
+                        required
+                      />
+                    </div>
+
+                    <div className="flex items-start gap-3 py-2">
+                      <div className="flex items-center h-5">
+                        <input
+                          id="privacy"
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+                          required
+                        />
+                      </div>
+                      <label htmlFor="privacy" className="text-sm text-slate-600 dark:text-slate-400">
+                        <CopyText copyId="landingA.contactForm.privacy" defaultText={t.sections.contactForm.privacy} as="span" />
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full h-14 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-sm font-bold text-white shadow-lg shadow-teal-500/25 transition-all hover:shadow-xl hover:shadow-teal-500/30 hover:scale-[1.01] active:scale-[0.99]"
+                    >
+                      <CopyText copyId="landingA.contactForm.submit" defaultText={t.sections.contactForm.submit} as="span" />
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </MotionDiv>
         </Section>
       </div>
 
@@ -730,19 +877,21 @@ export function LandingA() {
             <div className="relative z-10 h-full flex items-center px-6 sm:px-16 lg:px-24">
               <div className="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:text-left">
                 <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                  {t.sections.finalCtaTitle}
+                  <CopyText copyId="landingA.sections.finalCtaTitle" defaultText={t.sections.finalCtaTitle} as="span" />
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-slate-200">
-                  {t.sections.finalCtaSubtitle}
+                  <CopyText copyId="landingA.sections.finalCtaSubtitle" defaultText={t.sections.finalCtaSubtitle} as="span" />
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
                   <Link
                     href="/register"
                     className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-100 transition-colors"
                   >
-                    {t.sections.finalCta}
+                    <CopyText copyId="landingA.sections.finalCta" defaultText={t.sections.finalCta} as="span" />
                   </Link>
-                  <span className="text-xs text-slate-300">{t.footer.note}</span>
+                  <span className="text-xs text-slate-300">
+                    <CopyText copyId="landingA.footer.note" defaultText={t.footer.note} as="span" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -752,7 +901,9 @@ export function LandingA() {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
               <div>© Noventa</div>
               <div className="flex items-center gap-6">
-                <span className="font-medium">{t.footer.socialMedia}:</span>
+                <span className="font-medium">
+                  <CopyText copyId="landingA.footer.socialMedia" defaultText={t.footer.socialMedia} as="span" />:
+                </span>
                 <a href="https://instagram.com/noventa" target="_blank" rel="noopener noreferrer" className="hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                   Instagram
@@ -763,8 +914,12 @@ export function LandingA() {
                 </a>
               </div>
               <div className="flex gap-4">
-                <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy</a>
-                <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Terms</a>
+                <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+                  <CopyText copyId="landingA.footer.privacy" defaultText="Privacy" as="span" />
+                </a>
+                <a href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">
+                  <CopyText copyId="landingA.footer.terms" defaultText="Terms" as="span" />
+                </a>
               </div>
             </div>
           </div>
