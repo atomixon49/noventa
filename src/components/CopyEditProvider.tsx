@@ -58,7 +58,20 @@ type CopyEditorSelection = {
 const STORAGE_KEY = "noventa_copy_changes_v1";
 const AUTH_KEY = "noventa_copy_edit_auth_v1";
 
-const CopyEditContext = createContext<CopyEditContextValue | null>(null);
+// Valor por defecto del contexto para SSR
+const defaultContextValue: CopyEditContextValue = {
+  enabled: false,
+  setEnabled: () => {},
+  getOverride: () => undefined,
+  setOverride: () => {},
+  upsertFreeChange: () => {},
+  changes: [],
+  downloadJson: () => {},
+  clearAll: () => {},
+  openEditorFor: () => {},
+};
+
+const CopyEditContext = createContext<CopyEditContextValue>(defaultContextValue);
 
 function safeJsonParse<T>(value: string | null): T | null {
   if (!value) return null;
@@ -152,6 +165,9 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const { lang } = useLanguage();
 
+  // Verificar si estamos en el cliente
+  const isClient = typeof window !== "undefined";
+
   const [enabled, setEnabled] = useState(false);
   const [authorized, setAuthorized] = useState(false);
   const [changes, setChanges] = useState<CopyChange[]>([]);
@@ -160,19 +176,22 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
   const lastClickedElRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    if (!isClient) return;
     const initial = safeJsonParse<StoredState>(window.localStorage.getItem(STORAGE_KEY));
     if (initial?.changes) setChanges(initial.changes);
 
     const storedAuth = window.localStorage.getItem(AUTH_KEY);
     if (storedAuth === "1") setAuthorized(true);
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
+    if (!isClient) return;
     const state: StoredState = { changes };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [changes]);
+  }, [changes, isClient]);
 
   useEffect(() => {
+    if (!isClient) return;
     const qp = searchParams?.get("copyEdit");
     if (qp !== "1") return;
 
@@ -184,7 +203,7 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
     window.localStorage.setItem(AUTH_KEY, "1");
     setAuthorized(true);
     setEnabled(true);
-  }, [searchParams]);
+  }, [searchParams, isClient]);
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -202,6 +221,7 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
   }, [authorized]);
 
   useEffect(() => {
+    if (!isClient) return;
     function onClick(e: MouseEvent) {
       if (!enabled) return;
       if (!e.altKey) return;
@@ -222,7 +242,7 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
 
     window.addEventListener("click", onClick, true);
     return () => window.removeEventListener("click", onClick, true);
-  }, [enabled]);
+  }, [enabled, isClient]);
 
   const getOverride = useCallback(
     (l: string, copyId: string) => {
@@ -294,6 +314,7 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
   );
 
   const downloadJson = useCallback(() => {
+    if (!isClient) return;
     const payload = {
       app: "noventa-landing",
       generatedAt: nowIso(),
@@ -309,12 +330,13 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-  }, [changes]);
+  }, [changes, isClient]);
 
   const clearAll = useCallback(() => {
+    if (!isClient) return;
     setChanges([]);
     window.localStorage.removeItem(STORAGE_KEY);
-  }, []);
+  }, [isClient]);
 
   const openEditorFor = useCallback((payload: CopyEditorSelection) => {
     setSelection(payload);
@@ -384,9 +406,14 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
 }
 
 // Wrapper que envuelve el componente interno con Suspense
+// Durante SSR, el contexto usa valores por defecto
 export function CopyEditProvider({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={children}>
+    <Suspense fallback={
+      <CopyEditContext.Provider value={defaultContextValue}>
+        {children}
+      </CopyEditContext.Provider>
+    }>
       <CopyEditProviderInner>{children}</CopyEditProviderInner>
     </Suspense>
   );
@@ -394,7 +421,6 @@ export function CopyEditProvider({ children }: { children: React.ReactNode }) {
 
 export function useCopyEdit() {
   const ctx = useContext(CopyEditContext);
-  if (!ctx) throw new Error("useCopyEdit must be used within CopyEditProvider");
   return ctx;
 }
 
