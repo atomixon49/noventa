@@ -64,7 +64,7 @@ export type Translations = {
 export const translations: Record<Language, Translations> = {
   de: {
     nav: {
-      productName: "Noventa",
+      productName: "Conexio",
       productTagline: "Jobs strukturieren. Vertrauen erhöhen.",
       variantA: "Variante A",
       variantB: "Variante B",
@@ -79,7 +79,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Für Unternehmen (Beta)",
       title: "Gezieltes Recruiting für deinen Vertrieb",
       subtitle:
-        "Noventa ist eine Plattform für alle Arten von Vertrieb. Von Quereinsteigern bis zu erfahrenen Sales-Profis – Unternehmen können sich präsentieren oder gezielt Vertriebler kontaktieren, die den nächsten Schritt suchen.",
+        "Conexio ist eine Plattform für alle Arten von Vertrieb. Von Quereinsteigern bis zu erfahrenen Sales-Profis – Unternehmen können sich präsentieren oder gezielt Vertriebler kontaktieren, die den nächsten Schritt suchen.",
       primaryCta: "Unternehmensprofil erstellen",
       secondaryCta: "So funktioniert’s",
       trustNote:
@@ -123,17 +123,17 @@ export const translations: Record<Language, Translations> = {
         {
           title: "Vertriebler-Setup (mit Countdown-Teaser)",
           description:
-            "Der Countdown läuft im Dashboard bereits mit. So bist du startklar, sobald der Kandidatenpool freigeschaltet wird.",
+            "Der Countdown läuft im Dashboard bereits mit. So bist du startklar, sobald der Vertrieblerpool freigeschaltet wird.",
         },
         {
           title: "Vertriebler-Launch (Payoff)",
           description:
-            "Du filterst und vergleichst Profile – mit zwei Scores: Skills-Fit (%) und Wunsch-Fit (%). Weil deine Kampagne schon sauber steht, läuft Kontakt in beide Richtungen: du sprichst Kandidaten an – passende Vertriebler kontaktieren dich.",
+            "Kontakt in beide Richtungen: du sprichst Vertriebler an – passende Vertriebler kontaktieren dich. Du siehst nicht nur wer passt - sondern WIE und WARUM. Mehr dazu nur für Beta-Member.",
         },
       ],
       structuredTitle: "Eine Kampagne, die Vertriebler sofort verstehen.",
       structuredSubtitle:
-        "Du gibst klare Kriterien vor – Noventa macht daraus zwei Perspektiven: Skills-Fit (%) und Wunsch-Fit (%). So sehen beide Seiten sofort, ob es passt.",
+        "Conexio macht die Passung auf einen Blick sichtbar - und zwar aus vier Perspektiven. Mehr dazu nur für Beta-Member.",
       structuredTags: [
         "Rolle (D2D/Führungskraft/Telesales)",
         "Remote/Hybrid/Onsite",
@@ -148,7 +148,7 @@ export const translations: Record<Language, Translations> = {
         "Reisebereitschaft",
         "Individuelle Ausschlusskriterien",
       ],
-      comingSoonTitle: "Noventa (Phase 2) – darauf könnt ihr euch freuen und profitieren",
+      comingSoonTitle: "Conexio (Phase 2) – darauf könnt ihr euch freuen und profitieren",
       comingSoonCards: [
         {
           title: "Vertrieblerpool freischalten",
@@ -163,7 +163,7 @@ export const translations: Record<Language, Translations> = {
         {
           title: "Dual-Score-Matching",
           description:
-            "Skills und Motivation getrennt sichtbar – damit ihr schneller die richtigen Gespräche führt",
+            "Zwei getrennte Scores - nach deinen Kriterien gewichtet. Damit ihr schneller die richtigen Gespräche führt",
         },
         {
           title: "Leaderboard für Vertriebler und Unternehmen",
@@ -171,17 +171,17 @@ export const translations: Record<Language, Translations> = {
             "Wir fragen Vertriebler und belohnen Ausbildungsqualität, Onboarding, Transparenz, schnelle Rückmeldungen und beste Karrierechancen",
         },
       ],
-      aboutTitle: "Über Noventa",
+      aboutTitle: "Über Conexio",
       aboutSubtitle: "Von Vertrieblern, für Vertriebler",
       aboutText:
         "Sales entscheidet nicht nur über Einkommen – sondern über Lebensqualität. Und trotzdem sehen wir zu oft, wie gute Leute im Vertrieb unter Wert arbeiten: nicht wegen fehlendem Talent, sondern weil sie den Markt nicht überblicken, in der falschen Rolle landen oder in einer Bubble feststecken, die nur wenige Optionen zeigt.\nUnsere Mission ist Orientierung über den gesamten Sales-Markt: mehr Möglichkeiten sichtbar machen, Zugänge schaffen – und Menschen dabei helfen, den Weg zu finden, der wirklich zu ihrer Persönlichkeit und ihrem Leben passt.",
       socialTitle: "Folge uns auf Social Media",
       socialSubtitle: "Bleib auf dem Laufenden mit unseren neuesten Updates",
-      followUs: "Folge @noventacrew",
+      followUs: "Folge @conexiocrew",
       faqTitle: "FAQ",
       faqs: [
         {
-          q: "Warum startet Noventa zuerst mit Unternehmen in einer Beta-Phase?",
+          q: "Warum startet Conexio zuerst mit Unternehmen in einer Beta-Phase?",
           a: "In der Beta-Phase bereiten Unternehmen ihr Profil und ihre Stellenanzeigen vor, bevor Vertriebler gesammelt starten.",
         },
         {
@@ -190,27 +190,27 @@ export const translations: Record<Language, Translations> = {
         },
         {
           q: "Sind meine Unternehmensdaten öffentlich sichtbar?",
-          a: "Nein. Ihre Unternehmens- und Stellendaten sind nicht öffentlich einsehbar. Sie werden ausschließlich registrierten Vertrieblern angezeigt – und auch dort nur in dem Umfang, den Sie selbst festlegen.",
+          a: "Nein. Deine Unternehmens- und Stellendaten sind nicht öffentlich einsehbar. Du wirst ausschließlich registrierten Vertrieblern angezeigt – und auch dort nur in dem Umfang, den du selbst festlegst.",
         },
         {
           q: "Warum sollte ich mein Profil jetzt schon anlegen, wenn die Vertriebler erst in Phase 2 kommen?",
-          a: "Alle Vertriebler werden gesammelt freigeschaltet – wer dann direkt vorbereitet ist, steht von Beginn an besser da. Zusätzlich können Sie die Plattform in der Beta-Phase ohne Fixpreise kennenlernen.",
+          a: "Alle Vertriebler werden gesammelt freigeschaltet – wer dann direkt vorbereitet ist, steht von Beginn an besser da. Zusätzlich lernst du die Plattform in der Beta-Phase ohne Fixpreise kennen.",
         },
         {
-          q: "Was unterscheidet Noventa von klassischen Jobbörsen oder LinkedIn-Anzeigen?",
-          a: "Noventa ist gebaut von Vertrieblern für Vertriebler. Matching, Ratings und Suchlogik basieren auf realen Vertriebs-Pain-Points – nicht auf Algorithmen ohne Branchenverständnis oder Selbstdarstellung. Vertriebler lernen den ganzen Markt kennen – auch Produkte, an die normal niemand denkt.",
+          q: "Was unterscheidet Conexio von klassischen Jobbörsen oder LinkedIn-Anzeigen?",
+          a: "Conexio ist gebaut von Vertrieblern für Vertriebler. Matching, Ratings und Suchlogik basieren auf realen Vertriebs-Pain-Points – nicht auf Algorithmen ohne Branchenverständnis oder Selbstdarstellung. Vertriebler lernen den ganzen Markt kennen – auch Produkte, an die normal niemand denkt.",
         },
         {
           q: "Was passiert, wenn ich mich jetzt registriere, aber später nichts weiter unternehmen möchte?",
-          a: "Nichts. Keine Verpflichtung, kein Druck. Ihr Profil bleibt bestehen und Sie entscheiden jederzeit, ob und wann Sie aktiv werden.",
+          a: "Nichts. Keine Verpflichtung, kein Druck. Dein Profil bleibt bestehen und du entscheidest jederzeit, ob und wann du aktiv wirst.",
         },
         {
           q: "Muss ich meine Stellen oder Vergütung „schönreden“, um sichtbar zu sein?",
-          a: "Nein. Noventa ist auf Vergleichbarkeit und Ehrlichkeit ausgelegt. Unrealistische oder beschönigte Angaben führen nicht zu besseren Ergebnissen, sondern zu schlechterer Passung.",
+          a: "Nein. Conexio ist auf Vergleichbarkeit und Ehrlichkeit ausgelegt. Unrealistische oder beschönigte Angaben führen nicht zu besseren Ergebnissen, sondern zu schlechterer Passung.",
         },
         {
-          q: "Kann ich Noventa auch nutzen, wenn ich nur sporadisch oder projektweise rekrutiere?",
-          a: "Ja. Noventa ist nicht auf Daueraktivität ausgelegt, sondern auf punktgenaue Nutzung. Sie werden nicht schlechter gestellt, wenn Sie zeitweise inaktiv sind.",
+          q: "Kann ich Conexio auch nutzen, wenn ich nur sporadisch oder projektweise rekrutiere?",
+          a: "Ja. Conexio ist nicht auf Daueraktivität ausgelegt, sondern auf punktgenaue Nutzung. Dein Unternehmen wird nicht schlechter gestellt, wenn es zeitweise inaktiv ist.",
         },
       ],
       contactTitle: "Kontaktformular",
@@ -223,18 +223,18 @@ export const translations: Record<Language, Translations> = {
         privacy: "Ich stimme der Datenschutzerklärung zu",
         submit: "Nachricht senden",
       },
-      finalCtaTitle: "Bereit, deine erste Kampagne auf Noventa zu starten?",
+      finalCtaTitle: "Bereit, deine erste Kampagne auf Conexio zu starten?",
       finalCtaSubtitle: "Bereite dich und dein Unternehmen vor für den Launch – in der Beta kostenlos",
       finalCta: "Unternehmen registrieren",
     },
     footer: {
-      note: "Noventa ist in der Beta. Einige Module sind als ‚coming soon‘ markiert und werden schrittweise freigeschaltet.",
+      note: "Conexio ist in der Beta. Einige Module sind als ‚coming soon‘ markiert und werden schrittweise freigeschaltet.",
       socialMedia: "Social Media",
     },
   },
   es: {
     nav: {
-      productName: "Noventa",
+      productName: "Conexio",
       productTagline: "Publica mejor. Filtra mejor.",
       variantA: "Variante A",
       variantB: "Variante B",
@@ -249,7 +249,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Para empresas (Beta)",
       title: "Reclutamiento dirigido para tu equipo comercial",
       subtitle:
-        "Noventa es una plataforma para todo tipo de ventas. Desde personas sin experiencia previa hasta profesionales senior: las empresas pueden presentarse o contactar directamente a vendedores que buscan dar el siguiente paso.",
+        "Conexio es una plataforma para todo tipo de ventas. Desde personas sin experiencia previa hasta profesionales senior: las empresas pueden presentarse o contactar directamente a vendedores que buscan dar el siguiente paso.",
       primaryCta: "Crear perfil de empresa",
       secondaryCta: "Cómo funciona",
       trustNote:
@@ -304,7 +304,7 @@ export const translations: Record<Language, Translations> = {
       ],
       structuredTitle: "Una campaña que los vendedores entienden al instante.",
       structuredSubtitle:
-        "Tú defines criterios claros — Noventa los traduce a dos perspectivas: Skills-Fit (%) y Wish-Fit (%). Así ambos lados ven rápido si encaja.",
+        "Tú defines criterios claros — Conexio los traduce a dos perspectivas: Skills-Fit (%) y Wish-Fit (%). Así ambos lados ven rápido si encaja.",
       structuredTags: [
         "Rol (D2D/Líder/Telesales)",
         "Remoto/Híbrido/Presencial",
@@ -319,7 +319,7 @@ export const translations: Record<Language, Translations> = {
         "Disponibilidad de viaje",
         "Criterios de exclusión",
       ],
-      comingSoonTitle: "Noventa (Fase 2) — lo que viene y por qué te beneficiará",
+      comingSoonTitle: "Conexio (Fase 2) — lo que viene y por qué te beneficiará",
       comingSoonCards: [
         {
           title: "Desbloquear pool de vendedores",
@@ -342,17 +342,17 @@ export const translations: Record<Language, Translations> = {
             "Recompensamos calidad de formación, onboarding, transparencia, rapidez de respuesta y mejores oportunidades.",
         },
       ],
-      aboutTitle: "Sobre Noventa",
+      aboutTitle: "Sobre Conexio",
       aboutSubtitle: "De vendedores, para vendedores",
       aboutText:
-        "Las ventas no solo deciden ingresos — también calidad de vida. Y aun así vemos demasiado a menudo cómo buenas personas trabajan por debajo de su valor: no por falta de talento, sino porque no ven el mercado completo, terminan en el rol equivocado o quedan atrapadas en una burbuja con pocas opciones.\nNuestra misión es dar orientación sobre el mercado de ventas: hacer visibles más oportunidades, abrir accesos — y ayudar a cada persona a encontrar el camino que realmente encaja con su personalidad y su vida.",
+        "Las ventas no solo deciden ingresos — también calidad de vida. Y aun así vemos demasiado a menudo cómo buenas personas en ventas trabajan por debajo de su valor: no por falta de talento, sino porque no ven el mercado completo, terminan en el rol equivocado o quedan atrapadas en una burbuja con pocas opciones.\nNuestra misión es dar orientación sobre el mercado de ventas: hacer visibles más oportunidades, abrir accesos — y ayudar a cada persona a encontrar el camino que realmente encaja con su personalidad y su vida.",
       socialTitle: "Síguenos en redes sociales",
       socialSubtitle: "Mantente al día con nuestras últimas novedades",
-      followUs: "Sigue a @noventacrew",
+      followUs: "Sigue a @conexiocrew",
       faqTitle: "Preguntas frecuentes",
       faqs: [
         {
-          q: "¿Por qué Noventa comienza primero con empresas en una fase beta?",
+          q: "¿Por qué Conexio comienza primero con empresas en una fase beta?",
           a: "En la fase beta, las empresas preparan su perfil y sus anuncios de empleo antes de que los vendedores comiencen de forma colectiva.",
         },
         {
@@ -368,8 +368,8 @@ export const translations: Record<Language, Translations> = {
           a: "Todos los vendedores se habilitarán de forma colectiva; quien ya esté preparado en ese momento estará en mejor posición desde el principio. Además, puede conocer la plataforma en la fase beta sin precios fijos.",
         },
         {
-          q: "¿Qué diferencia a Noventa de las bolsas de trabajo clásicas o los anuncios de LinkedIn?",
-          a: "Noventa está construida por vendedores para vendedores. El matching, las valoraciones y la lógica de búsqueda se basan en puntos de dolor reales de las ventas, no en algoritmos sin conocimiento del sector o autopromoción. Los vendedores conocen todo el mercado, incluso productos en los que normalmente nadie piensa.",
+          q: "¿Qué diferencia a Conexio de las bolsas de trabajo clásicas o los anuncios de LinkedIn?",
+          a: "Conexio está construida por vendedores para vendedores. El matching, las valoraciones y la lógica de búsqueda se basan en puntos de dolor reales de las ventas, no en algoritmos sin conocimiento del sector o autopromoción. Los vendedores conocen todo el mercado, incluso productos en los que normalmente nadie piensa.",
         },
         {
           q: "¿Qué pasa si me registro ahora pero luego no quiero hacer nada más?",
@@ -377,11 +377,11 @@ export const translations: Record<Language, Translations> = {
         },
         {
           q: "¿Tengo que 'maquillar' mis puestos o remuneración para ser visible?",
-          a: "No. Noventa está diseñado para la comparabilidad y la honestidad. Los datos poco realistas o maquillados no conducen a mejores resultados, sino a un peor ajuste.",
+          a: "No. Conexio está diseñado para la comparabilidad y la honestidad. Los datos poco realistas o maquillados no conducen a mejores resultados, sino a un peor ajuste.",
         },
         {
-          q: "¿Puedo usar Noventa también si solo recluto de forma esporádica o por proyectos?",
-          a: "Sí. Noventa no está diseñado para una actividad constante, sino para un uso preciso. No se verá perjudicado si está inactivo temporalmente.",
+          q: "¿Puedo usar Conexio también si solo recluto de forma esporádica o por proyectos?",
+          a: "Sí. Conexio no está diseñado para una actividad constante, sino para un uso preciso. No se verá perjudicado si está inactivo temporalmente.",
         },
       ],
       contactTitle: "Formulario de contacto",
@@ -394,33 +394,33 @@ export const translations: Record<Language, Translations> = {
         privacy: "Acepto la política de privacidad",
         submit: "Enviar mensaje",
       },
-      finalCtaTitle: "¿Listo para lanzar tu primera campaña en Noventa?",
+      finalCtaTitle: "¿Listo para lanzar tu primera campaña en Conexio?",
       finalCtaSubtitle: "Prepara tu empresa para el lanzamiento — en beta gratis",
       finalCta: "Registrar empresa",
     },
     footer: {
-      note: "Noventa está en beta. Algunos módulos están marcados como 'próximamente' y se irán habilitando paso a paso.",
+      note: "Conexio está en beta. Algunos módulos están marcados como 'próximamente' y se irán habilitando paso a paso.",
       socialMedia: "Síguenos",
     },
   },
   en: {
     nav: {
-      productName: "Noventa",
+      productName: "Conexio",
       productTagline: "Structured hiring, faster matching.",
       variantA: "Variant A",
       variantB: "Variant B",
       variantC: "Variant C",
       languageLabel: "Language",
-      about: "About us",
+      about: "About",
       faq: "FAQ",
-      login: "Login",
+      login: "Company Login",
       updates: "Updates",
     },
     hero: {
       eyebrow: "For companies (Beta)",
       title: "Targeted recruiting for your sales team",
       subtitle:
-        "Noventa is a platform for all kinds of sales. From career changers to experienced sales pros — companies can present themselves or directly contact sellers ready for the next step.",
+        "Conexio is a platform for all kinds of sales. From career changers to experienced sales pros — companies can present themselves or directly contact sellers ready for the next step.",
       primaryCta: "Create company profile",
       secondaryCta: "How it works",
       trustNote:
@@ -475,7 +475,7 @@ export const translations: Record<Language, Translations> = {
       ],
       structuredTitle: "A campaign sellers instantly understand.",
       structuredSubtitle:
-        "You define clear criteria — Noventa turns them into two perspectives: Skills-Fit (%) and Wish-Fit (%). Both sides see fast if it matches.",
+        "You define clear criteria — Conexio turns them into two perspectives: Skills-Fit (%) and Wish-Fit (%). Both sides see fast if it matches.",
       structuredTags: [
         "Role (D2D/Leader/Telesales)",
         "Remote/Hybrid/Onsite",
@@ -490,7 +490,7 @@ export const translations: Record<Language, Translations> = {
         "Travel willingness",
         "Exclusion criteria",
       ],
-      comingSoonTitle: "Noventa (Phase 2) — what’s next and why it helps",
+      comingSoonTitle: "Conexio (Phase 2) — what’s next and why it helps",
       comingSoonCards: [
         {
           title: "Unlock the seller pool",
@@ -513,18 +513,18 @@ export const translations: Record<Language, Translations> = {
             "We reward training quality, onboarding, transparency, fast responses, and the best career opportunities.",
         },
       ],
-      aboutTitle: "About Noventa",
+      aboutTitle: "About Conexio",
       aboutSubtitle: "By sellers, for sellers",
       aboutText:
         "Sales doesn’t just decide income — it also impacts quality of life. Yet we still see great people working below their value: not because they lack talent, but because they can’t see the market, end up in the wrong role, or get stuck in a bubble with too few options.\nOur mission is to provide orientation across the entire sales market: make more opportunities visible, create access — and help people find the path that truly fits their personality and life.",
       socialTitle: "Follow us on social media",
       socialSubtitle: "Stay updated with our latest news",
-      followUs: "Follow @noventacrew",
+      followUs: "Follow @conexiocrew",
       faqTitle: "FAQ",
       faqs: [
         {
-          q: "Why is Noventa starting with companies in a beta phase first?",
-          a: "In the beta phase, companies prepare their profile and job postings before sellers join the platform collectively.",
+          q: "Why does Conexio start with companies in a beta phase?",
+          a: "In beta, companies prepare their profile and job listings before sellers are released collectively.",
         },
         {
           q: "Am I entering into any obligation?",
@@ -539,8 +539,8 @@ export const translations: Record<Language, Translations> = {
           a: "All sellers will be activated collectively – whoever is prepared then will be in a better position from the start. Additionally, you can get to know the platform in the beta phase without fixed prices.",
         },
         {
-          q: "What distinguishes Noventa from classic job boards or LinkedIn ads?",
-          a: "Noventa is built by sellers for sellers. Matching, ratings, and search logic are based on real sales pain points – not on algorithms without industry understanding or self-promotion. Sellers get to know the whole market – including products that normally nobody thinks of.",
+          q: "What makes Conexio different from job boards or LinkedIn ads?",
+          a: "Conexio is built by sellers for sellers. Matching, ratings, and search logic are based on real sales pain points — not generic algorithms or self-promotion. Sellers get a full view of the market, including products most people never consider.",
         },
         {
           q: "What happens if I register now but don't want to do anything further later?",
@@ -548,11 +548,11 @@ export const translations: Record<Language, Translations> = {
         },
         {
           q: "Do I have to 'sugarcoat' my jobs or compensation to be visible?",
-          a: "No. Noventa is designed for comparability and honesty. Unrealistic or sugarcoated information does not lead to better results, but to a worse fit.",
+          a: "No. Conexio is built for comparability and honesty. Unrealistic or polished claims don’t improve results — they reduce fit.",
         },
         {
-          q: "Can I use Noventa even if I only recruit sporadically or on a project basis?",
-          a: "Yes. Noventa is not designed for continuous activity, but for precise use. You will not be at a disadvantage if you are inactive for periods of time.",
+          q: "Can I use Conexio even if I only recruit sporadically or on a project basis?",
+          a: "Yes. Conexio is not designed for continuous activity, but for precise use. You will not be at a disadvantage if you are inactive for periods of time.",
         },
       ],
       contactTitle: "Contact Form",
@@ -565,12 +565,12 @@ export const translations: Record<Language, Translations> = {
         privacy: "I agree to the privacy policy",
         submit: "Send Message",
       },
-      finalCtaTitle: "Ready to launch your first campaign on Noventa?",
+      finalCtaTitle: "Ready to launch your first campaign on Conexio?",
       finalCtaSubtitle: "Get your company ready for the launch — free in beta",
       finalCta: "Register company",
     },
     footer: {
-      note: "Noventa is in beta. Some modules are marked as 'coming soon' and will roll out step by step.",
+      note: "Conexio is in beta. Some modules are marked as 'coming soon' and will roll out step by step.",
       socialMedia: "Follow us",
     },
   },

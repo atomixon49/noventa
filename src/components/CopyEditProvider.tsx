@@ -55,8 +55,8 @@ type CopyEditorSelection = {
   element?: HTMLElement | null;
 };
 
-const STORAGE_KEY = "noventa_copy_changes_v1";
-const AUTH_KEY = "noventa_copy_edit_auth_v1";
+const STORAGE_KEY = "conexio_copy_changes_v1";
+const AUTH_KEY = "conexio_copy_edit_auth_v1";
 
 // Valor por defecto del contexto para SSR
 const defaultContextValue: CopyEditContextValue = {
@@ -316,7 +316,7 @@ function CopyEditProviderInner({ children }: { children: React.ReactNode }) {
   const downloadJson = useCallback(() => {
     if (!isClient) return;
     const payload = {
-      app: "noventa-landing",
+      app: "conexio-landing",
       generatedAt: nowIso(),
       changes,
     };

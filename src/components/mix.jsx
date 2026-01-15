@@ -1,10 +1,11 @@
-eState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+
 import { 
   Briefcase, 
   Users, 
@@ -26,75 +27,7 @@ import {
   X
 } from 'lucide-react';
 
-type Language = 'de' | 'en' | 'es';
-type LandingVariant = 1 | 2 | 3;
-
-interface Translation {
-  nav: {
-    features: string;
-    testimonials: string;
-    faq: string;
-    cta: string;
-  };
-  hero: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    cta: string;
-    ctaSecondary: string;
-  };
-  proof: {
-    title: string;
-    companies: string;
-    jobs: string;
-    hires: string;
-    satisfaction: string;
-  };
-  features: {
-    title: string;
-    subtitle: string;
-    items: Array<{
-      title: string;
-      description: string;
-    }>;
-  };
-  benefits: {
-    title: string;
-    subtitle: string;
-    items: Array<{
-      title: string;
-      description: string;
-    }>;
-  };
-  testimonials: {
-    title: string;
-    subtitle: string;
-    items: Array<{
-      name: string;
-      role: string;
-      company: string;
-      content: string;
-    }>;
-  };
-  faq: {
-    title: string;
-    subtitle: string;
-    items: Array<{
-      question: string;
-      answer: string;
-    }>;
-  };
-  footer: {
-    tagline: string;
-    product: string;
-    company: string;
-    resources: string;
-    legal: string;
-    rights: string;
-  };
-}
-
-const translations: Record<Language, Translation> = {
+const translations = {
   de: {
     nav: {
       features: 'Funktionen',
@@ -105,7 +38,7 @@ const translations: Record<Language, Translation> = {
     hero: {
       badge: '🎉 Beta-Version - Kostenlos verfügbar',
       title: 'Finden Sie die besten Talente für Ihr Unternehmen',
-      subtitle: 'Noventa verbindet Unternehmen mit qualifizierten Fachkräften. Veröffentlichen Sie Stellenangebote, erreichen Sie Tausende von Kandidaten und bauen Sie Ihr Traumteam auf.',
+      subtitle: 'Conexio verbindet Unternehmen mit qualifizierten Fachkräften. Veröffentlichen Sie Stellenangebote, erreichen Sie Tausende von Kandidaten und bauen Sie Ihr Traumteam auf.',
       cta: 'Kostenlos registrieren',
       ctaSecondary: 'Mehr erfahren'
     },
@@ -147,7 +80,7 @@ const translations: Record<Language, Translation> = {
       ]
     },
     benefits: {
-      title: 'Warum Noventa wählen?',
+      title: 'Warum Conexio wählen?',
       subtitle: 'Vorteile, die Ihr Unternehmen voranbringen',
       items: [
         {
@@ -170,13 +103,13 @@ const translations: Record<Language, Translation> = {
     },
     testimonials: {
       title: 'Was unsere Kunden sagen',
-      subtitle: 'Erfolgsgeschichten von Unternehmen, die Noventa nutzen',
+      subtitle: 'Erfolgsgeschichten von Unternehmen, die Conexio nutzen',
       items: [
         {
           name: 'Anna Schmidt',
           role: 'HR-Leiterin',
           company: 'TechVision GmbH',
-          content: 'Noventa hat unseren Einstellungsprozess revolutioniert. Wir haben in nur 2 Wochen 5 großartige Entwickler gefunden!'
+          content: 'Conexio hat unseren Einstellungsprozess revolutioniert. Wir haben in nur 2 Wochen 5 großartige Entwickler gefunden!'
         },
         {
           name: 'Michael Weber',
@@ -188,29 +121,29 @@ const translations: Record<Language, Translation> = {
           name: 'Sarah Müller',
           role: 'Recruiting Manager',
           company: 'Global Solutions AG',
-          content: 'Die Qualität der Kandidaten auf Noventa ist außergewöhnlich. Sehr empfehlenswert für jedes wachsende Unternehmen.'
+          content: 'Die Qualität der Kandidaten auf Conexio ist außergewöhnlich. Sehr empfehlenswert für jedes wachsende Unternehmen.'
         }
       ]
     },
     faq: {
       title: 'Häufig gestellte Fragen',
-      subtitle: 'Alles, was Sie über Noventa wissen müssen',
+      subtitle: 'Alles, was Sie über Conexio wissen müssen',
       items: [
         {
-          question: 'Ist Noventa wirklich kostenlos?',
-          answer: 'Ja! Während unserer Beta-Phase ist Noventa völlig kostenlos. Sie erhalten Zugang zu allen Premium-Funktionen ohne versteckte Kosten.'
+          question: 'Ist Conexio wirklich kostenlos?',
+          answer: 'Ja! Während unserer Beta-Phase ist Conexio völlig kostenlos. Sie erhalten Zugang zu allen Premium-Funktionen ohne versteckte Kosten.'
         },
         {
           question: 'Wie schnell kann ich mit der Veröffentlichung von Stellenangeboten beginnen?',
           answer: 'Sie können sofort nach der Registrierung beginnen. Der gesamte Prozess dauert weniger als 5 Minuten.'
         },
         {
-          question: 'Welche Art von Unternehmen nutzt Noventa?',
-          answer: 'Von Startups bis zu etablierten Unternehmen - Noventa ist für Organisationen jeder Größe konzipiert, die qualifizierte Talente einstellen möchten.'
+          question: 'Welche Art von Unternehmen nutzt Conexio?',
+          answer: 'Von Startups bis zu etablierten Unternehmen - Conexio ist für Organisationen jeder Größe konzipiert, die qualifizierte Talente einstellen möchten.'
         },
         {
-          question: 'Wie unterscheidet sich Noventa von anderen Plattformen?',
-          answer: 'Noventa kombiniert modernste Technologie mit einem benutzerfreundlichen Interface und bietet intelligentes Matching, Echtzeit-Analysen und dedizierte Unterstützung.'
+          question: 'Wie unterscheidet sich Conexio von anderen Plattformen?',
+          answer: 'Conexio kombiniert moderne Technologie mit einem benutzerfreundlichen Interface und bietet intelligentes Matching, Echtzeit-Analysen und dedizierten Support.'
         },
         {
           question: 'Ist meine Unternehmensdaten sicher?',
@@ -224,7 +157,7 @@ const translations: Record<Language, Translation> = {
       company: 'Unternehmen',
       resources: 'Ressourcen',
       legal: 'Rechtliches',
-      rights: '© 2024 Noventa. Alle Rechte vorbehalten.'
+      rights: ' 2024 Conexio. Alle Rechte vorbehalten.'
     }
   },
   en: {
@@ -237,7 +170,7 @@ const translations: Record<Language, Translation> = {
     hero: {
       badge: '🎉 Beta Version - Free to Use',
       title: 'Find the Best Talent for Your Company',
-      subtitle: 'Noventa connects companies with qualified professionals. Post job openings, reach thousands of candidates, and build your dream team.',
+      subtitle: 'Conexio connects companies with qualified professionals. Post job openings, reach thousands of candidates, and build your dream team.',
       cta: 'Sign Up Free',
       ctaSecondary: 'Learn More'
     },
@@ -279,7 +212,7 @@ const translations: Record<Language, Translation> = {
       ]
     },
     benefits: {
-      title: 'Why Choose Noventa?',
+      title: 'Why Choose Conexio?',
       subtitle: 'Benefits that drive your business forward',
       items: [
         {
@@ -302,13 +235,13 @@ const translations: Record<Language, Translation> = {
     },
     testimonials: {
       title: 'What Our Customers Say',
-      subtitle: 'Success stories from companies using Noventa',
+      subtitle: 'Success stories from companies using Conexio',
       items: [
         {
           name: 'Anna Schmidt',
           role: 'HR Director',
           company: 'TechVision GmbH',
-          content: 'Noventa has revolutionized our hiring process. We found 5 amazing developers in just 2 weeks!'
+          content: 'Conexio has revolutionized our hiring process. We found 5 amazing developers in just 2 weeks!'
         },
         {
           name: 'Michael Weber',
@@ -320,29 +253,29 @@ const translations: Record<Language, Translation> = {
           name: 'Sarah Müller',
           role: 'Recruiting Manager',
           company: 'Global Solutions AG',
-          content: 'The quality of candidates on Noventa is exceptional. Highly recommended for any growing company.'
+          content: 'The quality of candidates on Conexio is exceptional. Highly recommended for any growing company.'
         }
       ]
     },
     faq: {
       title: 'Frequently Asked Questions',
-      subtitle: 'Everything you need to know about Noventa',
+      subtitle: 'Everything you need to know about Conexio',
       items: [
         {
-          question: 'Is Noventa really free?',
-          answer: 'Yes! During our beta phase, Noventa is completely free. You get access to all premium features with no hidden costs.'
+          question: 'Is Conexio really free?',
+          answer: 'Yes! During our beta phase, Conexio is completely free. You get access to all premium features with no hidden costs.'
         },
         {
           question: 'How quickly can I start posting jobs?',
           answer: 'You can start immediately after registration. The entire process takes less than 5 minutes.'
         },
         {
-          question: 'What type of companies use Noventa?',
-          answer: 'From startups to established enterprises - Noventa is designed for organizations of all sizes looking to hire qualified talent.'
+          question: 'What type of companies use Conexio?',
+          answer: 'From startups to established enterprises - Conexio is designed for organizations of all sizes looking to hire qualified talent.'
         },
         {
-          question: 'How is Noventa different from other platforms?',
-          answer: 'Noventa combines cutting-edge technology with a user-friendly interface, offering intelligent matching, real-time analytics, and dedicated support.'
+          question: 'How is Conexio different from other platforms?',
+          answer: 'Conexio combines cutting-edge technology with a user-friendly interface, offering intelligent matching, real-time analytics, and dedicated support.'
         },
         {
           question: 'Is my company data secure?',
@@ -356,7 +289,7 @@ const translations: Record<Language, Translation> = {
       company: 'Company',
       resources: 'Resources',
       legal: 'Legal',
-      rights: '© 2024 Noventa. All rights reserved.'
+      rights: ' 2024 Conexio. All rights reserved.'
     }
   },
   es: {
@@ -369,7 +302,7 @@ const translations: Record<Language, Translation> = {
     hero: {
       badge: '🎉 Versión Beta - Gratis',
       title: 'Encuentra el Mejor Talento para tu Empresa',
-      subtitle: 'Noventa conecta empresas con profesionales calificados. Publica ofertas de trabajo, alcanza miles de candidatos y construye tu equipo ideal.',
+      subtitle: 'Conexio conecta empresas con profesionales calificados. Publica ofertas de trabajo, alcanza miles de candidatos y construye tu equipo ideal.',
       cta: 'Regístrate Gratis',
       ctaSecondary: 'Saber Más'
     },
@@ -411,7 +344,7 @@ const translations: Record<Language, Translation> = {
       ]
     },
     benefits: {
-      title: '¿Por Qué Elegir Noventa?',
+      title: '¿Por Qué Elegir Conexio?',
       subtitle: 'Beneficios que impulsan tu negocio',
       items: [
         {
@@ -434,13 +367,13 @@ const translations: Record<Language, Translation> = {
     },
     testimonials: {
       title: 'Lo Que Dicen Nuestros Clientes',
-      subtitle: 'Historias de éxito de empresas que usan Noventa',
+      subtitle: 'Historias de éxito de empresas que usan Conexio',
       items: [
         {
           name: 'Ana García',
           role: 'Directora de RRHH',
           company: 'TechVision España',
-          content: 'Noventa ha revolucionado nuestro proceso de contratación. ¡Encontramos 5 desarrolladores increíbles en solo 2 semanas!'
+          content: 'Conexio ha revolucionado nuestro proceso de contratación. ¡Encontramos 5 desarrolladores increíbles en solo 2 semanas!'
         },
         {
           name: 'Miguel Torres',
@@ -452,29 +385,29 @@ const translations: Record<Language, Translation> = {
           name: 'Sara Martínez',
           role: 'Gerente de Reclutamiento',
           company: 'Soluciones Globales SA',
-          content: 'La calidad de los candidatos en Noventa es excepcional. Muy recomendado para cualquier empresa en crecimiento.'
+          content: 'La calidad de los candidatos en Conexio es excepcional. Muy recomendado para cualquier empresa en crecimiento.'
         }
       ]
     },
     faq: {
       title: 'Preguntas Frecuentes',
-      subtitle: 'Todo lo que necesitas saber sobre Noventa',
+      subtitle: 'Todo lo que necesitas saber sobre Conexio',
       items: [
         {
-          question: '¿Noventa es realmente gratis?',
-          answer: '¡Sí! Durante nuestra fase beta, Noventa es completamente gratis. Obtienes acceso a todas las funciones premium sin costos ocultos.'
+          question: '¿Conexio es realmente gratis?',
+          answer: '¡Sí! Durante nuestra fase beta, Conexio es completamente gratis. Obtienes acceso a todas las funciones premium sin costos ocultos.'
         },
         {
           question: '¿Qué tan rápido puedo empezar a publicar trabajos?',
           answer: 'Puedes comenzar inmediatamente después del registro. Todo el proceso toma menos de 5 minutos.'
         },
         {
-          question: '¿Qué tipo de empresas usan Noventa?',
-          answer: 'Desde startups hasta empresas establecidas - Noventa está diseñado para organizaciones de todos los tamaños que buscan contratar talento calificado.'
+          question: '¿Qué tipo de empresas usan Conexio?',
+          answer: 'Desde startups hasta empresas establecidas - Conexio está diseñado para organizaciones de todos los tamaños que buscan contratar talento calificado.'
         },
         {
-          question: '¿En qué se diferencia Noventa de otras plataformas?',
-          answer: 'Noventa combina tecnología de vanguardia con una interfaz fácil de usar, ofreciendo emparejamiento inteligente, análisis en tiempo real y soporte dedicado.'
+          question: '¿En qué se diferencia Conexio de otras plataformas?',
+          answer: 'Conexio combina tecnología de vanguardia con una interfaz fácil de usar, ofreciendo emparejamiento inteligente, análisis en tiempo real y soporte dedicado.'
         },
         {
           question: '¿Están seguros los datos de mi empresa?',
@@ -488,19 +421,19 @@ const translations: Record<Language, Translation> = {
       company: 'Empresa',
       resources: 'Recursos',
       legal: 'Legal',
-      rights: '© 2024 Noventa. Todos los derechos reservados.'
+      rights: ' 2024 Conexio. Todos los derechos reservados.'
     }
   }
 };
 
-const NoventaLanding = () => {
-  const [language, setLanguage] = useState<Language>('de');
-  const [variant, setVariant] = useState<LandingVariant>(1);
+const ConexioLanding = () => {
+  const [language, setLanguage] = useState('de');
+  const [variant, setVariant] = useState(1);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const t = translations[language];
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -510,7 +443,7 @@ const NoventaLanding = () => {
 
   const LanguageSwitcher = () => (
     <div className="flex gap-2">
-      {(['de', 'en', 'es'] as Language[]).map((lang) => (
+      {['de', 'en', 'es'].map((lang) => (
         <Button
           key={lang}
           variant={language === lang ? 'default' : 'outline'}
@@ -526,7 +459,7 @@ const NoventaLanding = () => {
 
   const VariantSwitcher = () => (
     <div className="fixed bottom-6 right-6 z-50 flex gap-2">
-      {([1, 2, 3] as LandingVariant[]).map((v) => (
+      {[1, 2, 3].map((v) => (
         <Button
           key={v}
           variant={variant === v ? 'default' : 'outline'}
@@ -555,7 +488,7 @@ const NoventaLanding = () => {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-xl">90</span>
             </div>
-            <span className="text-2xl font-bold">Noventa</span>
+            <span className="text-2xl font-bold">Conexio</span>
           </motion.div>
 
           <div className="hidden md:flex items-center gap-6">
@@ -1031,7 +964,7 @@ const NoventaLanding = () => {
               <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">90</span>
               </div>
-              <span className="text-2xl font-bold">Noventa</span>
+              <span className="text-2xl font-bold">Conexio</span>
             </div>
             <p className="text-muted-foreground">{t.footer.tagline}</p>
           </div>
@@ -1067,7 +1000,7 @@ const NoventaLanding = () => {
         <Separator className="my-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-muted-foreground text-sm">{t.footer.rights}</p>
+          <p className="text-muted-foreground text-sm"> 2024 Conexio. Todos los derechos reservados.</p>
           <div className="flex gap-4">
             <Button variant="ghost" size="icon">
               <Globe className="w-5 h-5" />
@@ -1094,10 +1027,10 @@ const NoventaLanding = () => {
               </h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
                 {language === 'de' 
-                  ? 'Schließen Sie sich Hunderten von Unternehmen an, die bereits großartige Talente mit Noventa finden.'
+                  ? 'Schließen Sie sich Hunderten von Unternehmen an, die bereits großartige Talente mit Conexio finden.'
                   : language === 'en'
-                  ? 'Join hundreds of companies already finding great talent with Noventa.'
-                  : 'Únete a cientos de empresas que ya están encontrando gran talento con Noventa.'}
+                  ? 'Join hundreds of companies already finding great talent with Conexio.'
+                  : 'Únete a cientos de empresas que ya están encontrando gran talento con Conexio.'}
               </p>
               <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
                 {t.hero.cta}
@@ -1140,4 +1073,4 @@ const NoventaLanding = () => {
   );
 };
 
-export default NoventaLanding;
+export default ConexioLanding;

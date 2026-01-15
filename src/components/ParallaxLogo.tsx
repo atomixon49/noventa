@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export function ParallaxLogo({
-  src = "/logo-n.png",
+  src = "/Logo.PNG",
   size = 220,
   className,
 }: {

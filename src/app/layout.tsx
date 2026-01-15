@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Noventa",
+  title: "Conexio",
   description: "Publish structured job campaigns for sales roles.",
 };
 

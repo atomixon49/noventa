@@ -1,0 +1,17 @@
+{
+  "app": "noventa-landing",
+  "generatedAt": "2026-01-09T12:51:53.087Z",
+  "changes": [
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.hero.subtitle",
+      "selector": "[data-copy-id=\"landingA.hero.subtitle\"]",
+      "domPath": "html/body[2]/div[10]/div[1]/section[5]/div[1]/div[1]/p[3]/span[1]",
+      "before": "Noventa ist eine Plattform für alle Arten von Vertrieb. Von Quereinsteigern bis zu erfahrenen Sales-Profis – Unternehmen können sich präsentieren oder gezielt Vertriebler kontaktieren, die den nächsten Schritt suchen.",
+      "after": "Conexio ist eine Plattform für alle Arten von Vertrieb. Von Quereinsteigern bis zu erfahrenen Sales-Profis – Unternehmen können sich präsentieren oder gezielt Vertriebler kontaktieren, die den nächsten Schritt suchen.",
+      "updatedAt": "2026-01-09T12:51:40.371Z"
+    }
+  ]
+}

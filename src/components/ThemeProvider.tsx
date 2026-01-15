@@ -19,8 +19,8 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const STORAGE_KEY = "noventa_theme";
-const THEME_EVENT = "noventa-theme";
+const STORAGE_KEY = "conexio_theme";
+const THEME_EVENT = "conexio-theme";
 
 function readStoredTheme(): Theme {
   if (typeof window === "undefined") return "light";

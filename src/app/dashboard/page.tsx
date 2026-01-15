@@ -669,7 +669,7 @@ export default function DashboardPage() {
 
   // Load from localStorage on mount
   useEffect(() => {
-    const savedJobs = localStorage.getItem("noventa_jobs");
+    const savedJobs = localStorage.getItem("conexio_jobs");
     if (savedJobs) {
       setJobs(JSON.parse(savedJobs));
     }
@@ -678,14 +678,14 @@ export default function DashboardPage() {
   const handleCreateJob = (newJob: JobOffer) => {
     const updatedJobs = [newJob, ...jobs];
     setJobs(updatedJobs);
-    localStorage.setItem("noventa_jobs", JSON.stringify(updatedJobs));
+    localStorage.setItem("conexio_jobs", JSON.stringify(updatedJobs));
     setCurrentView("list");
   };
 
   const handleDeleteJob = (id: number | string) => {
     const updatedJobs = jobs.filter((job) => job.id !== id);
     setJobs(updatedJobs);
-    localStorage.setItem("noventa_jobs", JSON.stringify(updatedJobs));
+    localStorage.setItem("conexio_jobs", JSON.stringify(updatedJobs));
   };
 
   return (
@@ -710,13 +710,13 @@ export default function DashboardPage() {
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Logo */}
-        <div className="p-4 border-b border-slate-700/50 flex items-center justify-center h-[80px] relative">
-          <div className="bg-white rounded-xl shadow-lg w-14 h-14 shrink-0 flex items-center justify-center p-2">
+        <div className="p-4 border-b border-slate-700/50 flex items-center justify-center h-[90px] relative">
+          <div className="bg-white rounded-2xl shadow-lg w-16 h-16 shrink-0 flex items-center justify-center p-2.5">
             <Image
-              src="/logo-n.png"
-              alt="Noventa"
-              width={40}
-              height={40}
+              src="/Logo.PNG"
+              alt="Conexio Logo"
+              width={48}
+              height={48}
               className="object-contain"
             />
           </div>
@@ -1042,7 +1042,7 @@ function SuggestionsView({ setCurrentView }: { setCurrentView: (view: View) => v
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
               <CopyText copyId="dashboard.suggestions.wishFeatureLabel" defaultText={wishFeatureLabel} as="span" />
@@ -1255,7 +1255,7 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("noventa_company_profile");
+      const saved = localStorage.getItem("conexio_company_profile");
       if (saved) {
         const parsed = JSON.parse(saved);
         setProfile((prev) => ({ ...prev, ...parsed }));
@@ -1267,7 +1267,7 @@ function ProfileView({ jobs, tr }: { jobs: JobOffer[]; tr: any }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("noventa_company_profile", JSON.stringify(profile));
+      localStorage.setItem("conexio_company_profile", JSON.stringify(profile));
     } catch {
       // ignore
     }

@@ -1,0 +1,38 @@
+{
+  "app": "noventa-landing",
+  "generatedAt": "2026-01-09T13:12:12.193Z",
+  "changes": [
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "cssPath",
+      "selector": "html > body > div:nth-of-type(2) > div:nth-of-type(5) > section > div:nth-of-type(2) > div:nth-of-type(3) > p",
+      "domPath": "html/body[2]/div[10]/div[5]/section[4]/div[2]/div[3]/p[2]",
+      "before": "Skills und Motivation getrennt sichtbar – damit ihr schneller die richtigen Gespräche führt",
+      "after": "Zwei getrennte Scores - nach deinen Kriterien gewichtet. Damit ihr schneller die richtigen Gespräche führt",
+      "updatedAt": "2026-01-09T13:11:53.791Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.whySubtitle",
+      "selector": "[data-copy-id=\"landingA.sections.whySubtitle\"]",
+      "domPath": "html/body[2]/div[10]/div[2]/section[1]/div[1]/p[2]/span[1]",
+      "before": "Dann bist du nicht alleine. Noventa ist genau dafür gebaut.",
+      "after": "Dann bist du nicht alleine. Conexio ist genau dafür gebaut.",
+      "updatedAt": "2026-01-09T12:59:05.816Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.comingSoonTitle",
+      "selector": "[data-copy-id=\"landingA.sections.comingSoonTitle\"]",
+      "domPath": "html/body[2]/div[10]/div[5]/section[4]/div[1]/h2[1]/span[1]",
+      "before": "Noventa (Phase 2) – darauf könnt ihr euch freuen und profitieren",
+      "after": "Conexio (Phase 2) – darauf könnt ihr euch freuen und profitieren",
+      "updatedAt": "2026-01-09T12:58:44.062Z"
+    }
+  ]
+}

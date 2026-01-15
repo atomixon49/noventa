@@ -18,8 +18,8 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-const STORAGE_KEY = "noventa_lang";
-const LANG_EVENT = "noventa-lang";
+const STORAGE_KEY = "conexio_lang";
+const LANG_EVENT = "conexio-lang";
 
 function readStoredLanguage(): Language {
   const stored = window.localStorage.getItem(STORAGE_KEY);

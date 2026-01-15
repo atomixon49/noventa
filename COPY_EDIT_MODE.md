@@ -1,6 +1,6 @@
 # Copy Edit Mode – Guía de Uso
 
-Este documento explica cómo activar y usar el **Copy Edit Mode** en la aplicación Noventa. Esta funcionalidad permite a usuarios no técnicos (CEOs, stakeholders) editar textos de la interfaz directamente desde el navegador y exportar los cambios en un archivo JSON estructurado para que los desarrolladores puedan aplicarlos fácilmente.
+Este documento explica cómo activar y usar el **Copy Edit Mode** en la aplicación Conexio. Esta funcionalidad permite a usuarios no técnicos (CEOs, stakeholders) editar textos de la interfaz directamente desde el navegador y exportar los cambios en un archivo JSON estructurado para que los desarrolladores puedan aplicarlos fácilmente.
 
 ---
 

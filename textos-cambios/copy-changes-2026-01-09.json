@@ -1,0 +1,39 @@
+{
+  "app": "noventa-landing",
+  "generatedAt": "2026-01-09T12:51:10.423Z",
+  "changes": [
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.structuredSubtitle",
+      "selector": "[data-copy-id=\"landingA.sections.structuredSubtitle\"]",
+      "domPath": "html/body[2]/div[10]/div[4]/section[1]/div[1]/div[1]/div[2]/p[2]/span[1]",
+      "before": "Du gibst klare Kriterien vor – Noventa macht daraus zwei Perspektiven: Skills-Fit (%) und Wunsch-Fit (%). So sehen beide Seiten sofort, ob es passt.",
+      "after": "Conexio macht die Passung auf einen Blick sichtbar - und zwar aus vier Perspektiven. Mehr dazu nur für Beta-Member.",
+      "updatedAt": "2026-01-09T12:50:41.971Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.howSteps.4.description",
+      "selector": "[data-copy-id=\"landingA.howSteps.4.description\"]",
+      "domPath": "html/body[2]/div[10]/div[3]/section[2]/div[2]/div[2]/div[5]/div[2]/p[3]/span[1]",
+      "before": "Du filterst und vergleichst Profile – mit zwei Scores: Skills-Fit (%) und Wunsch-Fit (%). Weil deine Kampagne schon sauber steht, läuft Kontakt in beide Richtungen: du sprichst Kandidaten an – passende Vertriebler kontaktieren dich.",
+      "after": "Kontakt in beide Richtungen: du sprichst Vertriebler an – passende Vertriebler kontaktieren dich. Du siehst nicht nur wer passt - sondern WIE und WARUM. Mehr dazu nur für Beta-Member.",
+      "updatedAt": "2026-01-09T12:40:30.784Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.howSteps.3.description",
+      "selector": "[data-copy-id=\"landingA.howSteps.3.description\"]",
+      "domPath": "html/body[2]/div[10]/div[3]/section[2]/div[2]/div[2]/div[4]/div[2]/p[3]/span[1]",
+      "before": "Der Countdown läuft im Dashboard bereits mit. So bist du startklar, sobald der Kandidatenpool freigeschaltet wird.",
+      "after": "Der Countdown läuft im Dashboard bereits mit. So bist du startklar, sobald der Vertrieblerpool freigeschaltet wird.",
+      "updatedAt": "2026-01-09T12:19:25.297Z"
+    }
+  ]
+}

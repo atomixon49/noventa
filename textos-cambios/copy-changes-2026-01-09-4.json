@@ -1,0 +1,83 @@
+{
+  "app": "noventa-landing",
+  "generatedAt": "2026-01-09T13:19:07.004Z",
+  "changes": [
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.footer.note",
+      "selector": "[data-copy-id=\"landingA.footer.note\"]",
+      "domPath": "html/body[2]/div[10]/div[11]/section[1]/div[1]/div[4]/div[1]/div[3]/span[2]/span[1]",
+      "before": "Noventa ist in der Beta. Einige Module sind als ‚coming soon‘ markiert und werden schrittweise freigeschaltet.",
+      "after": "Conexio ist in der Beta. Einige Module sind als ‚coming soon‘ markiert und werden schrittweise freigeschaltet.",
+      "updatedAt": "2026-01-09T13:18:56.865Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.finalCtaTitle",
+      "selector": "[data-copy-id=\"landingA.sections.finalCtaTitle\"]",
+      "domPath": "html/body[2]/div[10]/div[11]/section[1]/div[1]/div[4]/div[1]/h2[1]/span[1]",
+      "before": "Bereit, deine erste Kampagne auf Noventa zu starten?",
+      "after": "Bereit, deine erste Kampagne auf Conexio zu starten?",
+      "updatedAt": "2026-01-09T13:18:36.900Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.faqs.7.a",
+      "selector": "[data-copy-id=\"landingA.sections.faqs.7.a\"]",
+      "domPath": "html/body[2]/div[10]/div[9]/section[5]/div[2]/div[8]/div[2]/div[1]/span[1]",
+      "before": "Ja. Noventa ist nicht auf Daueraktivität ausgelegt, sondern auf punktgenaue Nutzung. Sie werden nicht schlechter gestellt, wenn Sie zeitweise inaktiv sind.",
+      "after": "Ja. Conexio ist nicht auf Daueraktivität ausgelegt, sondern auf punktgenaue Nutzung. Dein Unternehmen wird nicht schlechter gestellt, wenn es zeitweise inaktiv ist.",
+      "updatedAt": "2026-01-09T13:18:17.921Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.faqs.7.q",
+      "selector": "[data-copy-id=\"landingA.sections.faqs.7.q\"]",
+      "domPath": "html/body[2]/div[10]/div[9]/section[5]/div[2]/div[8]/button[1]/div[1]/span[1]",
+      "before": "Kann ich Noventa auch nutzen, wenn ich nur sporadisch oder projektweise rekrutiere?",
+      "after": "Kann ich Conexio auch nutzen, wenn ich nur sporadisch oder projektweise rekrutiere?",
+      "updatedAt": "2026-01-09T13:17:21.520Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.faqs.5.a",
+      "selector": "[data-copy-id=\"landingA.sections.faqs.5.a\"]",
+      "domPath": "html/body[2]/div[10]/div[9]/section[5]/div[2]/div[6]/div[2]/div[1]/span[1]",
+      "before": "Nichts. Keine Verpflichtung, kein Druck. Ihr Profil bleibt bestehen und Sie entscheiden jederzeit, ob und wann Sie aktiv werden.",
+      "after": "Nichts. Keine Verpflichtung, kein Druck. Dein Profil bleibt bestehen und du entscheidest jederzeit, ob und wann du aktiv wirst.",
+      "updatedAt": "2026-01-09T13:16:48.462Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.faqs.3.a",
+      "selector": "[data-copy-id=\"landingA.sections.faqs.3.a\"]",
+      "domPath": "html/body[2]/div[10]/div[9]/section[5]/div[2]/div[4]/div[2]/div[1]/span[1]",
+      "before": "Alle Vertriebler werden gesammelt freigeschaltet – wer dann direkt vorbereitet ist, steht von Beginn an besser da. Zusätzlich können Sie die Plattform in der Beta-Phase ohne Fixpreise kennenlernen.",
+      "after": "Alle Vertriebler werden gesammelt freigeschaltet – wer dann direkt vorbereitet ist, steht von Beginn an besser da. Zusätzlich lernst du die Plattform in der Beta-Phase ohne Fixpreise kennen.",
+      "updatedAt": "2026-01-09T13:16:10.069Z"
+    },
+    {
+      "route": "/",
+      "lang": "de",
+      "selectorType": "copyId",
+      "copyId": "landingA.sections.faqs.2.a",
+      "selector": "[data-copy-id=\"landingA.sections.faqs.2.a\"]",
+      "domPath": "html/body[2]/div[10]/div[9]/section[5]/div[2]/div[3]/div[2]/div[1]/span[1]",
+      "before": "Nein. Ihre Unternehmens- und Stellendaten sind nicht öffentlich einsehbar. Sie werden ausschließlich registrierten Vertrieblern angezeigt – und auch dort nur in dem Umfang, den Sie selbst festlegen.",
+      "after": "Nein. Deine Unternehmens- und Stellendaten sind nicht öffentlich einsehbar. Du wirst ausschließlich registrierten Vertrieblern angezeigt – und auch dort nur in dem Umfang, den du selbst festlegst.",
+      "updatedAt": "2026-01-09T13:14:41.099Z"
+    }
+  ]
+}

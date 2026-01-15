@@ -17,13 +17,14 @@ import {
   Sparkles
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/components/LanguageProvider";
 import { CopyText, useCopyString } from "@/components/CopyEditProvider";
 import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 
 // Endpoints from environment variables
-const API_LOGIN = process.env.NEXT_PUBLIC_API_LOGIN || "https://loginnoventa.hjsolutions.site/public/login";
+const API_LOGIN = process.env.NEXT_PUBLIC_API_LOGIN || "https://loginconexio.hjsolutions.site/public/login";
 
 type Role = "company" | "user";
 
@@ -151,7 +152,7 @@ export default function LoginPage() {
           }
         };
 
-        localStorage.setItem("noventa_session_meta", JSON.stringify(sessionData));
+        localStorage.setItem("conexio_session_meta", JSON.stringify(sessionData));
         
         console.log("Session saved securely");
         router.push("/dashboard");
@@ -187,45 +188,55 @@ export default function LoginPage() {
         layout
         className="relative w-full max-w-5xl bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-[40px] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-[600px]"
       >
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="wait">
           <motion.div
             key={role}
-            initial={{ opacity: 0, x: role === "company" ? -20 : 20, filter: "blur(10px)" }}
-            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, x: role === "company" ? 20 : -20, filter: "blur(10px)" }}
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
             className={`flex flex-col md:flex-row w-full h-full ${role === "user" ? "md:flex-row-reverse" : ""}`}
           >
             {/* Form Side */}
             <div className="flex-1 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
               <div className="mb-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h1 className="text-3xl font-bold">
-                    <CopyText copyId="auth.login.title" defaultText={tr.title} as="span" />
-                  </h1>
-                  <div className="flex p-1 bg-slate-800 rounded-xl">
+                <div className="flex items-center justify-between gap-4 mb-6">
+                  <div className="rounded-xl bg-white p-2.5 shadow-md">
+                    <Image
+                      src="/Marca-N.PNG"
+                      alt="Conexio"
+                      width={160}
+                      height={44}
+                      className="h-8 w-auto object-contain"
+                      priority
+                    />
+                  </div>
+                  <div className="flex p-1 bg-slate-800/80 rounded-xl border border-white/5">
                     <button
                       type="button"
                       onClick={() => setRole("company")}
-                      className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${role === "company" ? "bg-teal-500 text-white shadow-lg" : "text-slate-400 hover:text-slate-200"}`}
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${role === "company" ? "bg-teal-500 text-white shadow-lg shadow-teal-500/30" : "text-slate-400 hover:text-slate-200"}`}
                     >
                       <CopyText copyId="auth.login.roles.company" defaultText={tr.roles.company} as="span" />
                     </button>
                     <button
                       type="button"
                       onClick={() => setRole("user")}
-                      className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${role === "user" ? "bg-cyan-500 text-white shadow-lg" : "text-slate-400 hover:text-slate-200"}`}
+                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${role === "user" ? "bg-cyan-500 text-white shadow-lg shadow-cyan-500/30" : "text-slate-400 hover:text-slate-200"}`}
                     >
                       <CopyText copyId="auth.login.roles.user" defaultText={tr.roles.user} as="span" />
                     </button>
                   </div>
                 </div>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">
+                  <CopyText copyId="auth.login.title" defaultText={tr.title} as="span" />
+                </h1>
                 <p className="text-slate-400">
                   <CopyText copyId="auth.login.subtitle" defaultText={tr.subtitle} as="span" />
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
                 <div className="space-y-1.5">
                   <label className="text-sm font-medium text-slate-300 ml-1">
                     <CopyText copyId="auth.login.form.username.label" defaultText={tr.form.username} as="span" />

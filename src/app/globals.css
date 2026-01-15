@@ -51,7 +51,7 @@ html {
   scroll-behavior: smooth;
 }
 
-@keyframes noventa-marquee-left {
+@keyframes conexio-marquee-left {
   0% {
     transform: translate3d(0, 0, 0);
   }
@@ -60,7 +60,7 @@ html {
   }
 }
 
-@keyframes noventa-marquee-right {
+@keyframes conexio-marquee-right {
   0% {
     transform: translate3d(-50%, 0, 0);
   }
@@ -69,7 +69,7 @@ html {
   }
 }
 
-.noventa-marquee {
+.conexio-marquee {
   overflow: hidden;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
@@ -77,26 +77,26 @@ html {
   contain: paint;
 }
 
-.noventa-marquee__track {
+.conexio-marquee__track {
   width: max-content;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
 }
 
-.noventa-marquee--left .noventa-marquee__track {
-  animation: noventa-marquee-left var(--noventa-marquee-duration, 55s) linear infinite;
+.conexio-marquee--left .conexio-marquee__track {
+  animation: conexio-marquee-left var(--conexio-marquee-duration, 55s) linear infinite;
 }
 
-.noventa-marquee--right .noventa-marquee__track {
-  animation: noventa-marquee-right var(--noventa-marquee-duration, 60s) linear infinite;
+.conexio-marquee--right .conexio-marquee__track {
+  animation: conexio-marquee-right var(--conexio-marquee-duration, 60s) linear infinite;
 }
 
-.noventa-marquee:hover .noventa-marquee__track {
+.conexio-marquee:hover .conexio-marquee__track {
   animation-play-state: paused;
 }
 
-.noventa-marquee.is-paused .noventa-marquee__track {
+.conexio-marquee.is-paused .conexio-marquee__track {
   animation-play-state: paused;
 }
 

@@ -110,19 +110,21 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center">
-            <Image 
-              src="/noventa-1.jpeg" 
-              alt="Noventa" 
+            <div className="rounded-xl bg-white/95 p-2 shadow-sm">
+              <Image 
+              src="/Marca-N.PNG" 
+              alt="Conexio Logo" 
               width={180} 
               height={50}
               className="h-12 w-auto object-contain"
               priority
-            />
+              />
+            </div>
           </Link>
         </div>
 
         <nav className="hidden items-center gap-6 sm:flex">
-          <Link href="#about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
+          <Link href="/about" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
             <CopyText copyId="siteHeader.nav.about" defaultText={t.nav.about} as="span" />
           </Link>
           <Link href="#faq" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
@@ -161,8 +163,8 @@ export function SiteHeader() {
           <nav className="flex items-center gap-1 sm:hidden">
             <Link href="/" className="rounded-lg bg-white p-1 shadow-sm">
               <Image 
-                src="/logo-n.png" 
-                alt="Noventa" 
+                src="/Logo.PNG" 
+                alt="Conexio Logo" 
                 width={100} 
                 height={30}
                 className="h-7 w-auto object-contain"

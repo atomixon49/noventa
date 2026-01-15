@@ -91,8 +91,8 @@ export function HeroDashboard() {
           {/* Logo with white background */}
           <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center shadow-lg p-1.5 mb-2">
             <Image
-              src="/logo-n.png"
-              alt="Noventa"
+              src="/Logo.PNG"
+              alt="Conexio Logo"
               width={32}
               height={32}
               className="object-contain"

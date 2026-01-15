@@ -38,7 +38,7 @@ export function SocialMediaGallery({ title, subtitle, followText }: SocialMediaG
           {/* Social Links */}
           <div className="flex items-center justify-center gap-4">
             <a
-              href="https://www.instagram.com/noventacrew/"
+              href="https://www.instagram.com/conexiocrew/"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
@@ -48,7 +48,7 @@ export function SocialMediaGallery({ title, subtitle, followText }: SocialMediaG
               <ExternalLink size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
             </a>
             <a
-              href="https://www.tiktok.com/@noventacrew"
+              href="https://www.tiktok.com/@conexiocrew"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
